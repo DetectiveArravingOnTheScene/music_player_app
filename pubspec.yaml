@@ -1,19 +1,31 @@
 name: music_player_app
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: ^3.10.1
+    sdk: ^3.10.1
+
+workspace:
+    - core
+    - core_ui
+    - data
+    - domain
+    - navigation
 
 dependencies:
-  flutter:
-    sdk: flutter
+    flutter:
+        sdk: flutter
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^6.0.0
-
+    flutter_test:
+        sdk: flutter
+    flutter_lints: ^6.0.0
+    melos: ^7.3.0
+melos:
+    useRootAsPackage: true
+    scripts:
+        generate:
+            run: melos exec -c 1 --scope="navigation" --depends-on build_runner -- dart run build_runner build
 flutter:
-  uses-material-design: true
+    uses-material-design: true
