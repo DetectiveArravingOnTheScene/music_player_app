@@ -1,5 +1,8 @@
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+library;
+
+export 'package:slang/slang.dart';
+export 'package:slang_flutter/slang_flutter.dart';
+export 'package:flutter_localizations/flutter_localizations.dart';
+export 'package:navigation/navigation.dart';
+
+export 'localization/gen/strings.g.dart';
