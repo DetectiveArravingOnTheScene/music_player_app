@@ -16,6 +16,8 @@ workspace:
 dependencies:
     flutter:
         sdk: flutter
+    core:
+        path: ./core
 
 dev_dependencies:
     flutter_test:
@@ -26,6 +28,8 @@ melos:
     useRootAsPackage: true
     scripts:
         generate:
-            run: melos exec -c 1 --scope="navigation" -- dart run build_runner build
+            steps:
+                - melos exec -c 1 --scope="navigation" -- dart run build_runner build
+                - melos exec -c 1 --scope="core" -- dart run slang
 flutter:
     uses-material-design: true
