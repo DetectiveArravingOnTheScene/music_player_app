@@ -26,6 +26,6 @@ melos:
     useRootAsPackage: true
     scripts:
         generate:
-            run: melos exec -c 1 --scope="navigation" --depends-on build_runner -- dart run build_runner build
+            run: melos exec -c 1 --scope="navigation" -- dart run build_runner build
 flutter:
     uses-material-design: true
