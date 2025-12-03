@@ -16,6 +16,8 @@ dependencies:
         path: ./../../core
     navigation:
         path: ./../../navigation
+    player:
+        path: ./../player
 
 resolution: workspace
 
