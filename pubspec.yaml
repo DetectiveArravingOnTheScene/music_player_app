@@ -12,6 +12,11 @@ workspace:
     - data
     - domain
     - navigation
+    - features/player
+    - features/main
+    - features/home
+    - features/search
+    - features/user_collection
 
 dependencies:
     flutter:
