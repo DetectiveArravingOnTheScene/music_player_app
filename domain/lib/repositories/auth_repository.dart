@@ -1,11 +1,11 @@
 import 'package:domain/models/models.dart';
 
-abstract class IAuthRepository {
+abstract class AuthRepository {
   Stream<UserModel?> get user;
 
-  // The actual actions
   Future<void> signInWithGoogle();
-  Future<void> signOut();
 
-  UserModel? get currentUser;
+  Future<void> signInWithEmail(String email, String password);
+
+  Future<void> signOut();
 }

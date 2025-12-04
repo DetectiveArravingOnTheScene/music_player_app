@@ -10,11 +10,11 @@ class DataDependencyInjection {
   void initialize() {
     _initGoogleSignIn();
     _initSupabase();
-    _initAuthProvider();
+    _initProviders();
   }
 
   void _initGoogleSignIn() {
-    var instance = GoogleSignIn.instance;
+    GoogleSignIn instance = GoogleSignIn.instance;
     instance.initialize(
       serverClientId: GoogleSignInOptions.webClientId,
       clientId: GoogleSignInOptions.iosClientId,
@@ -31,8 +31,8 @@ class DataDependencyInjection {
     });
   }
 
-  void _initAuthProvider() {
-    serviceLocator.registerSingletonAsync<IAuthProvider>(() async {
+  void _initProviders() {
+    serviceLocator.registerSingletonAsync<AuthProvider>(() async {
       return SupabaseAuthProvider(
         serviceLocator.get<Supabase>(),
         serviceLocator.get<GoogleSignIn>(),
