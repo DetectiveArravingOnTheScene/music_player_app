@@ -3,11 +3,14 @@ import 'package:core/core.dart';
 import 'package:data/data.dart';
 import 'package:music_player_app/app/music_app.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LocaleSettings.setLocale(AppLocale.en);
   coreDependencyInjection.initialize();
   dataDependencyInjection.initialize();
+  await serviceLocator.allReady();
+
+  await serviceLocator.get<AuthProvider>().meow();
 
   runApp(TranslationProvider(child: MusicApp()));
 }
