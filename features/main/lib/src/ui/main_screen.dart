@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
 import 'package:player/player.dart';
 
+@RoutePage()
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
@@ -11,11 +12,7 @@ class MainScreen extends StatelessWidget {
       alignment: AlignmentGeometry.center,
       children: [
         AutoTabsScaffold(
-          routes: const [
-            NamedRoute(Routes.homeRoute),
-            NamedRoute(Routes.searchRoute),
-            NamedRoute(Routes.collectionRoute),
-          ],
+          routes: const [HomeRoute(), SearchRoute(), UserCollectionRoute()],
           bottomNavigationBuilder: (context, tabsRouter) {
             return BottomNavigationBar(
               currentIndex: tabsRouter.activeIndex,

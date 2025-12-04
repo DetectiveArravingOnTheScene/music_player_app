@@ -17,6 +17,7 @@ workspace:
     - features/home
     - features/search
     - features/user_collection
+    - features/auth
 
 dependencies:
     flutter:
@@ -25,6 +26,8 @@ dependencies:
         path: ./core
     data: 
         path: ./data
+    navigation:
+        path: ./navigation
 
 dev_dependencies:
     flutter_test:

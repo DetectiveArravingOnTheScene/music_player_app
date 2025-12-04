@@ -1,6 +1,6 @@
 import 'package:core/core.dart';
-import 'package:core/di/app_di.dart';
 import 'package:flutter/material.dart';
+import 'package:navigation/navigation.dart';
 
 class MusicApp extends StatelessWidget {
   const MusicApp({super.key});

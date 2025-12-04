@@ -2,11 +2,10 @@ library;
 
 import 'package:navigation/navigation.dart';
 
-export 'src/ui/player_screen.dart';
-export 'src/ui/widgets/player_widget.dart';
+export 'src/ui/auth_screen.dart';
 
 @AutoRouterConfig()
-class PlayerRouter extends RootStackRouter {
+class AuthRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [];
 }

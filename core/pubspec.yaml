@@ -17,9 +17,9 @@ dependencies:
     flutter_localizations:
         sdk: flutter
     get_it: ^9.1.1
-
     navigation:
         path: ./../navigation
+
 
 dev_dependencies:
     flutter_test:
