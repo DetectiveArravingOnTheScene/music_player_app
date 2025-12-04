@@ -10,7 +10,5 @@ void main() async {
   dataDependencyInjection.initialize();
   await serviceLocator.allReady();
 
-  await serviceLocator.get<AuthProvider>().meow();
-
   runApp(TranslationProvider(child: MusicApp()));
 }

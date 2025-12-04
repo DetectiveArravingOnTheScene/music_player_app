@@ -1,5 +1,6 @@
 library;
 
-export 'providers/remote/auth_provider/auth_provider.dart';
-
 export 'di/data_di.dart';
+export 'repositories/repositories.dart';
+export 'mappers/mappers.dart';
+export 'providers/providers.dart';
