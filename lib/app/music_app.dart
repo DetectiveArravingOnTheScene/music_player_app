@@ -1,5 +1,9 @@
 import 'package:core/core.dart';
+<<<<<<< HEAD
 import 'package:core_ui/theme/app_theme.dart';
+=======
+import 'package:core/di/app_di.dart';
+>>>>>>> parent of 222634d ([P2.1] Add SupabaseAuthProvider and AuthRepository)
 import 'package:flutter/material.dart';
 
 class MusicApp extends StatelessWidget {
