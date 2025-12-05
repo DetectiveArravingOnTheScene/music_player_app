@@ -14,7 +14,7 @@ class SupabaseAuthProvider implements AuthProvider {
   @override
   Stream<UserEntity?> get authStateChanges =>
       _supabaseDb.client.auth.onAuthStateChange.map((state) {
-        final user = state.session?.user;
+        final User? user = state.session?.user;
         if (user == null) {
           return null;
         }
