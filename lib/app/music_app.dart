@@ -1,5 +1,5 @@
 import 'package:core/core.dart';
-import 'package:core_ui/core_ui.dart';
+import 'package:core_ui/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class MusicApp extends StatelessWidget {
