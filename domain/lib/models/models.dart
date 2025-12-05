@@ -1,4 +1,5 @@
-export 'song_model.dart';
-export 'song_path.dart';
-export 'album_model.dart';
-export 'artist_model.dart';
+export 'music_models/song_model.dart';
+export 'music_models/song_path.dart';
+export 'music_models/album_model.dart';
+export 'music_models/artist_model.dart';
+export 'user_model/user_model.dart';
