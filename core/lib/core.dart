@@ -9,4 +9,3 @@ export 'localization/gen/strings.g.dart';
 export 'di/app_di.dart';
 export 'config/firebase_options.dart';
 export 'config/supabase_options.dart';
-export 'config/google_sign_in_options.dart';
