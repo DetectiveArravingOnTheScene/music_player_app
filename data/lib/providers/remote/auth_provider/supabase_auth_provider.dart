@@ -12,13 +12,24 @@ class SupabaseAuthProvider implements AuthProvider {
   final GoogleSignIn _googleSignIn;
 
   @override
-  Stream<User?> get authStateChanges =>
-      _supabaseDb.client.auth.onAuthStateChange.map((e) => e.session?.user);
+  Stream<UserEntity?> get authStateChanges =>
+      _supabaseDb.client.auth.onAuthStateChange.map((state) {
+        final user = state.session?.user;
+        if (user == null) {
+          return null;
+        }
+
+        return UserEntity(
+          id: user.id,
+          email: user.email!,
+          avatarUrl: user.userMetadata?['avatar_url'],
+        );
+      });
 
   @override
-  Future<AuthResponse> signInWithEmail(String email, String password) async {
+  Future<void> signInWithEmail(String email, String password) async {
     try {
-      return await _supabaseDb.client.auth.signInWithPassword(
+      await _supabaseDb.client.auth.signInWithPassword(
         email: email,
         password: password,
       );
@@ -28,12 +39,12 @@ class SupabaseAuthProvider implements AuthProvider {
   }
 
   @override
-  Future<AuthResponse> signInWithGoogle() async {
+  Future<void> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn
           .attemptLightweightAuthentication();
       if (googleUser == null) {
-        throw AuthException('Failed to sign in with Google.');
+        throw AuthException(t.login.fail);
       }
 
       final GoogleSignInClientAuthorization authorization =
@@ -47,10 +58,10 @@ class SupabaseAuthProvider implements AuthProvider {
       final String? idToken = googleUser.authentication.idToken;
 
       if (idToken == null) {
-        throw AuthException('No ID Token found.');
+        throw AuthException(t.login.fail);
       }
 
-      return await _supabaseDb.client.auth.signInWithIdToken(
+      await _supabaseDb.client.auth.signInWithIdToken(
         provider: OAuthProvider.google,
         idToken: idToken,
         accessToken: authorization.accessToken,

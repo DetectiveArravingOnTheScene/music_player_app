@@ -1,11 +1,11 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:data/data.dart';
 
 abstract class AuthProvider {
-  Stream<User?> get authStateChanges;
+  Stream<UserEntity?> get authStateChanges;
 
-  Future<AuthResponse> signInWithGoogle();
+  Future<void> signInWithGoogle();
 
-  Future<AuthResponse> signInWithEmail(String email, String password);
+  Future<void> signInWithEmail(String email, String password);
 
   Future<void> signOut();
 }

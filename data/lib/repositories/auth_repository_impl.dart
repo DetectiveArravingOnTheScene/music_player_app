@@ -8,12 +8,12 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Stream<UserModel?> get user {
-    return _authProvider.authStateChanges.map((supabaseUser) {
-      if (supabaseUser == null) {
+    return _authProvider.authStateChanges.map((userEntity) {
+      if (userEntity == null) {
         return null;
       }
 
-      return UserMapper.toModel(supabaseUser);
+      return UserMapper.toModel(userEntity);
     });
   }
 
