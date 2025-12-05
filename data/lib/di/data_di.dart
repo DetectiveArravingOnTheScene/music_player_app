@@ -1,4 +1,6 @@
 import 'package:core/core.dart';
+import 'package:data/data.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final DataDependencyInjection dataDependencyInjection =
@@ -6,7 +8,18 @@ final DataDependencyInjection dataDependencyInjection =
 
 class DataDependencyInjection {
   void initialize() {
+    _initGoogleSignIn();
     _initSupabase();
+    _initProviders();
+  }
+
+  void _initGoogleSignIn() {
+    GoogleSignIn instance = GoogleSignIn.instance;
+    instance.initialize(
+      serverClientId: GoogleSignInOptions.webClientId,
+      clientId: GoogleSignInOptions.iosClientId,
+    );
+    serviceLocator.registerSingleton<GoogleSignIn>(instance);
   }
 
   void _initSupabase() {
@@ -16,5 +29,14 @@ class DataDependencyInjection {
         anonKey: SupabaseOptions.publishibleKey,
       );
     });
+  }
+
+  void _initProviders() {
+    serviceLocator.registerSingletonAsync<AuthProvider>(() async {
+      return SupabaseAuthProvider(
+        serviceLocator.get<Supabase>(),
+        serviceLocator.get<GoogleSignIn>(),
+      );
+    }, dependsOn: [Supabase]);
   }
 }
