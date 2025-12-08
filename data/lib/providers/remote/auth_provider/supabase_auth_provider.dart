@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:core/core.dart';
 import 'package:data/data.dart';
+import 'package:domain/errors/auth/auth_app_exception.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -34,7 +35,7 @@ class SupabaseAuthProvider implements AuthProvider {
         password: password,
       );
     } catch (e) {
-      rethrow;
+      throw AuthAppException(t.login.fail);
     }
   }
 
@@ -66,8 +67,10 @@ class SupabaseAuthProvider implements AuthProvider {
         idToken: idToken,
         accessToken: authorization.accessToken,
       );
-    } catch (e) {
+    } on AuthException {
       rethrow;
+    } catch (e) {
+      throw AuthAppException(t.login.fail);
     }
   }
 
