@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:navigation/navigation.dart';
 
-final serviceLocator = GetIt.instance;
+final GetIt serviceLocator = GetIt.instance;
 final CoreDependencyInjection coreDependencyInjection =
     CoreDependencyInjection();
 
