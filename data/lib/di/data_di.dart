@@ -13,6 +13,7 @@ class DataDependencyInjection {
     _initSupabase();
     _initProviders();
     _initRepositories();
+    _initUseCases();
   }
 
   void _initGoogleSignIn() {
@@ -46,5 +47,26 @@ class DataDependencyInjection {
     serviceLocator.registerSingletonWithDependencies<AuthRepository>(() {
       return AuthRepositoryImpl(serviceLocator.get<AuthProvider>());
     }, dependsOn: [AuthProvider]);
+  }
+
+  void _initUseCases() {
+    serviceLocator.registerSingletonWithDependencies<SignInWithEmailUseCase>(
+      () {
+        return SignInWithEmailUseCase(serviceLocator.get<AuthRepository>());
+      },
+      dependsOn: [AuthRepository],
+    );
+    serviceLocator.registerSingletonWithDependencies<SignUpWithEmailUseCase>(
+      () {
+        return SignUpWithEmailUseCase(serviceLocator.get<AuthRepository>());
+      },
+      dependsOn: [AuthRepository],
+    );
+    serviceLocator.registerSingletonWithDependencies<SignInWithGoogleUseCase>(
+      () {
+        return SignInWithGoogleUseCase(serviceLocator.get<AuthRepository>());
+      },
+      dependsOn: [AuthRepository],
+    );
   }
 }

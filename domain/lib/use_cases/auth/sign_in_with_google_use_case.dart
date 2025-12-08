@@ -1,7 +1,7 @@
 import 'package:domain/domain.dart';
 
-class SignInWithEmailUseCase extends FutureUseCaseNoParams<void> {
-  SignInWithEmailUseCase(this._authRepository);
+class SignInWithGoogleUseCase extends FutureUseCaseNoParams<void> {
+  SignInWithGoogleUseCase(this._authRepository);
   final AuthRepository _authRepository;
 
   @override

@@ -1,8 +1,19 @@
 {
-  "hello": "Hello $name",
-  "save": "Save",
-  "login": {
-    "success": "Logged in successfully",
-    "fail": "Logged in failed"
-  }
+    "hello": "Hello $name",
+    "save": "Save",
+    "login": {
+        "emailError": {
+            "empty": "Please enter an email address",
+            "invalid": "Please enter a valid email address"
+        },
+        "passwordError": {
+            "empty": "Please enter a password",
+            "short": "Password must be at least 8 characters long",
+            "noUppercase": "Password must contain at least one uppercase letter",
+            "noNumber": "Password must contain at least one number",
+            "noSpecial": ""
+        },
+        "success": "Logged in successfully",
+        "fail": "Logged in failed"
+    }
 }

@@ -49,8 +49,35 @@ class _TranslationsLoginRu implements TranslationsLoginEn {
 	final TranslationsRu _root; // ignore: unused_field
 
 	// Translations
+	@override late final _TranslationsLoginEmailErrorRu emailError = _TranslationsLoginEmailErrorRu._(_root);
+	@override late final _TranslationsLoginPasswordErrorRu passwordError = _TranslationsLoginPasswordErrorRu._(_root);
 	@override String get success => 'Вход выполнен успешно';
 	@override String get fail => 'Не удалось войти';
+}
+
+// Path: login.emailError
+class _TranslationsLoginEmailErrorRu implements TranslationsLoginEmailErrorEn {
+	_TranslationsLoginEmailErrorRu._(this._root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get empty => 'Пожалуйста, введите адрес электронной почты';
+	@override String get invalid => 'Пожалуйста, введите корректный адрес электронной почты';
+}
+
+// Path: login.passwordError
+class _TranslationsLoginPasswordErrorRu implements TranslationsLoginPasswordErrorEn {
+	_TranslationsLoginPasswordErrorRu._(this._root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get empty => 'Пожалуйста, введите пароль';
+	@override String get short => 'Пароль должен содержать минимум 8 символов';
+	@override String get noUppercase => 'Пароль должен содержать хотя бы одну заглавную букву';
+	@override String get noNumber => 'Пароль должен содержать хотя бы одну цифру';
+	@override String get noSpecial => 'Пароль должен содержать хотя бы один специальный символ';
 }
 
 /// The flat map containing all translations for locale <ru>.
@@ -63,6 +90,13 @@ extension on TranslationsRu {
 		return switch (path) {
 			'hello' => ({required Object name}) => 'Привет, ${name}',
 			'save' => 'Сохранить',
+			'login.emailError.empty' => 'Пожалуйста, введите адрес электронной почты',
+			'login.emailError.invalid' => 'Пожалуйста, введите корректный адрес электронной почты',
+			'login.passwordError.empty' => 'Пожалуйста, введите пароль',
+			'login.passwordError.short' => 'Пароль должен содержать минимум 8 символов',
+			'login.passwordError.noUppercase' => 'Пароль должен содержать хотя бы одну заглавную букву',
+			'login.passwordError.noNumber' => 'Пароль должен содержать хотя бы одну цифру',
+			'login.passwordError.noSpecial' => 'Пароль должен содержать хотя бы один специальный символ',
 			'login.success' => 'Вход выполнен успешно',
 			'login.fail' => 'Не удалось войти',
 			_ => null,

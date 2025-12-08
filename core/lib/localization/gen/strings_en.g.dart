@@ -57,12 +57,53 @@ class TranslationsLoginEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
+	late final TranslationsLoginEmailErrorEn emailError = TranslationsLoginEmailErrorEn._(_root);
+	late final TranslationsLoginPasswordErrorEn passwordError = TranslationsLoginPasswordErrorEn._(_root);
 
 	/// en: 'Logged in successfully'
 	String get success => 'Logged in successfully';
 
 	/// en: 'Logged in failed'
 	String get fail => 'Logged in failed';
+}
+
+// Path: login.emailError
+class TranslationsLoginEmailErrorEn {
+	TranslationsLoginEmailErrorEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Please enter an email address'
+	String get empty => 'Please enter an email address';
+
+	/// en: 'Please enter a valid email address'
+	String get invalid => 'Please enter a valid email address';
+}
+
+// Path: login.passwordError
+class TranslationsLoginPasswordErrorEn {
+	TranslationsLoginPasswordErrorEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Please enter a password'
+	String get empty => 'Please enter a password';
+
+	/// en: 'Password must be at least 8 characters long'
+	String get short => 'Password must be at least 8 characters long';
+
+	/// en: 'Password must contain at least one uppercase letter'
+	String get noUppercase => 'Password must contain at least one uppercase letter';
+
+	/// en: 'Password must contain at least one number'
+	String get noNumber => 'Password must contain at least one number';
+
+	/// en: ''
+	String get noSpecial => '';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -75,6 +116,13 @@ extension on Translations {
 		return switch (path) {
 			'hello' => ({required Object name}) => 'Hello ${name}',
 			'save' => 'Save',
+			'login.emailError.empty' => 'Please enter an email address',
+			'login.emailError.invalid' => 'Please enter a valid email address',
+			'login.passwordError.empty' => 'Please enter a password',
+			'login.passwordError.short' => 'Password must be at least 8 characters long',
+			'login.passwordError.noUppercase' => 'Password must contain at least one uppercase letter',
+			'login.passwordError.noNumber' => 'Password must contain at least one number',
+			'login.passwordError.noSpecial' => '',
 			'login.success' => 'Logged in successfully',
 			'login.fail' => 'Logged in failed',
 			_ => null,

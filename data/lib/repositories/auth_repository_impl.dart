@@ -38,6 +38,15 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
+  Future<void> signUpWithEmail(SignInWithEmailPayload input) async {
+    try {
+      await _authProvider.signUpWithEmail(input);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<void> signOut() async {
     _authProvider.signOut();
   }

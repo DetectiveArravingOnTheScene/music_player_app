@@ -7,5 +7,7 @@ abstract class AuthRepository {
 
   Future<void> signInWithEmail(SignInWithEmailPayload input);
 
+  Future<void> signUpWithEmail(SignInWithEmailPayload input);
+
   Future<void> signOut();
 }
