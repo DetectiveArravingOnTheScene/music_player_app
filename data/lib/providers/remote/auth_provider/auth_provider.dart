@@ -1,11 +1,12 @@
 import 'package:data/data.dart';
+import 'package:domain/payloads/payloads.dart';
 
 abstract class AuthProvider {
   Stream<UserEntity?> get authStateChanges;
 
   Future<void> signInWithGoogle();
 
-  Future<void> signInWithEmail(String email, String password);
+  Future<void> signInWithEmail(SignInWithEmailPayload input);
 
   Future<void> signOut();
 }

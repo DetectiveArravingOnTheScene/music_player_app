@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:core/core.dart';
 import 'package:data/data.dart';
+import 'package:domain/domain.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -27,11 +28,11 @@ class SupabaseAuthProvider implements AuthProvider {
       });
 
   @override
-  Future<void> signInWithEmail(String email, String password) async {
+  Future<void> signInWithEmail(SignInWithEmailPayload input) async {
     try {
       await _supabaseDb.client.auth.signInWithPassword(
-        email: email,
-        password: password,
+        email: input.email,
+        password: input.password,
       );
     } catch (e) {
       rethrow;

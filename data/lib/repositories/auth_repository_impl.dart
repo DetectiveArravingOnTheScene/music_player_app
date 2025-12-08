@@ -28,9 +28,9 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<void> signInWithEmail(String email, String password) async {
+  Future<void> signInWithEmail(SignInWithEmailPayload input) async {
     try {
-      await _authProvider.signInWithEmail(email, password);
+      await _authProvider.signInWithEmail(input);
     } catch (e) {
       ///TODO: Replace with Failure when merged
       throw Exception();
