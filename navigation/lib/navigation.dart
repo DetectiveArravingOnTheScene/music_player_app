@@ -2,6 +2,7 @@ library;
 
 export 'src/app_router.dart';
 export 'package:auto_route/auto_route.dart';
+export 'src/auth_watcher.dart';
 
 export 'package:main/main.gr.dart';
 export 'package:player/player.gr.dart';

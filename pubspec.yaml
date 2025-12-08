@@ -26,6 +26,8 @@ dependencies:
         path: ./core
     data: 
         path: ./data
+    domain:
+        path: ./domain
     navigation:
         path: ./navigation
 

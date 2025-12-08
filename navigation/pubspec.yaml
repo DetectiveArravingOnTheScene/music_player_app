@@ -26,6 +26,8 @@ dependencies:
         path: ./../features/user_collection
     auth:
         path: ./../features/auth
+    domain:
+      path: ./../domain
 
 resolution: workspace
 

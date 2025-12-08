@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:data/data.dart';
+import 'package:domain/domain.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -11,6 +12,7 @@ class DataDependencyInjection {
     _initGoogleSignIn();
     _initSupabase();
     _initProviders();
+    _initRepositories();
   }
 
   void _initGoogleSignIn() {
@@ -38,5 +40,11 @@ class DataDependencyInjection {
         serviceLocator.get<GoogleSignIn>(),
       );
     }, dependsOn: [Supabase]);
+  }
+
+  void _initRepositories() {
+    serviceLocator.registerSingletonWithDependencies<AuthRepository>(() {
+      return AuthRepositoryImpl(serviceLocator.get<AuthProvider>());
+    }, dependsOn: [AuthProvider]);
   }
 }

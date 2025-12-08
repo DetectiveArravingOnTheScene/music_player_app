@@ -1,32 +1,30 @@
+import 'package:core/core.dart';
 import 'package:navigation/navigation.dart';
+import 'package:navigation/src/guards.dart';
 
+@AutoRouterConfig()
 class AppRouter extends RootStackRouter {
   @override
   List<AutoRoute> get routes => [
-    AutoRoute(page: AuthRoute.page),
-    AutoRoute(page: MainRoute.page),
     AutoRoute(
-      page: MainRoute.page,
+      page: AuthRoute.page,
+      path: '/auth',
+      guards: [GuestGuard(serviceLocator.get<AuthWatcher>())],
       children: [
-        AutoRoute(page: HomeRoute.page),
-        AutoRoute(page: SearchRoute.page),
-        AutoRoute(page: UserCollectionRoute.page),
+        AutoRoute(page: SignInRoute.page, path: 'signin', initial: true),
+        AutoRoute(page: SignUpRoute.page, path: 'signup'),
       ],
     ),
-    AutoRoute(page: PlayerRoute.page),
-  ];
-
-  @override
-  List<AutoRouteGuard> get guards => [
-    AutoRouteGuard.simple((resolver, router) {
-      if (false || resolver.routeName == AuthRoute.name) {
-        // we continue navigation
-        resolver.next();
-      } else {
-        resolver.redirectUntil(
-          AuthRoute(onResult: (didLogin) => resolver.next(didLogin)),
-        );
-      }
-    }),
+    AutoRoute(
+      page: MainRoute.page,
+      path: '/',
+      guards: [AuthGuard(serviceLocator.get<AuthWatcher>())],
+      children: [
+        AutoRoute(page: HomeRoute.page, initial: true, path: 'home'),
+        AutoRoute(page: SearchRoute.page, path: 'search'),
+        AutoRoute(page: UserCollectionRoute.page, path: 'collection'),
+        AutoRoute(page: PlayerRoute.page, path: 'player'),
+      ],
+    ),
   ];
 }

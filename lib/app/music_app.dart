@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
 
@@ -15,7 +16,11 @@ class MusicApp extends StatelessWidget {
       locale: TranslationProvider.of(context).flutterLocale,
       supportedLocales: AppLocaleUtils.supportedLocales,
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      routerConfig: serviceLocator.get<AppRouter>().config(),
+      routerConfig: serviceLocator.get<AppRouter>().config(
+        reevaluateListenable: AuthWatcher(
+          serviceLocator.get<AuthRepository>().user,
+        ),
+      ),
     );
   }
 }

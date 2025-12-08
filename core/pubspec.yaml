@@ -19,6 +19,8 @@ dependencies:
     get_it: ^9.1.1
     navigation:
         path: ./../navigation
+    domain:
+        path: ./../domain
 
 
 dev_dependencies:
