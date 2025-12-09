@@ -1,0 +1,22 @@
+name: Guard Main Branch
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened, edited]
+
+jobs:
+  check-source-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check source branch
+        run: |
+          SOURCE_BRANCH="${{ github.head_ref }}"
+          echo "Source branch is: $SOURCE_BRANCH"
+          
+          if [[ "$SOURCE_BRANCH" != "dev" ]]; then
+            echo "::error::Merges into main are ONLY allowed from the 'dev' branch. Your source is '$SOURCE_BRANCH'."
+            exit 1
+          else
+            echo "Source branch is valid."
+          fi
