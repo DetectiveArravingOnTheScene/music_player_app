@@ -43,7 +43,6 @@ class SignInScreen extends StatelessWidget {
               TextField(
                 onChanged: (value) =>
                     context.read<SignInBloc>().add(SignInEmailChanged(value)),
-                // controller: emailController,
                 decoration: InputDecoration(
                   label: Text(t.login.email),
                   errorText: state.emailError,
@@ -53,7 +52,7 @@ class SignInScreen extends StatelessWidget {
                 onChanged: (value) => context.read<SignInBloc>().add(
                   SignInPasswordChanged(value),
                 ),
-                // controller: passwordController,
+                obscureText: true,
                 decoration: InputDecoration(
                   label: Text(t.login.password),
                   errorText: state.passwordError,

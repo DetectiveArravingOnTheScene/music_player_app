@@ -50,6 +50,7 @@ class SignUpScreen extends StatelessWidget {
                 ),
               ),
               TextField(
+                obscureText: true,
                 onChanged: (value) => context.read<SignUpBloc>().add(
                   SignUpPasswordChanged(value),
                 ),
@@ -60,6 +61,7 @@ class SignUpScreen extends StatelessWidget {
                 ),
               ),
               TextField(
+                obscureText: true,
                 onChanged: (value) => context.read<SignUpBloc>().add(
                   SignUpConfirmPasswordChanged(value),
                 ),
