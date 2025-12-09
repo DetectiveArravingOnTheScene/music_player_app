@@ -49,10 +49,19 @@ class _TranslationsLoginRu implements TranslationsLoginEn {
 	final TranslationsRu _root; // ignore: unused_field
 
 	// Translations
+	@override String get signIn => 'Войти';
+	@override String get signUp => 'Зарегистироваться';
+	@override String get email => 'Электронная почта';
+	@override String get confirmPassword => 'Подтвердите пароль';
+	@override String get password => 'Пароль';
 	@override late final _TranslationsLoginEmailErrorRu emailError = _TranslationsLoginEmailErrorRu._(_root);
 	@override late final _TranslationsLoginPasswordErrorRu passwordError = _TranslationsLoginPasswordErrorRu._(_root);
+	@override late final _TranslationsLoginConfirmPasswordErrorRu confirmPasswordError = _TranslationsLoginConfirmPasswordErrorRu._(_root);
 	@override String get success => 'Вход выполнен успешно';
 	@override String get fail => 'Не удалось войти';
+	@override String get haveAccount => 'Уже есть аккаунт?';
+	@override String get haveNoAccount => 'Еще нет аккаунта?';
+	@override String get google => 'Google';
 }
 
 // Path: login.emailError
@@ -80,6 +89,17 @@ class _TranslationsLoginPasswordErrorRu implements TranslationsLoginPasswordErro
 	@override String get noSpecial => 'Пароль должен содержать хотя бы один специальный символ';
 }
 
+// Path: login.confirmPasswordError
+class _TranslationsLoginConfirmPasswordErrorRu implements TranslationsLoginConfirmPasswordErrorEn {
+	_TranslationsLoginConfirmPasswordErrorRu._(this._root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get empty => 'Пожалуйста, подтвердите пароль';
+	@override String get mismatch => 'Пароли не совпадают';
+}
+
 /// The flat map containing all translations for locale <ru>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -90,6 +110,11 @@ extension on TranslationsRu {
 		return switch (path) {
 			'hello' => ({required Object name}) => 'Привет, ${name}',
 			'save' => 'Сохранить',
+			'login.signIn' => 'Войти',
+			'login.signUp' => 'Зарегистироваться',
+			'login.email' => 'Электронная почта',
+			'login.confirmPassword' => 'Подтвердите пароль',
+			'login.password' => 'Пароль',
 			'login.emailError.empty' => 'Пожалуйста, введите адрес электронной почты',
 			'login.emailError.invalid' => 'Пожалуйста, введите корректный адрес электронной почты',
 			'login.passwordError.empty' => 'Пожалуйста, введите пароль',
@@ -97,8 +122,13 @@ extension on TranslationsRu {
 			'login.passwordError.noUppercase' => 'Пароль должен содержать хотя бы одну заглавную букву',
 			'login.passwordError.noNumber' => 'Пароль должен содержать хотя бы одну цифру',
 			'login.passwordError.noSpecial' => 'Пароль должен содержать хотя бы один специальный символ',
+			'login.confirmPasswordError.empty' => 'Пожалуйста, подтвердите пароль',
+			'login.confirmPasswordError.mismatch' => 'Пароли не совпадают',
 			'login.success' => 'Вход выполнен успешно',
 			'login.fail' => 'Не удалось войти',
+			'login.haveAccount' => 'Уже есть аккаунт?',
+			'login.haveNoAccount' => 'Еще нет аккаунта?',
+			'login.google' => 'Google',
 			_ => null,
 		};
 	}

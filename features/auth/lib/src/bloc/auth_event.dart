@@ -36,3 +36,11 @@ final class SignUpSubmitted extends AuthEvent {
 final class GoogleSignUpSubmitted extends AuthEvent {
   const GoogleSignUpSubmitted();
 }
+
+final class SignUpPageRequested extends AuthEvent {
+  const SignUpPageRequested();
+}
+
+final class SignInPageRequested extends AuthEvent {
+  const SignInPageRequested();
+}

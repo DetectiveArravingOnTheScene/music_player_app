@@ -1,7 +1,10 @@
-import 'package:auth/src/bloc/auth_bloc.dart';
-import 'package:auth/src/bloc/auth_event.dart';
-import 'package:auth/src/bloc/auth_state.dart';
+import 'package:auth/src/bloc/blocs.dart';
+import 'package:auth/src/bloc/sign_In/sign_in_event.dart';
+import 'package:auth/src/bloc/sign_In/sign_in_state.dart';
+import 'package:auth/src/ui/widgets/auth_scope.dart';
+import 'package:auth/src/ui/widgets/auth_screen_carcass.dart';
 import 'package:core/core.dart';
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
 
@@ -9,53 +12,91 @@ import 'package:navigation/navigation.dart';
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
 
-  // final TextEditingController emailController = TextEditingController();
-  // final TextEditingController passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 16.0),
-          child: Column(
-            spacing: 24,
-            children: [
+    return BlocProvider(
+      create: (context) => SignInBloc(
+        signInWithEmailUseCase: serviceLocator.get<SignInWithEmailUseCase>(),
+        signInWithGoogleUseCase: serviceLocator.get<SignInWithGoogleUseCase>(),
+      ),
+      child: BlocConsumer<SignInBloc, SignInState>(
+        listenWhen: (p, c) => p.status != c.status,
+        listener: (context, state) {
+          if (state.status == Status.failure) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
+          }
+          if (state.status == Status.success) {
+            final authScope = AuthScope.of(context);
+            if (authScope?.onResult != null) {
+              // SCENARIO: Deep Link / Guard Redirection
+              // Trigger the guard callback to resume the original route
+              authScope!.onResult!(true);
+            }
+          }
+        },
+        builder: (context, state) {
+          return AuthScreenCarcass(
+            title: t.login.signIn,
+            textFields: [
               TextField(
                 onChanged: (value) =>
-                    context.read<AuthBloc>().add(AuthEmailChanged(value)),
+                    context.read<SignInBloc>().add(SignInEmailChanged(value)),
                 // controller: emailController,
                 decoration: InputDecoration(
-                  label: Text("Email"),
+                  label: Text(t.login.email),
                   errorText: state.emailError,
                 ),
               ),
               TextField(
-                onChanged: (value) =>
-                    context.read<AuthBloc>().add(AuthPasswordChanged(value)),
+                onChanged: (value) => context.read<SignInBloc>().add(
+                  SignInPasswordChanged(value),
+                ),
                 // controller: passwordController,
                 decoration: InputDecoration(
-                  label: Text("Password"),
+                  label: Text(t.login.password),
                   errorText: state.passwordError,
                 ),
               ),
+            ],
+            button: Row(
+              children: [
+                Expanded(
+                  child: FilledButton.tonal(
+                    onPressed: () {
+                      context.read<SignInBloc>().add(SignInSubmitted());
+                    },
+                    child: Text(t.login.signIn),
+                  ),
+                ),
+              ],
+            ),
+            authProviders: [
               Row(
                 children: [
                   Expanded(
-                    child: FilledButton.tonal(
+                    child: FilledButton(
                       onPressed: () {
-                        context.read<AuthBloc>().add(SignInSubmitted());
+                        context.read<SignInBloc>().add(
+                          SignInWithGoogleSubmitted(),
+                        );
                       },
-                      child: Text("Sign in"),
+                      child: Text(t.login.google),
                     ),
                   ),
                 ],
               ),
             ],
-          ),
-        );
-      },
+            bottomWidget: TextButton(
+              onPressed: () {
+                context.navigateTo(SignUpRoute());
+              },
+              child: Text(t.login.haveNoAccount),
+            ),
+          );
+        },
+      ),
     );
   }
 }

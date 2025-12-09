@@ -1,94 +1,61 @@
-import 'package:auth/src/bloc/auth_event.dart';
-import 'package:auth/src/bloc/auth_state.dart';
+import 'package:auth/src/bloc/sign_In/sign_in_event.dart';
+import 'package:auth/src/bloc/sign_In/sign_in_state.dart';
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
-import 'package:domain/errors/errors.dart';
 
-class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc({
+class SignInBloc extends Bloc<SignInEvent, SignInState> {
+  SignInBloc({
     required SignInWithEmailUseCase signInWithEmailUseCase,
-    required SignUpWithEmailUseCase signUpWithEmailUseCase,
     required SignInWithGoogleUseCase signInWithGoogleUseCase,
   }) : _signInWithEmailUseCase = signInWithEmailUseCase,
-       _signUpWithEmailUseCase = signUpWithEmailUseCase,
        _signInWithGoogleUseCase = signInWithGoogleUseCase,
-       super(
-         const AuthState(
-           isSignIn: true,
-           status: Status.ready,
-           email: '',
-           password: '',
-           emailError: null,
-           passwordError: null,
-         ),
-       ) {
-    on<AuthEmailChanged>(_onAuthEmailChanged);
-    on<AuthPasswordChanged>(_onAuthPasswordChanged);
-    on<SignInSubmitted>(_onSignInSubmitted);
-    on<SignUpSubmitted>(_onSignUpSubmitted);
-    on<GoogleSignUpSubmitted>(_onGoogleSignUpSubmitted);
+       super(const SignInState()) {
+    on<SignInEmailChanged>(_onEmailChanged);
+    on<SignInPasswordChanged>(_onPasswordChanged);
+    on<SignInSubmitted>(_onSubmitted);
+    on<SignInWithGoogleSubmitted>(_onGoogleSubmitted);
   }
 
   final SignInWithEmailUseCase _signInWithEmailUseCase;
-  final SignUpWithEmailUseCase _signUpWithEmailUseCase;
   final SignInWithGoogleUseCase _signInWithGoogleUseCase;
 
-  void _onAuthEmailChanged(AuthEmailChanged event, Emitter<AuthState> emit) {
-    String? error = _validateEmail(event.email);
-
+  void _onEmailChanged(SignInEmailChanged event, Emitter<SignInState> emit) {
+    final error = _validateEmail(event.email);
     emit(
       state.copyWith(
         email: event.email,
         emailError: error,
-        isValid: error == null ? true : false,
+        isValid:
+            error == null &&
+            state.passwordError == null &&
+            state.password.isNotEmpty,
       ),
     );
   }
 
-  void _onAuthPasswordChanged(
-    AuthPasswordChanged event,
-    Emitter<AuthState> emit,
+  void _onPasswordChanged(
+    SignInPasswordChanged event,
+    Emitter<SignInState> emit,
   ) {
-    String? error = _validatePassword(event.password);
-
+    final error = _validatePassword(event.password);
     emit(
       state.copyWith(
         password: event.password,
         passwordError: error,
-        isValid: error == null ? true : false,
+        isValid:
+            error == null && state.emailError == null && state.email.isNotEmpty,
       ),
     );
   }
 
-  Future<void> _onSignUpSubmitted(
-    SignUpSubmitted event,
-    Emitter<AuthState> emit,
-  ) async {
-    if (state.isValid) {
-      try {
-        emit(state.copyWith(status: Status.loading));
-        await _signUpWithEmailUseCase.execute(
-          SignInWithEmailPayload(state.email, state.password),
-        );
-        emit(state.copyWith(status: Status.success));
-      } on AppException catch (e) {
-        emit(state.copyWith(status: Status.failure, errorMessage: e.message));
-      }
-    } else {
-      emit(
-        state.copyWith(
-          emailError: _validateEmail(state.email),
-          passwordError: _validatePassword(state.password),
-        ),
-      );
-    }
-  }
-
-  Future<void> _onSignInSubmitted(
+  Future<void> _onSubmitted(
     SignInSubmitted event,
-    Emitter<AuthState> emit,
+    Emitter<SignInState> emit,
   ) async {
-    if (state.isValid) {
+    final emailError = _validateEmail(state.email);
+    final passwordError = _validatePassword(state.password);
+
+    if (emailError == null && passwordError == null) {
       try {
         emit(state.copyWith(status: Status.loading));
         await _signInWithEmailUseCase.execute(
@@ -101,16 +68,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } else {
       emit(
         state.copyWith(
-          emailError: _validateEmail(state.email),
-          passwordError: _validatePassword(state.password),
+          emailError: emailError,
+          passwordError: passwordError,
+          isValid: false,
         ),
       );
     }
   }
 
-  Future<void> _onGoogleSignUpSubmitted(
-    GoogleSignUpSubmitted event,
-    Emitter<AuthState> emit,
+  Future<void> _onGoogleSubmitted(
+    SignInWithGoogleSubmitted event,
+    Emitter<SignInState> emit,
   ) async {
     try {
       emit(state.copyWith(status: Status.loading));

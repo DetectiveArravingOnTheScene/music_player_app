@@ -19,7 +19,7 @@ import 'package:flutter/material.dart' as _i5;
 /// [_i1.AuthScreen]
 class AuthRoute extends _i4.PageRouteInfo<AuthRouteArgs> {
   AuthRoute({
-    required void Function(bool) onResult,
+    void Function(bool)? onResult,
     _i5.Key? key,
     List<_i4.PageRouteInfo>? children,
   }) : super(
@@ -33,16 +33,18 @@ class AuthRoute extends _i4.PageRouteInfo<AuthRouteArgs> {
   static _i4.PageInfo page = _i4.PageInfo(
     name,
     builder: (data) {
-      final args = data.argsAs<AuthRouteArgs>();
+      final args = data.argsAs<AuthRouteArgs>(
+        orElse: () => const AuthRouteArgs(),
+      );
       return _i1.AuthScreen(onResult: args.onResult, key: args.key);
     },
   );
 }
 
 class AuthRouteArgs {
-  const AuthRouteArgs({required this.onResult, this.key});
+  const AuthRouteArgs({this.onResult, this.key});
 
-  final void Function(bool) onResult;
+  final void Function(bool)? onResult;
 
   final _i5.Key? key;
 
