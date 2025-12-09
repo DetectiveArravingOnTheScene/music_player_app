@@ -22,12 +22,12 @@ class SignUpScreen extends StatelessWidget {
       child: BlocConsumer<SignUpBloc, SignUpState>(
         listenWhen: (p, c) => p.status != c.status,
         listener: (context, state) {
-          if (state.status == Status.failure) {
+          if (state.status == SignUpStatus.failure) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
           }
-          if (state.status == Status.success) {
+          if (state.status == SignUpStatus.success) {
             final authScope = AuthScope.of(context);
             if (authScope?.onResult != null) {
               // SCENARIO: Deep Link / Guard Redirection

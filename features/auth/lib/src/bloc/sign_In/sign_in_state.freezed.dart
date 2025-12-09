@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SignInState {
 
- Status get status; String get email; String get password; String? get emailError; String? get passwordError; String? get errorMessage; bool get isValid;
+ SignInStatus get status; String get email; String get password; String? get emailError; String? get passwordError; String? get errorMessage; bool get isValid;
 /// Create a copy of SignInState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $SignInStateCopyWith<$Res>  {
   factory $SignInStateCopyWith(SignInState value, $Res Function(SignInState) _then) = _$SignInStateCopyWithImpl;
 @useResult
 $Res call({
- Status status, String email, String password, String? emailError, String? passwordError, String? errorMessage, bool isValid
+ SignInStatus status, String email, String password, String? emailError, String? passwordError, String? errorMessage, bool isValid
 });
 
 
@@ -65,7 +65,7 @@ class _$SignInStateCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? email = null,Object? password = null,Object? emailError = freezed,Object? passwordError = freezed,Object? errorMessage = freezed,Object? isValid = null,}) {
   return _then(_self.copyWith(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as Status,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as SignInStatus,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,emailError: freezed == emailError ? _self.emailError : emailError // ignore: cast_nullable_to_non_nullable
 as String?,passwordError: freezed == passwordError ? _self.passwordError : passwordError // ignore: cast_nullable_to_non_nullable
@@ -156,7 +156,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Status status,  String email,  String password,  String? emailError,  String? passwordError,  String? errorMessage,  bool isValid)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( SignInStatus status,  String email,  String password,  String? emailError,  String? passwordError,  String? errorMessage,  bool isValid)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SignInState() when $default != null:
 return $default(_that.status,_that.email,_that.password,_that.emailError,_that.passwordError,_that.errorMessage,_that.isValid);case _:
@@ -177,7 +177,7 @@ return $default(_that.status,_that.email,_that.password,_that.emailError,_that.p
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Status status,  String email,  String password,  String? emailError,  String? passwordError,  String? errorMessage,  bool isValid)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( SignInStatus status,  String email,  String password,  String? emailError,  String? passwordError,  String? errorMessage,  bool isValid)  $default,) {final _that = this;
 switch (_that) {
 case _SignInState():
 return $default(_that.status,_that.email,_that.password,_that.emailError,_that.passwordError,_that.errorMessage,_that.isValid);case _:
@@ -197,7 +197,7 @@ return $default(_that.status,_that.email,_that.password,_that.emailError,_that.p
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Status status,  String email,  String password,  String? emailError,  String? passwordError,  String? errorMessage,  bool isValid)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( SignInStatus status,  String email,  String password,  String? emailError,  String? passwordError,  String? errorMessage,  bool isValid)?  $default,) {final _that = this;
 switch (_that) {
 case _SignInState() when $default != null:
 return $default(_that.status,_that.email,_that.password,_that.emailError,_that.passwordError,_that.errorMessage,_that.isValid);case _:
@@ -212,10 +212,10 @@ return $default(_that.status,_that.email,_that.password,_that.emailError,_that.p
 
 
 class _SignInState implements SignInState {
-  const _SignInState({this.status = Status.ready, this.email = '', this.password = '', this.emailError, this.passwordError, this.errorMessage, this.isValid = false});
+  const _SignInState({this.status = SignInStatus.ready, this.email = '', this.password = '', this.emailError, this.passwordError, this.errorMessage, this.isValid = false});
   
 
-@override@JsonKey() final  Status status;
+@override@JsonKey() final  SignInStatus status;
 @override@JsonKey() final  String email;
 @override@JsonKey() final  String password;
 @override final  String? emailError;
@@ -253,7 +253,7 @@ abstract mixin class _$SignInStateCopyWith<$Res> implements $SignInStateCopyWith
   factory _$SignInStateCopyWith(_SignInState value, $Res Function(_SignInState) _then) = __$SignInStateCopyWithImpl;
 @override @useResult
 $Res call({
- Status status, String email, String password, String? emailError, String? passwordError, String? errorMessage, bool isValid
+ SignInStatus status, String email, String password, String? emailError, String? passwordError, String? errorMessage, bool isValid
 });
 
 
@@ -273,7 +273,7 @@ class __$SignInStateCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? email = null,Object? password = null,Object? emailError = freezed,Object? passwordError = freezed,Object? errorMessage = freezed,Object? isValid = null,}) {
   return _then(_SignInState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as Status,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as SignInStatus,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,emailError: freezed == emailError ? _self.emailError : emailError // ignore: cast_nullable_to_non_nullable
 as String?,passwordError: freezed == passwordError ? _self.passwordError : passwordError // ignore: cast_nullable_to_non_nullable

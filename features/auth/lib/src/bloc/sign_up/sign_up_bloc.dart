@@ -106,13 +106,15 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         passwordError == null &&
         confirmPasswordError == null) {
       try {
-        emit(state.copyWith(status: Status.loading));
+        emit(state.copyWith(status: SignUpStatus.loading));
         await _signUpWithEmailUseCase.execute(
           SignInWithEmailPayload(state.email, state.password),
         );
-        emit(state.copyWith(status: Status.success));
+        emit(state.copyWith(status: SignUpStatus.success));
       } on AppException catch (e) {
-        emit(state.copyWith(status: Status.failure, errorMessage: e.message));
+        emit(
+          state.copyWith(status: SignUpStatus.failure, errorMessage: e.message),
+        );
       }
     } else {
       emit(
@@ -131,11 +133,13 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     Emitter<SignUpState> emit,
   ) async {
     try {
-      emit(state.copyWith(status: Status.loading));
+      emit(state.copyWith(status: SignUpStatus.loading));
       await _signInWithGoogleUseCase.execute();
-      emit(state.copyWith(status: Status.success));
+      emit(state.copyWith(status: SignUpStatus.success));
     } on AppException catch (e) {
-      emit(state.copyWith(status: Status.failure, errorMessage: e.message));
+      emit(
+        state.copyWith(status: SignUpStatus.failure, errorMessage: e.message),
+      );
     }
   }
 

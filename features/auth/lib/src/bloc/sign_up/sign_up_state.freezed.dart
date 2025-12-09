@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SignUpState {
 
- Status get status; String get email; String get password; String get confirmPassword; String? get emailError; String? get passwordError; String? get confirmPasswordError; String? get errorMessage; bool get isValid;
+ SignUpStatus get status; String get email; String get password; String get confirmPassword; String? get emailError; String? get passwordError; String? get confirmPasswordError; String? get errorMessage; bool get isValid;
 /// Create a copy of SignUpState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $SignUpStateCopyWith<$Res>  {
   factory $SignUpStateCopyWith(SignUpState value, $Res Function(SignUpState) _then) = _$SignUpStateCopyWithImpl;
 @useResult
 $Res call({
- Status status, String email, String password, String confirmPassword, String? emailError, String? passwordError, String? confirmPasswordError, String? errorMessage, bool isValid
+ SignUpStatus status, String email, String password, String confirmPassword, String? emailError, String? passwordError, String? confirmPasswordError, String? errorMessage, bool isValid
 });
 
 
@@ -65,7 +65,7 @@ class _$SignUpStateCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? email = null,Object? password = null,Object? confirmPassword = null,Object? emailError = freezed,Object? passwordError = freezed,Object? confirmPasswordError = freezed,Object? errorMessage = freezed,Object? isValid = null,}) {
   return _then(_self.copyWith(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as Status,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as SignUpStatus,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,confirmPassword: null == confirmPassword ? _self.confirmPassword : confirmPassword // ignore: cast_nullable_to_non_nullable
 as String,emailError: freezed == emailError ? _self.emailError : emailError // ignore: cast_nullable_to_non_nullable
@@ -158,7 +158,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Status status,  String email,  String password,  String confirmPassword,  String? emailError,  String? passwordError,  String? confirmPasswordError,  String? errorMessage,  bool isValid)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( SignUpStatus status,  String email,  String password,  String confirmPassword,  String? emailError,  String? passwordError,  String? confirmPasswordError,  String? errorMessage,  bool isValid)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SignUpState() when $default != null:
 return $default(_that.status,_that.email,_that.password,_that.confirmPassword,_that.emailError,_that.passwordError,_that.confirmPasswordError,_that.errorMessage,_that.isValid);case _:
@@ -179,7 +179,7 @@ return $default(_that.status,_that.email,_that.password,_that.confirmPassword,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Status status,  String email,  String password,  String confirmPassword,  String? emailError,  String? passwordError,  String? confirmPasswordError,  String? errorMessage,  bool isValid)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( SignUpStatus status,  String email,  String password,  String confirmPassword,  String? emailError,  String? passwordError,  String? confirmPasswordError,  String? errorMessage,  bool isValid)  $default,) {final _that = this;
 switch (_that) {
 case _SignUpState():
 return $default(_that.status,_that.email,_that.password,_that.confirmPassword,_that.emailError,_that.passwordError,_that.confirmPasswordError,_that.errorMessage,_that.isValid);case _:
@@ -199,7 +199,7 @@ return $default(_that.status,_that.email,_that.password,_that.confirmPassword,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Status status,  String email,  String password,  String confirmPassword,  String? emailError,  String? passwordError,  String? confirmPasswordError,  String? errorMessage,  bool isValid)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( SignUpStatus status,  String email,  String password,  String confirmPassword,  String? emailError,  String? passwordError,  String? confirmPasswordError,  String? errorMessage,  bool isValid)?  $default,) {final _that = this;
 switch (_that) {
 case _SignUpState() when $default != null:
 return $default(_that.status,_that.email,_that.password,_that.confirmPassword,_that.emailError,_that.passwordError,_that.confirmPasswordError,_that.errorMessage,_that.isValid);case _:
@@ -214,10 +214,10 @@ return $default(_that.status,_that.email,_that.password,_that.confirmPassword,_t
 
 
 class _SignUpState implements SignUpState {
-  const _SignUpState({this.status = Status.ready, this.email = '', this.password = '', this.confirmPassword = '', this.emailError, this.passwordError, this.confirmPasswordError, this.errorMessage, this.isValid = false});
+  const _SignUpState({this.status = SignUpStatus.ready, this.email = '', this.password = '', this.confirmPassword = '', this.emailError, this.passwordError, this.confirmPasswordError, this.errorMessage, this.isValid = false});
   
 
-@override@JsonKey() final  Status status;
+@override@JsonKey() final  SignUpStatus status;
 @override@JsonKey() final  String email;
 @override@JsonKey() final  String password;
 @override@JsonKey() final  String confirmPassword;
@@ -257,7 +257,7 @@ abstract mixin class _$SignUpStateCopyWith<$Res> implements $SignUpStateCopyWith
   factory _$SignUpStateCopyWith(_SignUpState value, $Res Function(_SignUpState) _then) = __$SignUpStateCopyWithImpl;
 @override @useResult
 $Res call({
- Status status, String email, String password, String confirmPassword, String? emailError, String? passwordError, String? confirmPasswordError, String? errorMessage, bool isValid
+ SignUpStatus status, String email, String password, String confirmPassword, String? emailError, String? passwordError, String? confirmPasswordError, String? errorMessage, bool isValid
 });
 
 
@@ -277,7 +277,7 @@ class __$SignUpStateCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? email = null,Object? password = null,Object? confirmPassword = null,Object? emailError = freezed,Object? passwordError = freezed,Object? confirmPasswordError = freezed,Object? errorMessage = freezed,Object? isValid = null,}) {
   return _then(_SignUpState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as Status,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as SignUpStatus,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String,confirmPassword: null == confirmPassword ? _self.confirmPassword : confirmPassword // ignore: cast_nullable_to_non_nullable
 as String,emailError: freezed == emailError ? _self.emailError : emailError // ignore: cast_nullable_to_non_nullable

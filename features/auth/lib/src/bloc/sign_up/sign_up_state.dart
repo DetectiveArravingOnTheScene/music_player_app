@@ -5,7 +5,7 @@ part 'sign_up_state.freezed.dart';
 @freezed
 abstract class SignUpState with _$SignUpState {
   const factory SignUpState({
-    @Default(Status.ready) Status status,
+    @Default(SignUpStatus.ready) SignUpStatus status,
     @Default('') String email,
     @Default('') String password,
     @Default('') String confirmPassword,
@@ -16,3 +16,5 @@ abstract class SignUpState with _$SignUpState {
     @Default(false) bool isValid,
   }) = _SignUpState;
 }
+
+enum SignUpStatus { loading, ready, success, failure }
