@@ -12,8 +12,8 @@ class CoreDependencyInjection {
   }
 
   void _initAppRouter() {
-    serviceLocator.registerSingletonWithDependencies<AuthWatcher>(() {
-      return AuthWatcher(serviceLocator.get<AuthRepository>().user);
+    serviceLocator.registerSingletonWithDependencies<AuthService>(() {
+      return AuthService(serviceLocator.get<AuthRepository>().user);
     }, dependsOn: <Type>[AuthRepository]);
     serviceLocator.registerSingleton<AppRouter>(AppRouter());
   }

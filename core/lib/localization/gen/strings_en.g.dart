@@ -47,7 +47,20 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	/// en: 'Save'
 	String get save => 'Save';
 
+	late final TranslationsErrorEn error = TranslationsErrorEn._(_root);
 	late final TranslationsLoginEn login = TranslationsLoginEn._(_root);
+}
+
+// Path: error
+class TranslationsErrorEn {
+	TranslationsErrorEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Something went wrong'
+	String get generalError => 'Something went wrong';
 }
 
 // Path: login
@@ -82,6 +95,9 @@ class TranslationsLoginEn {
 
 	/// en: 'Logged in failed'
 	String get fail => 'Logged in failed';
+
+	/// en: 'or continue with'
+	String get orContinue => 'or continue with';
 
 	/// en: 'Already have an account?'
 	String get haveAccount => 'Already have an account?';
@@ -157,6 +173,7 @@ extension on Translations {
 		return switch (path) {
 			'hello' => ({required Object name}) => 'Hello ${name}',
 			'save' => 'Save',
+			'error.generalError' => 'Something went wrong',
 			'login.signIn' => 'Sign In',
 			'login.signUp' => 'Sign Up',
 			'login.email' => 'Email',
@@ -173,6 +190,7 @@ extension on Translations {
 			'login.confirmPasswordError.mismatch' => 'Passwords do not match',
 			'login.success' => 'Logged in successfully',
 			'login.fail' => 'Logged in failed',
+			'login.orContinue' => 'or continue with',
 			'login.haveAccount' => 'Already have an account?',
 			'login.haveNoAccount' => 'Don\'t have an account?',
 			'login.google' => 'Google',

@@ -39,7 +39,18 @@ class TranslationsRu with BaseTranslations<AppLocale, Translations> implements T
 	// Translations
 	@override String hello({required Object name}) => 'Привет, ${name}';
 	@override String get save => 'Сохранить';
+	@override late final _TranslationsErrorRu error = _TranslationsErrorRu._(_root);
 	@override late final _TranslationsLoginRu login = _TranslationsLoginRu._(_root);
+}
+
+// Path: error
+class _TranslationsErrorRu implements TranslationsErrorEn {
+	_TranslationsErrorRu._(this._root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get generalError => 'Что-то пошло не так';
 }
 
 // Path: login
@@ -59,6 +70,7 @@ class _TranslationsLoginRu implements TranslationsLoginEn {
 	@override late final _TranslationsLoginConfirmPasswordErrorRu confirmPasswordError = _TranslationsLoginConfirmPasswordErrorRu._(_root);
 	@override String get success => 'Вход выполнен успешно';
 	@override String get fail => 'Не удалось войти';
+	@override String get orContinue => 'или войдите с помощью';
 	@override String get haveAccount => 'Уже есть аккаунт?';
 	@override String get haveNoAccount => 'Еще нет аккаунта?';
 	@override String get google => 'Google';
@@ -110,6 +122,7 @@ extension on TranslationsRu {
 		return switch (path) {
 			'hello' => ({required Object name}) => 'Привет, ${name}',
 			'save' => 'Сохранить',
+			'error.generalError' => 'Что-то пошло не так',
 			'login.signIn' => 'Войти',
 			'login.signUp' => 'Зарегистироваться',
 			'login.email' => 'Электронная почта',
@@ -126,6 +139,7 @@ extension on TranslationsRu {
 			'login.confirmPasswordError.mismatch' => 'Пароли не совпадают',
 			'login.success' => 'Вход выполнен успешно',
 			'login.fail' => 'Не удалось войти',
+			'login.orContinue' => 'или войдите с помощью',
 			'login.haveAccount' => 'Уже есть аккаунт?',
 			'login.haveNoAccount' => 'Еще нет аккаунта?',
 			'login.google' => 'Google',

@@ -1,6 +1,9 @@
 {
     "hello": "Hello $name",
     "save": "Save",
+    "error": {
+        "generalError": "Something went wrong"
+    },
     "login": {
         "signIn": "Sign In",
         "signUp": "Sign Up",
@@ -24,6 +27,7 @@
         },
         "success": "Logged in successfully",
         "fail": "Logged in failed",
+        "orContinue": "or continue with",
         "haveAccount": "Already have an account?",
         "haveNoAccount": "Don't have an account?",
         "google": "Google"
