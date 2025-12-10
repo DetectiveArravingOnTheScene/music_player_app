@@ -14,13 +14,18 @@ dependencies:
         sdk: flutter
     slang: ^4.11.0
     slang_flutter: ^4.11.0
+    flutter_bloc: ^9.1.1
     flutter_localizations:
         sdk: flutter
     get_it: ^9.1.1
+    freezed_annotation: ^3.1.0
     flutter_dotenv: ^6.0.0
 
     navigation:
         path: ./../navigation
+    domain:
+        path: ./../domain
+
 
 dev_dependencies:
     flutter_test:

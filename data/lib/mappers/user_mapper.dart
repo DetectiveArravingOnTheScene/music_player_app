@@ -1,5 +1,6 @@
-import 'package:data/data.dart';
 import 'package:domain/domain.dart';
+
+import '../data.dart';
 
 abstract class UserMapper {
   static UserModel toModel(UserEntity user) {

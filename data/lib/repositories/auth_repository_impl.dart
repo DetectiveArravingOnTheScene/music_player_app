@@ -1,5 +1,7 @@
-import 'package:data/data.dart';
+import 'package:core/core.dart';
 import 'package:domain/domain.dart';
+
+import '../data.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final AuthProvider _authProvider;
@@ -8,7 +10,7 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Stream<UserModel?> get user {
-    return _authProvider.authStateChanges.map((userEntity) {
+    return _authProvider.authStateChanges.map((UserEntity? userEntity) {
       if (userEntity == null) {
         return null;
       }
@@ -22,21 +24,30 @@ class AuthRepositoryImpl extends AuthRepository {
     try {
       await _authProvider.signInWithGoogle();
     } catch (e) {
-      rethrow;
+      throw AuthAppException(t.login.fail);
     }
   }
 
   @override
-  Future<void> signInWithEmail(String email, String password) async {
+  Future<void> signInWithEmail(SignInWithEmailPayload input) async {
     try {
-      await _authProvider.signInWithEmail(email, password);
+      await _authProvider.signInWithEmail(input);
     } catch (e) {
-      rethrow;
+      throw AuthAppException(t.login.fail);
+    }
+  }
+
+  @override
+  Future<void> signUpWithEmail(SignInWithEmailPayload input) async {
+    try {
+      await _authProvider.signUpWithEmail(input);
+    } catch (e) {
+      throw AuthAppException(t.login.fail);
     }
   }
 
   @override
   Future<void> signOut() async {
-    _authProvider.signOut();
+    await _authProvider.signOut();
   }
 }

@@ -1,10 +1,5 @@
-import 'package:equatable/equatable.dart';
-
-abstract class AppException extends Equatable {
+abstract class AppException implements Exception {
   const AppException(this.message);
 
   final String message;
-
-  @override
-  List<Object?> get props => [message];
 }

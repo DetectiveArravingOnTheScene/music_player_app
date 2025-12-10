@@ -1,4 +1,4 @@
-import 'package:domain/models/models.dart';
+import '../models.dart';
 
 class AlbumModel {
   final String title;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
 import 'package:player/player.dart';
 
+@RoutePage()
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
@@ -9,37 +10,41 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       alignment: AlignmentGeometry.center,
-      children: [
+      children: <Widget>[
         AutoTabsScaffold(
-          routes: const [
-            NamedRoute(Routes.homeRoute),
-            NamedRoute(Routes.searchRoute),
-            NamedRoute(Routes.collectionRoute),
+          routes: const <PageRouteInfo<Object?>>[
+            HomeRoute(),
+            SearchRoute(),
+            UserCollectionRoute(),
           ],
-          bottomNavigationBuilder: (context, tabsRouter) {
-            return BottomNavigationBar(
-              currentIndex: tabsRouter.activeIndex,
-              onTap: tabsRouter.setActiveIndex,
-              items: const [
-                BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.search),
-                  label: "Search",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.system_update_tv_rounded),
-                  label: "Collection",
-                ),
-              ],
-            );
-          },
+          bottomNavigationBuilder:
+              (BuildContext context, TabsRouter tabsRouter) {
+                return BottomNavigationBar(
+                  currentIndex: tabsRouter.activeIndex,
+                  onTap: tabsRouter.setActiveIndex,
+                  items: const <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.home),
+                      label: 'Home',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.search),
+                      label: 'Search',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.system_update_tv_rounded),
+                      label: 'Collection',
+                    ),
+                  ],
+                );
+              },
         ),
         Positioned.directional(
           textDirection: TextDirection.ltr,
           bottom: 100,
           start: 0,
           end: 0,
-          child: Row(children: [Expanded(child: PlayerWidget())]),
+          child: const Row(children: <Widget>[Expanded(child: PlayerWidget())]),
         ),
       ],
     );

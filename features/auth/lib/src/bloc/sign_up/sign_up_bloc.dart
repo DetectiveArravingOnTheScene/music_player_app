@@ -1,0 +1,179 @@
+import 'package:core/core.dart';
+import 'package:domain/domain.dart';
+
+import '../blocs.dart';
+
+class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
+  SignUpBloc({
+    required SignUpWithEmailUseCase signUpWithEmailUseCase,
+    required SignInWithGoogleUseCase signInWithGoogleUseCase,
+  }) : _signUpWithEmailUseCase = signUpWithEmailUseCase,
+       _signInWithGoogleUseCase = signInWithGoogleUseCase,
+       super(const SignUpState()) {
+    on<SignUpEmailChanged>(_onEmailChanged);
+    on<SignUpPasswordChanged>(_onPasswordChanged);
+    on<SignUpConfirmPasswordChanged>(_onConfirmPasswordChanged);
+    on<SignUpSubmitted>(_onSubmitted);
+    on<SignUpWithGoogleSubmitted>(_onGoogleSubmitted);
+  }
+
+  final SignUpWithEmailUseCase _signUpWithEmailUseCase;
+  final SignInWithGoogleUseCase _signInWithGoogleUseCase;
+
+  void _onEmailChanged(SignUpEmailChanged event, Emitter<SignUpState> emit) {
+    final String? error = _validateEmail(event.email);
+    emit(
+      state.copyWith(
+        email: event.email,
+        emailError: error,
+        isValid: _calculateIsValid(
+          emailError: error,
+          passwordError: state.passwordError,
+          confirmPasswordError: state.confirmPasswordError,
+          email: event.email,
+          password: state.password,
+          confirmPassword: state.confirmPassword,
+        ),
+      ),
+    );
+  }
+
+  void _onPasswordChanged(
+    SignUpPasswordChanged event,
+    Emitter<SignUpState> emit,
+  ) {
+    final String? passwordError = _validatePassword(event.password);
+
+    final String? confirmPasswordError = _validateConfirmPassword(
+      state.confirmPassword,
+      event.password,
+    );
+
+    emit(
+      state.copyWith(
+        password: event.password,
+        passwordError: passwordError,
+        confirmPasswordError: confirmPasswordError,
+        isValid: _calculateIsValid(
+          emailError: state.emailError,
+          passwordError: passwordError,
+          confirmPasswordError: confirmPasswordError,
+          email: state.email,
+          password: event.password,
+          confirmPassword: state.confirmPassword,
+        ),
+      ),
+    );
+  }
+
+  void _onConfirmPasswordChanged(
+    SignUpConfirmPasswordChanged event,
+    Emitter<SignUpState> emit,
+  ) {
+    final String? error = _validateConfirmPassword(
+      event.confirmPassword,
+      state.password,
+    );
+
+    emit(
+      state.copyWith(
+        confirmPassword: event.confirmPassword,
+        confirmPasswordError: error,
+        isValid: _calculateIsValid(
+          emailError: state.emailError,
+          passwordError: state.passwordError,
+          confirmPasswordError: error,
+          email: state.email,
+          password: state.password,
+          confirmPassword: event.confirmPassword,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onSubmitted(
+    SignUpSubmitted event,
+    Emitter<SignUpState> emit,
+  ) async {
+    final String? emailError = _validateEmail(state.email);
+    final String? passwordError = _validatePassword(state.password);
+    final String? confirmPasswordError = _validateConfirmPassword(
+      state.confirmPassword,
+      state.password,
+    );
+
+    if (emailError == null &&
+        passwordError == null &&
+        confirmPasswordError == null) {
+      try {
+        emit(state.copyWith(status: SignUpStatus.loading));
+        await _signUpWithEmailUseCase.execute(
+          SignInWithEmailPayload(state.email, state.password),
+        );
+        emit(state.copyWith(status: SignUpStatus.success));
+      } on AppException catch (e) {
+        emit(
+          state.copyWith(status: SignUpStatus.failure, errorMessage: e.message),
+        );
+      }
+    } else {
+      emit(
+        state.copyWith(
+          emailError: emailError,
+          passwordError: passwordError,
+          confirmPasswordError: confirmPasswordError,
+          isValid: false,
+        ),
+      );
+    }
+  }
+
+  Future<void> _onGoogleSubmitted(
+    SignUpWithGoogleSubmitted event,
+    Emitter<SignUpState> emit,
+  ) async {
+    try {
+      emit(state.copyWith(status: SignUpStatus.loading));
+      await _signInWithGoogleUseCase.execute();
+      emit(state.copyWith(status: SignUpStatus.success));
+    } on AppException catch (e) {
+      emit(
+        state.copyWith(status: SignUpStatus.failure, errorMessage: e.message),
+      );
+    }
+  }
+
+  bool _calculateIsValid({
+    required String? emailError,
+    required String? passwordError,
+    required String? confirmPasswordError,
+    required String email,
+    required String password,
+    required String confirmPassword,
+  }) {
+    return emailError == null &&
+        passwordError == null &&
+        confirmPasswordError == null &&
+        email.isNotEmpty &&
+        password.isNotEmpty &&
+        confirmPassword.isNotEmpty;
+  }
+
+  String? _validateEmail(String value) {
+    return serviceLocator.get<UserValidatonService>().validateEmail(value);
+  }
+
+  String? _validatePassword(String value) {
+    return serviceLocator.get<UserValidatonService>().validatePassword(value);
+  }
+
+  String? _validateConfirmPassword(
+    String? confirmValue,
+    String originalPassword,
+  ) {
+    return serviceLocator.get<UserValidatonService>().validateConfirmPassword(
+      confirmValue,
+      originalPassword,
+    );
+  }
+}

@@ -1,0 +1,35 @@
+{
+    "hello": "Hello $name",
+    "save": "Save",
+    "error": {
+        "generalError": "Something went wrong"
+    },
+    "login": {
+        "signIn": "Sign In",
+        "signUp": "Sign Up",
+        "email": "Email",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "emailError": {
+            "empty": "Please enter an email address",
+            "invalid": "Please enter a valid email address"
+        },
+        "passwordError": {
+            "empty": "Please enter a password",
+            "short": "Password must be at least 8 characters long",
+            "noUppercase": "Password must contain at least one uppercase letter",
+            "noNumber": "Password must contain at least one number",
+            "noSpecial": "Password must contain at least one special symbol"
+        },
+        "confirmPasswordError": {
+            "empty": "Please confirm your password",
+            "mismatch": "Passwords do not match"
+        },
+        "success": "Logged in successfully",
+        "fail": "Logged in failed",
+        "orContinue": "or continue with",
+        "haveAccount": "Already have an account?",
+        "haveNoAccount": "Don't have an account?",
+        "google": "Google"
+    }
+}

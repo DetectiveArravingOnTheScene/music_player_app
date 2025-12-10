@@ -1,35 +1,30 @@
-import 'package:home/home.dart';
-import 'package:main/main.dart';
-import 'package:navigation/navigation.dart';
-import 'package:player/player.dart';
-import 'package:search/search.dart';
-import 'package:user_collection/user_collection.dart';
+import 'package:core/core.dart';
+import '../navigation.dart';
+import 'guards.dart';
 
+@AutoRouterConfig()
 class AppRouter extends RootStackRouter {
   @override
-  List<AutoRoute> get routes => [
-    NamedRouteDef(
-      name: Routes.mainRoute,
-      initial: true,
-      builder: (context, state) => MainScreen(),
-      children: [
-        NamedRouteDef(
-          name: Routes.homeRoute,
-          builder: (context, state) => HomeScreen(),
-        ),
-        NamedRouteDef(
-          name: Routes.searchRoute,
-          builder: (context, state) => SearchScreen(),
-        ),
-        NamedRouteDef(
-          name: Routes.collectionRoute,
-          builder: (context, state) => UserCollectionScreen(),
-        ),
+  List<AutoRoute> get routes => <AutoRoute>[
+    AutoRoute(
+      page: AuthRoute.page,
+      path: '/auth',
+      guards: <AutoRouteGuard>[GuestGuard(serviceLocator.get<AuthWatcher>())],
+      children: <AutoRoute>[
+        AutoRoute(page: SignInRoute.page, path: 'signin', initial: true),
+        AutoRoute(page: SignUpRoute.page, path: 'signup'),
       ],
     ),
-    NamedRouteDef(
-      name: Routes.playerRoute,
-      builder: (context, state) => PlayerScreen(),
+    AutoRoute(
+      page: MainRoute.page,
+      path: '/',
+      guards: <AutoRouteGuard>[AuthGuard(serviceLocator.get<AuthWatcher>())],
+      children: <AutoRoute>[
+        AutoRoute(page: HomeRoute.page, initial: true, path: 'home'),
+        AutoRoute(page: SearchRoute.page, path: 'search'),
+        AutoRoute(page: UserCollectionRoute.page, path: 'collection'),
+        AutoRoute(page: PlayerRoute.page, path: 'player'),
+      ],
     ),
   ];
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:navigation/navigation.dart';
 
+@RoutePage()
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
 
