@@ -22,8 +22,7 @@ class AuthRepositoryImpl extends AuthRepository {
     try {
       await _authProvider.signInWithGoogle();
     } catch (e) {
-      ///TODO: Replace with Failure when merged
-      throw Exception();
+      rethrow;
     }
   }
 
@@ -32,8 +31,7 @@ class AuthRepositoryImpl extends AuthRepository {
     try {
       await _authProvider.signInWithEmail(email, password);
     } catch (e) {
-      ///TODO: Replace with Failure when merged
-      throw Exception();
+      rethrow;
     }
   }
 
