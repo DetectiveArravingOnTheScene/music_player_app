@@ -47,7 +47,20 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	/// en: 'Save'
 	String get save => 'Save';
 
+	late final TranslationsErrorEn error = TranslationsErrorEn._(_root);
 	late final TranslationsLoginEn login = TranslationsLoginEn._(_root);
+}
+
+// Path: error
+class TranslationsErrorEn {
+	TranslationsErrorEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Something went wrong'
+	String get generalError => 'Something went wrong';
 }
 
 // Path: login
@@ -58,11 +71,96 @@ class TranslationsLoginEn {
 
 	// Translations
 
+	/// en: 'Sign In'
+	String get signIn => 'Sign In';
+
+	/// en: 'Sign Up'
+	String get signUp => 'Sign Up';
+
+	/// en: 'Email'
+	String get email => 'Email';
+
+	/// en: 'Password'
+	String get password => 'Password';
+
+	/// en: 'Confirm Password'
+	String get confirmPassword => 'Confirm Password';
+
+	late final TranslationsLoginEmailErrorEn emailError = TranslationsLoginEmailErrorEn._(_root);
+	late final TranslationsLoginPasswordErrorEn passwordError = TranslationsLoginPasswordErrorEn._(_root);
+	late final TranslationsLoginConfirmPasswordErrorEn confirmPasswordError = TranslationsLoginConfirmPasswordErrorEn._(_root);
+
 	/// en: 'Logged in successfully'
 	String get success => 'Logged in successfully';
 
 	/// en: 'Logged in failed'
 	String get fail => 'Logged in failed';
+
+	/// en: 'or continue with'
+	String get orContinue => 'or continue with';
+
+	/// en: 'Already have an account?'
+	String get haveAccount => 'Already have an account?';
+
+	/// en: 'Don't have an account?'
+	String get haveNoAccount => 'Don\'t have an account?';
+
+	/// en: 'Google'
+	String get google => 'Google';
+}
+
+// Path: login.emailError
+class TranslationsLoginEmailErrorEn {
+	TranslationsLoginEmailErrorEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Please enter an email address'
+	String get empty => 'Please enter an email address';
+
+	/// en: 'Please enter a valid email address'
+	String get invalid => 'Please enter a valid email address';
+}
+
+// Path: login.passwordError
+class TranslationsLoginPasswordErrorEn {
+	TranslationsLoginPasswordErrorEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Please enter a password'
+	String get empty => 'Please enter a password';
+
+	/// en: 'Password must be at least 8 characters long'
+	String get short => 'Password must be at least 8 characters long';
+
+	/// en: 'Password must contain at least one uppercase letter'
+	String get noUppercase => 'Password must contain at least one uppercase letter';
+
+	/// en: 'Password must contain at least one number'
+	String get noNumber => 'Password must contain at least one number';
+
+	/// en: 'Password must contain at least one special symbol'
+	String get noSpecial => 'Password must contain at least one special symbol';
+}
+
+// Path: login.confirmPasswordError
+class TranslationsLoginConfirmPasswordErrorEn {
+	TranslationsLoginConfirmPasswordErrorEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Please confirm your password'
+	String get empty => 'Please confirm your password';
+
+	/// en: 'Passwords do not match'
+	String get mismatch => 'Passwords do not match';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -75,8 +173,27 @@ extension on Translations {
 		return switch (path) {
 			'hello' => ({required Object name}) => 'Hello ${name}',
 			'save' => 'Save',
+			'error.generalError' => 'Something went wrong',
+			'login.signIn' => 'Sign In',
+			'login.signUp' => 'Sign Up',
+			'login.email' => 'Email',
+			'login.password' => 'Password',
+			'login.confirmPassword' => 'Confirm Password',
+			'login.emailError.empty' => 'Please enter an email address',
+			'login.emailError.invalid' => 'Please enter a valid email address',
+			'login.passwordError.empty' => 'Please enter a password',
+			'login.passwordError.short' => 'Password must be at least 8 characters long',
+			'login.passwordError.noUppercase' => 'Password must contain at least one uppercase letter',
+			'login.passwordError.noNumber' => 'Password must contain at least one number',
+			'login.passwordError.noSpecial' => 'Password must contain at least one special symbol',
+			'login.confirmPasswordError.empty' => 'Please confirm your password',
+			'login.confirmPasswordError.mismatch' => 'Passwords do not match',
 			'login.success' => 'Logged in successfully',
 			'login.fail' => 'Logged in failed',
+			'login.orContinue' => 'or continue with',
+			'login.haveAccount' => 'Already have an account?',
+			'login.haveNoAccount' => 'Don\'t have an account?',
+			'login.google' => 'Google',
 			_ => null,
 		};
 	}

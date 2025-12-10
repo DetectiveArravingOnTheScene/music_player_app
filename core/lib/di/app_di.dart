@@ -1,3 +1,5 @@
+import 'package:domain/domain.dart';
+import 'package:domain/services/auth_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:navigation/navigation.dart';
 

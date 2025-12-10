@@ -1,5 +1,8 @@
 import 'package:core/core.dart';
+import 'package:core_ui/core_ui.dart';
+import 'package:domain/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:navigation/navigation.dart';
 
 class MusicApp extends StatelessWidget {
   const MusicApp({super.key});
@@ -7,10 +10,14 @@ class MusicApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       locale: TranslationProvider.of(context).flutterLocale,
       supportedLocales: AppLocaleUtils.supportedLocales,
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      routerConfig: serviceLocator.get<AppRouter>().config(),
+      routerConfig: serviceLocator.get<AppRouter>().config(
+        reevaluateListenable: serviceLocator.get<AuthService>(),
+      ),
     );
   }
 }

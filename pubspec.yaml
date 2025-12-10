@@ -17,14 +17,21 @@ workspace:
     - features/home
     - features/search
     - features/user_collection
+    - features/auth
 
 dependencies:
     flutter:
         sdk: flutter
     core:
         path: ./core
+    core_ui:
+        path: ./core_ui
     data: 
         path: ./data
+    domain:
+        path: ./domain
+    navigation:
+        path: ./navigation
 
 dev_dependencies:
     flutter_test:
@@ -34,11 +41,12 @@ dev_dependencies:
 melos:
     useRootAsPackage: true
     scripts:
-        generate:
+        generate_all:
             steps:
                 - melos exec -c 1 --scope="navigation" -- dart run build_runner build
                 - melos exec -c 1 --scope="core" -- dart run slang
 flutter:
     uses-material-design: true
     assets:
+      - api_keys.env
       - assets/song.mp3

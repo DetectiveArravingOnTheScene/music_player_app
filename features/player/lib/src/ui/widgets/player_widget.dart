@@ -1,5 +1,5 @@
-import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:navigation/navigation.dart';
 
 class PlayerWidget extends StatelessWidget {
   const PlayerWidget({super.key});
@@ -9,8 +9,8 @@ class PlayerWidget extends StatelessWidget {
     return Container(
       color: Colors.red,
       child: ElevatedButton(
-        onPressed: () => context.router.push(NamedRoute(Routes.playerRoute)),
-        child: Text("PRESS ME"),
+        onPressed: () => context.router.push(const PlayerRoute()),
+        child: const Text('PRESS ME'),
       ),
     );
   }

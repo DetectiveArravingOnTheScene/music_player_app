@@ -1,16 +1,19 @@
 name: domain
 description: A sample command-line application.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+publish_to: none
 
 environment:
     sdk: ^3.10.1
 
 resolution: workspace
 
-# Add regular dependencies here.
 dependencies:
     path: ^1.9.0
+    equatable: ^2.0.7
+
+    core:
+      path: ./../core
 
 dev_dependencies:
     lints: ^6.0.0

@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:navigation/navigation.dart';
 
+@RoutePage()
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
