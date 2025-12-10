@@ -41,9 +41,7 @@ class SignUpContent extends StatelessWidget {
             TextField(
               obscureText: true,
               onChanged: (String value) {
-                context.read<SignUpBloc>().add(
-                  SignUpPasswordChanged(value),
-                );
+                context.read<SignUpBloc>().add(SignUpPasswordChanged(value));
               },
               // controller: passwordController,
               decoration: InputDecoration(
@@ -70,9 +68,7 @@ class SignUpContent extends StatelessWidget {
               Expanded(
                 child: FilledButton.tonal(
                   onPressed: () {
-                    context.read<SignUpBloc>().add(
-                      const SignUpSubmitted(),
-                    );
+                    context.read<SignUpBloc>().add(const SignUpSubmitted());
                   },
                   child: Text(t.login.signUp),
                 ),

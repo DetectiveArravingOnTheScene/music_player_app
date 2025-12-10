@@ -7,7 +7,7 @@ import 'widgets/auth_scope.dart';
 class AuthScreen extends StatelessWidget {
   const AuthScreen({this.onResult, super.key});
 
-  final void Function({bool didLogin})? onResult;
+  final void Function({required bool didLogin})? onResult;
 
   @override
   Widget build(BuildContext context) {

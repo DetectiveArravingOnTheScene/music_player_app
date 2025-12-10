@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 class AuthScope extends InheritedWidget {
   const AuthScope({super.key, required this.onResult, required super.child});
 
-  final void Function({bool didLogin})? onResult;
+  final void Function({required bool didLogin})? onResult;
 
   static AuthScope? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<AuthScope>();
@@ -12,5 +12,9 @@ class AuthScope extends InheritedWidget {
   @override
   bool updateShouldNotify(AuthScope oldWidget) {
     return onResult != oldWidget.onResult;
+  }
+
+  void redirectBack({required bool redirect}) {
+    onResult?.call(didLogin: redirect);
   }
 }

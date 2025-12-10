@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
+import 'package:domain/services/auth_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -55,6 +56,10 @@ class DataDependencyInjection {
     serviceLocator.registerSingleton<UserValidatonService>(
       UserValidatonService(),
     );
+
+    serviceLocator.registerSingletonWithDependencies<AuthService>(() {
+      return AuthService(serviceLocator.get<AuthRepository>().user);
+    }, dependsOn: <Type>[AuthRepository]);
   }
 
   void _initUseCases() {

@@ -1,28 +1,31 @@
+import 'package:core/di/app_di.dart';
+import 'package:domain/services/auth_service.dart';
+
 import '../navigation.dart';
 
 class AuthGuard extends AutoRouteGuard {
-  final AuthWatcher authWatcher;
-  AuthGuard(this.authWatcher);
+  AuthGuard();
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
-    if (authWatcher.currentUser != null) {
+    if (serviceLocator.get<AuthService>().currentUser != null) {
       resolver.next();
     } else {
       resolver.redirectUntil(
-        AuthRoute(onResult: (bool didLogin) => resolver.next(didLogin)),
+        AuthRoute(
+          onResult: ({required bool didLogin}) => resolver.next(didLogin),
+        ),
       );
     }
   }
 }
 
 class GuestGuard extends AutoRouteGuard {
-  final AuthWatcher authWatcher;
-  GuestGuard(this.authWatcher);
+  GuestGuard();
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
-    if (authWatcher.currentUser != null) {
+    if (serviceLocator.get<AuthService>().currentUser != null) {
       resolver.next(false);
       router.replaceAll(<PageRouteInfo<Object?>>[const HomeRoute()]);
     } else {
