@@ -13,6 +13,7 @@ class DataDependencyInjection {
     _initSupabase();
     _initProviders();
     _initRepositories();
+    _initServices();
     _initUseCases();
   }
 
@@ -47,6 +48,12 @@ class DataDependencyInjection {
     serviceLocator.registerSingletonWithDependencies<AuthRepository>(() {
       return AuthRepositoryImpl(serviceLocator.get<AuthProvider>());
     }, dependsOn: [AuthProvider]);
+  }
+
+  void _initServices() {
+    serviceLocator.registerSingleton<UserValidatonService>(
+      UserValidatonService(),
+    );
   }
 
   void _initUseCases() {

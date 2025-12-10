@@ -94,45 +94,10 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   }
 
   String? _validateEmail(String value) {
-    if (value.isEmpty) {
-      return t.login.emailError.empty;
-    }
-
-    final emailRegex = RegExp(
-      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-    );
-
-    if (!emailRegex.hasMatch(value)) {
-      return t.login.emailError.invalid;
-    }
-
-    return null;
+    return serviceLocator.get<UserValidatonService>().validateEmail(value);
   }
 
-  String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return t.login.passwordError.empty;
-    }
-
-    if (value.length < 8) {
-      return t.login.passwordError.short;
-    }
-
-    // Check for at least one uppercase letter
-    if (!value.contains(RegExp(r'[A-Z]'))) {
-      return t.login.passwordError.noUppercase;
-    }
-
-    // Check for at least one number
-    if (!value.contains(RegExp(r'[0-9]'))) {
-      return t.login.passwordError.noNumber;
-    }
-
-    // Check for at least one special character
-    if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
-      return t.login.passwordError.noSpecial;
-    }
-
-    return null;
+  String? _validatePassword(String value) {
+    return serviceLocator.get<UserValidatonService>().validatePassword(value);
   }
 }
