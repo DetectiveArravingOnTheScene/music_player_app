@@ -6,10 +6,6 @@ class SignOutUseCase extends FutureUseCaseNoParams<void> {
 
   @override
   Future<void> execute() async {
-    try {
-      return _authRepository.signOut();
-    } catch (e) {
-      rethrow;
-    }
+    return _authRepository.signOut();
   }
 }

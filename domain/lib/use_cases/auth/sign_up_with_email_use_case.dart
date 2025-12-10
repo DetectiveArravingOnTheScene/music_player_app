@@ -7,10 +7,6 @@ class SignUpWithEmailUseCase
 
   @override
   Future<void> execute(SignInWithEmailPayload input) async {
-    try {
-      return _authRepository.signUpWithEmail(input);
-    } catch (e) {
-      rethrow;
-    }
+    return _authRepository.signUpWithEmail(input);
   }
 }

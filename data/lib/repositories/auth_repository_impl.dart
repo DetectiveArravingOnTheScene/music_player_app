@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 
@@ -22,7 +23,7 @@ class AuthRepositoryImpl extends AuthRepository {
     try {
       await _authProvider.signInWithGoogle();
     } catch (e) {
-      rethrow;
+      throw AuthAppException(t.login.fail);
     }
   }
 
@@ -31,7 +32,7 @@ class AuthRepositoryImpl extends AuthRepository {
     try {
       await _authProvider.signInWithEmail(input);
     } catch (e) {
-      rethrow;
+      throw AuthAppException(t.login.fail);
     }
   }
 
@@ -40,7 +41,7 @@ class AuthRepositoryImpl extends AuthRepository {
     try {
       await _authProvider.signUpWithEmail(input);
     } catch (e) {
-      rethrow;
+      throw AuthAppException(t.login.fail);
     }
   }
 

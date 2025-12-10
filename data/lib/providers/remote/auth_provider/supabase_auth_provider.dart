@@ -29,70 +29,52 @@ class SupabaseAuthProvider implements AuthProvider {
 
   @override
   Future<void> signInWithEmail(SignInWithEmailPayload input) async {
-    try {
-      await _supabaseDb.client.auth.signInWithPassword(
-        email: input.email,
-        password: input.password,
-      );
-    } catch (e) {
-      throw AuthAppException(t.login.fail);
-    }
+    await _supabaseDb.client.auth.signInWithPassword(
+      email: input.email,
+      password: input.password,
+    );
   }
 
   @override
   Future<void> signUpWithEmail(SignInWithEmailPayload input) async {
-    try {
-      await _supabaseDb.client.auth.signUp(
-        email: input.email,
-        password: input.password,
-      );
-    } catch (e) {
-      throw AuthAppException(t.login.fail);
-    }
+    await _supabaseDb.client.auth.signUp(
+      email: input.email,
+      password: input.password,
+    );
   }
 
   @override
   Future<void> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn
-          .attemptLightweightAuthentication();
-      if (googleUser == null) {
-        throw AuthException(t.login.fail);
-      }
-
-      final GoogleSignInClientAuthorization authorization =
-          await googleUser.authorizationClient.authorizationForScopes(
-            GoogleSignInOptions.scopes,
-          ) ??
-          await googleUser.authorizationClient.authorizeScopes(
-            GoogleSignInOptions.scopes,
-          );
-
-      final String? idToken = googleUser.authentication.idToken;
-
-      if (idToken == null) {
-        throw AuthException(t.login.fail);
-      }
-
-      await _supabaseDb.client.auth.signInWithIdToken(
-        provider: OAuthProvider.google,
-        idToken: idToken,
-        accessToken: authorization.accessToken,
-      );
-    } on AuthException {
-      rethrow;
-    } catch (e) {
-      throw AuthAppException(t.login.fail);
+    final GoogleSignInAccount? googleUser = await _googleSignIn
+        .attemptLightweightAuthentication();
+    if (googleUser == null) {
+      throw AuthException(t.login.fail);
     }
+
+    final GoogleSignInClientAuthorization authorization =
+        await googleUser.authorizationClient.authorizationForScopes(
+          GoogleSignInOptions.scopes,
+        ) ??
+        await googleUser.authorizationClient.authorizeScopes(
+          GoogleSignInOptions.scopes,
+        );
+
+    final String? idToken = googleUser.authentication.idToken;
+
+    if (idToken == null) {
+      throw AuthException(t.login.fail);
+    }
+
+    await _supabaseDb.client.auth.signInWithIdToken(
+      provider: OAuthProvider.google,
+      idToken: idToken,
+      accessToken: authorization.accessToken,
+    );
   }
 
   @override
   Future<void> signOut() async {
-    try {
-      await _googleSignIn.signOut();
-      await _supabaseDb.client.auth.signOut();
-    } catch (e) {
-      rethrow;
-    }
+    await _googleSignIn.signOut();
+    await _supabaseDb.client.auth.signOut();
   }
 }

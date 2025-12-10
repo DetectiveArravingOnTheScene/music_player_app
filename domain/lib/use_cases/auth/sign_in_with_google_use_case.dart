@@ -6,10 +6,6 @@ class SignInWithGoogleUseCase extends FutureUseCaseNoParams<void> {
 
   @override
   Future<void> execute() async {
-    try {
-      return _authRepository.signInWithGoogle();
-    } catch (e) {
-      rethrow;
-    }
+    return _authRepository.signInWithGoogle();
   }
 }
