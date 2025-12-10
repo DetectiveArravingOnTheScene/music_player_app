@@ -1,5 +1,5 @@
-import 'package:auth/src/bloc/sign_In/sign_in_event.dart';
-import 'package:auth/src/bloc/sign_In/sign_in_state.dart';
+import 'package:auth/src/bloc/sign_in/sign_in_event.dart';
+import 'package:auth/src/bloc/sign_in/sign_in_state.dart';
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 
