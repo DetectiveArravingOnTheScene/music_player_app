@@ -39,12 +39,45 @@ dev_dependencies:
     flutter_lints: ^6.0.0
     melos: ^7.3.0
 melos:
+    ide:
+      intellij:
+        enabled: false
     useRootAsPackage: true
     scripts:
-        generate_all:
-            steps:
-                - melos exec -c 1 --scope="navigation" -- dart run build_runner build
-                - melos exec -c 1 --scope="core" -- dart run slang
+      generate_core:
+        run: melos exec --scope="core" -- dart run slang
+
+      generate_data:
+        run: melos exec --scope="data" -- dart run build_runner build   
+
+      generate_main:
+        run: melos exec --scope="main" -- dart run build_runner build
+
+      generate_home:
+        run: melos exec --scope="home" -- dart run build_runner build
+
+      generate_player:
+        run: melos exec --scope="player" -- dart run build_runner build
+
+      generate_search:
+        run: melos exec --scope="search" -- dart run build_runner build
+
+      generate_user_collection:
+        run: melos exec --scope="user_collection" -- dart run build_runner build
+
+      generate_auth:
+        run: melos exec --scope="auth" -- dart run build_runner build
+
+      generate_all:
+        steps:
+          - melos run generate_core
+          - melos run generate_data
+          - melos run generate_main
+          - melos run generate_home
+          - melos run generate_player
+          - melos run generate_search
+          - melos run generate_user_collection
+          - melos run generate_auth
 flutter:
     uses-material-design: true
     assets:
