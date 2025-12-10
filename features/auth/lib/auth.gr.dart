@@ -10,8 +10,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auth/src/ui/auth_screen.dart' as _i1;
-import 'package:auth/src/ui/sign_in_screen.dart' as _i2;
-import 'package:auth/src/ui/sign_up_screen.dart' as _i3;
+import 'package:auth/src/ui/sign_in_screen/sign_in_screen.dart' as _i2;
+import 'package:auth/src/ui/sign_up_screen/sign_up_screen.dart' as _i3;
 import 'package:auto_route/auto_route.dart' as _i4;
 import 'package:flutter/material.dart' as _i5;
 
@@ -19,7 +19,7 @@ import 'package:flutter/material.dart' as _i5;
 /// [_i1.AuthScreen]
 class AuthRoute extends _i4.PageRouteInfo<AuthRouteArgs> {
   AuthRoute({
-    void Function(bool)? onResult,
+    void Function({bool didLogin})? onResult,
     _i5.Key? key,
     List<_i4.PageRouteInfo>? children,
   }) : super(
@@ -44,7 +44,7 @@ class AuthRoute extends _i4.PageRouteInfo<AuthRouteArgs> {
 class AuthRouteArgs {
   const AuthRouteArgs({this.onResult, this.key});
 
-  final void Function(bool)? onResult;
+  final void Function({bool didLogin})? onResult;
 
   final _i5.Key? key;
 
