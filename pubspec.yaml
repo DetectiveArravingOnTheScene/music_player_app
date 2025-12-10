@@ -39,7 +39,7 @@ dev_dependencies:
 melos:
     useRootAsPackage: true
     scripts:
-        generate:
+        generate_all:
             steps:
                 - melos exec -c 1 --scope="navigation" -- dart run build_runner build
                 - melos exec -c 1 --scope="core" -- dart run slang
