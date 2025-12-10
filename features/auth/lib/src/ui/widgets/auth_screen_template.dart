@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AuthScreenCarcass extends StatelessWidget {
-  const AuthScreenCarcass({
+class AuthScreenTemplate extends StatelessWidget {
+  const AuthScreenTemplate({
     required this.title,
     required this.textFields,
     required this.button,

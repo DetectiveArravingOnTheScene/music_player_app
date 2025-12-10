@@ -1,8 +1,6 @@
 import 'package:auth/src/bloc/blocs.dart';
-import 'package:auth/src/bloc/sign_In/sign_in_event.dart';
-import 'package:auth/src/bloc/sign_In/sign_in_state.dart';
 import 'package:auth/src/ui/widgets/auth_scope.dart';
-import 'package:auth/src/ui/widgets/auth_screen_carcass.dart';
+import 'package:auth/src/ui/widgets/auth_screen_template.dart';
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +35,7 @@ class SignInScreen extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          return AuthScreenCarcass(
+          return AuthScreenTemplate(
             title: t.login.signIn,
             textFields: [
               TextField(
