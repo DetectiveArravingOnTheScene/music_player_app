@@ -1,6 +1,7 @@
-import 'package:auth/src/bloc/blocs.dart';
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
+
+import '../blocs.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   SignUpBloc({
@@ -20,7 +21,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   final SignInWithGoogleUseCase _signInWithGoogleUseCase;
 
   void _onEmailChanged(SignUpEmailChanged event, Emitter<SignUpState> emit) {
-    final error = _validateEmail(event.email);
+    final String? error = _validateEmail(event.email);
     emit(
       state.copyWith(
         email: event.email,
@@ -41,9 +42,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     SignUpPasswordChanged event,
     Emitter<SignUpState> emit,
   ) {
-    final passwordError = _validatePassword(event.password);
+    final String? passwordError = _validatePassword(event.password);
 
-    final confirmPasswordError = _validateConfirmPassword(
+    final String? confirmPasswordError = _validateConfirmPassword(
       state.confirmPassword,
       event.password,
     );
@@ -69,7 +70,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     SignUpConfirmPasswordChanged event,
     Emitter<SignUpState> emit,
   ) {
-    final error = _validateConfirmPassword(
+    final String? error = _validateConfirmPassword(
       event.confirmPassword,
       state.password,
     );
@@ -94,9 +95,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     SignUpSubmitted event,
     Emitter<SignUpState> emit,
   ) async {
-    final emailError = _validateEmail(state.email);
-    final passwordError = _validatePassword(state.password);
-    final confirmPasswordError = _validateConfirmPassword(
+    final String? emailError = _validateEmail(state.email);
+    final String? passwordError = _validatePassword(state.password);
+    final String? confirmPasswordError = _validateConfirmPassword(
       state.confirmPassword,
       state.password,
     );

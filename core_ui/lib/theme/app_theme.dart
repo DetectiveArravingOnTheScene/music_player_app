@@ -16,7 +16,9 @@ class AppTheme {
       filled: false,
       contentPadding: const EdgeInsets.all(8),
 
-      floatingLabelStyle: WidgetStateTextStyle.resolveWith((states) {
+      floatingLabelStyle: WidgetStateTextStyle.resolveWith((
+        Set<WidgetState> states,
+      ) {
         if (states.contains(WidgetState.error)) {
           return TextStyle(color: scheme.error);
         }

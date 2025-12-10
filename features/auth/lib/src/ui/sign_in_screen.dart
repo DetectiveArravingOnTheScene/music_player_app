@@ -1,10 +1,11 @@
-import 'package:auth/src/bloc/blocs.dart';
-import 'package:auth/src/ui/widgets/auth_scope.dart';
-import 'package:auth/src/ui/widgets/auth_screen_template.dart';
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
+
+import '../bloc/blocs.dart';
+import 'widgets/auth_scope.dart';
+import 'widgets/auth_screen_template.dart';
 
 @RoutePage()
 class SignInScreen extends StatelessWidget {
@@ -12,34 +13,34 @@ class SignInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SignInBloc(
+    return BlocProvider<SignInBloc>(
+      create: (BuildContext context) => SignInBloc(
         signInWithEmailUseCase: serviceLocator.get<SignInWithEmailUseCase>(),
         signInWithGoogleUseCase: serviceLocator.get<SignInWithGoogleUseCase>(),
       ),
       child: BlocConsumer<SignInBloc, SignInState>(
-        listenWhen: (p, c) => p.status != c.status,
-        listener: (context, state) {
+        listenWhen: (SignInState p, SignInState c) => p.status != c.status,
+        listener: (BuildContext context, SignInState state) {
           if (state.status == SignInStatus.failure) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
           }
           if (state.status == SignInStatus.success) {
-            final authScope = AuthScope.of(context);
+            final AuthScope? authScope = AuthScope.of(context);
             if (authScope?.onResult != null) {
               // SCENARIO: Deep Link / Guard Redirection
               // Trigger the guard callback to resume the original route
-              authScope!.onResult!(true);
+              authScope!.onResult!(didLogin: true);
             }
           }
         },
-        builder: (context, state) {
+        builder: (BuildContext context, SignInState state) {
           return AuthScreenTemplate(
             title: t.login.signIn,
-            textFields: [
+            textFields: <Widget>[
               TextField(
-                onChanged: (value) =>
+                onChanged: (String value) =>
                     context.read<SignInBloc>().add(SignInEmailChanged(value)),
                 decoration: InputDecoration(
                   label: Text(t.login.email),
@@ -47,7 +48,7 @@ class SignInScreen extends StatelessWidget {
                 ),
               ),
               TextField(
-                onChanged: (value) => context.read<SignInBloc>().add(
+                onChanged: (String value) => context.read<SignInBloc>().add(
                   SignInPasswordChanged(value),
                 ),
                 obscureText: true,
@@ -58,25 +59,25 @@ class SignInScreen extends StatelessWidget {
               ),
             ],
             button: Row(
-              children: [
+              children: <Widget>[
                 Expanded(
                   child: FilledButton.tonal(
                     onPressed: () {
-                      context.read<SignInBloc>().add(SignInSubmitted());
+                      context.read<SignInBloc>().add(const SignInSubmitted());
                     },
                     child: Text(t.login.signIn),
                   ),
                 ),
               ],
             ),
-            authProviders: [
+            authProviders: <Widget>[
               Row(
-                children: [
+                children: <Widget>[
                   Expanded(
                     child: FilledButton(
                       onPressed: () {
                         context.read<SignInBloc>().add(
-                          SignInWithGoogleSubmitted(),
+                          const SignInWithGoogleSubmitted(),
                         );
                       },
                       child: Text(t.login.google),
@@ -87,7 +88,7 @@ class SignInScreen extends StatelessWidget {
             ],
             bottomWidget: TextButton(
               onPressed: () {
-                context.navigateTo(SignUpRoute());
+                context.navigateTo(const SignUpRoute());
               },
               child: Text(t.login.haveNoAccount),
             ),

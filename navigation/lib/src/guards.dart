@@ -1,4 +1,4 @@
-import 'package:navigation/navigation.dart';
+import '../navigation.dart';
 
 class AuthGuard extends AutoRouteGuard {
   final AuthWatcher authWatcher;
@@ -10,7 +10,7 @@ class AuthGuard extends AutoRouteGuard {
       resolver.next();
     } else {
       resolver.redirectUntil(
-        AuthRoute(onResult: (didLogin) => resolver.next(didLogin)),
+        AuthRoute(onResult: (bool didLogin) => resolver.next(didLogin)),
       );
     }
   }
@@ -24,7 +24,7 @@ class GuestGuard extends AutoRouteGuard {
   void onNavigation(NavigationResolver resolver, StackRouter router) {
     if (authWatcher.currentUser != null) {
       resolver.next(false);
-      router.replaceAll([HomeRoute()]);
+      router.replaceAll(<PageRouteInfo<Object?>>[const HomeRoute()]);
     } else {
       resolver.next();
     }

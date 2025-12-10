@@ -1,9 +1,11 @@
 import 'dart:async';
+
 import 'package:core/core.dart';
-import 'package:data/data.dart';
 import 'package:domain/domain.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../../data.dart';
 
 class SupabaseAuthProvider implements AuthProvider {
   SupabaseAuthProvider(this._supabaseDb, this._googleSignIn);
@@ -14,7 +16,7 @@ class SupabaseAuthProvider implements AuthProvider {
 
   @override
   Stream<UserEntity?> get authStateChanges =>
-      _supabaseDb.client.auth.onAuthStateChange.map((state) {
+      _supabaseDb.client.auth.onAuthStateChange.map((AuthState state) {
         final User? user = state.session?.user;
         if (user == null) {
           return null;

@@ -1,4 +1,4 @@
-import 'package:domain/domain.dart';
+import '../domain.dart';
 
 abstract class AuthRepository {
   Stream<UserModel?> get user;

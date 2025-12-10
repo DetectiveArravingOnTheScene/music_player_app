@@ -22,18 +22,18 @@ class AuthScreenTemplate extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+        children: <Widget>[
           Column(
             spacing: 20,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 150),
+            children: <Widget>[
+              const SizedBox(height: 150),
               Text(title, style: Theme.of(context).textTheme.displaySmall),
-              SizedBox(height: 48),
+              const SizedBox(height: 48),
               ...textFields,
               button,
-              Divider(),
-              Text("or continue with"),
+              const Divider(),
+              const Text('or continue with'),
               ...authProviders,
             ],
           ),

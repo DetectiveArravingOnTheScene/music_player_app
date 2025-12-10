@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
-import 'package:data/data.dart';
 import 'package:domain/domain.dart';
+
+import '../data.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final AuthProvider _authProvider;
@@ -9,7 +10,7 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Stream<UserModel?> get user {
-    return _authProvider.authStateChanges.map((userEntity) {
+    return _authProvider.authStateChanges.map((UserEntity? userEntity) {
       if (userEntity == null) {
         return null;
       }
@@ -47,6 +48,6 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Future<void> signOut() async {
-    _authProvider.signOut();
+    await _authProvider.signOut();
   }
 }

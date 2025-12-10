@@ -1,4 +1,4 @@
-import 'package:domain/domain.dart';
+import '../../domain.dart';
 
 class SignInWithGoogleUseCase extends FutureUseCaseNoParams<void> {
   SignInWithGoogleUseCase(this._authRepository);

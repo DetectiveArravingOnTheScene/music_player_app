@@ -10,7 +10,7 @@ class PlayerWidget extends StatelessWidget {
       color: Colors.red,
       child: ElevatedButton(
         onPressed: () => context.router.push(const PlayerRoute()),
-        child: Text("PRESS ME"),
+        child: const Text('PRESS ME'),
       ),
     );
   }

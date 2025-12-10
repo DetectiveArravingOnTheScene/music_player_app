@@ -32,7 +32,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
               player.play();
             }
           },
-          child: Text("Press to play"),
+          child: const Text('Press to play'),
         ),
       ),
     );

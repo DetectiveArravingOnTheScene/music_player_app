@@ -10,33 +10,41 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       alignment: AlignmentGeometry.center,
-      children: [
+      children: <Widget>[
         AutoTabsScaffold(
-          routes: const [HomeRoute(), SearchRoute(), UserCollectionRoute()],
-          bottomNavigationBuilder: (context, tabsRouter) {
-            return BottomNavigationBar(
-              currentIndex: tabsRouter.activeIndex,
-              onTap: tabsRouter.setActiveIndex,
-              items: const [
-                BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.search),
-                  label: "Search",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.system_update_tv_rounded),
-                  label: "Collection",
-                ),
-              ],
-            );
-          },
+          routes: const <PageRouteInfo<Object?>>[
+            HomeRoute(),
+            SearchRoute(),
+            UserCollectionRoute(),
+          ],
+          bottomNavigationBuilder:
+              (BuildContext context, TabsRouter tabsRouter) {
+                return BottomNavigationBar(
+                  currentIndex: tabsRouter.activeIndex,
+                  onTap: tabsRouter.setActiveIndex,
+                  items: const <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.home),
+                      label: 'Home',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.search),
+                      label: 'Search',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.system_update_tv_rounded),
+                      label: 'Collection',
+                    ),
+                  ],
+                );
+              },
         ),
         Positioned.directional(
           textDirection: TextDirection.ltr,
           bottom: 100,
           start: 0,
           end: 0,
-          child: Row(children: [Expanded(child: PlayerWidget())]),
+          child: const Row(children: <Widget>[Expanded(child: PlayerWidget())]),
         ),
       ],
     );

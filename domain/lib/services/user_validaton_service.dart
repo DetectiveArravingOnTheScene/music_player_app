@@ -1,4 +1,4 @@
-import "package:core/core.dart";
+import 'package:core/core.dart';
 
 class UserValidatonService {
   String? validateEmail(String value) {
@@ -6,7 +6,7 @@ class UserValidatonService {
       return t.login.emailError.empty;
     }
 
-    final emailRegex = RegExp(
+    final RegExp emailRegex = RegExp(
       r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
     );
 
@@ -26,11 +26,11 @@ class UserValidatonService {
       return t.login.passwordError.short;
     }
 
-    if (!value.contains(RegExp(r'[A-Z]'))) {
+    if (!value.contains(RegExp('[A-Z]'))) {
       return t.login.passwordError.noUppercase;
     }
 
-    if (!value.contains(RegExp(r'[0-9]'))) {
+    if (!value.contains(RegExp('[0-9]'))) {
       return t.login.passwordError.noNumber;
     }
 

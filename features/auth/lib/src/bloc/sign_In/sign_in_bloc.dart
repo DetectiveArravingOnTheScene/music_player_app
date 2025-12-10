@@ -1,7 +1,8 @@
-import 'package:auth/src/bloc/sign_in/sign_in_event.dart';
-import 'package:auth/src/bloc/sign_in/sign_in_state.dart';
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
+
+import 'sign_in_event.dart';
+import 'sign_in_state.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   SignInBloc({
@@ -20,7 +21,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   final SignInWithGoogleUseCase _signInWithGoogleUseCase;
 
   void _onEmailChanged(SignInEmailChanged event, Emitter<SignInState> emit) {
-    final error = _validateEmail(event.email);
+    final String? error = _validateEmail(event.email);
     emit(
       state.copyWith(
         email: event.email,
@@ -37,7 +38,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     SignInPasswordChanged event,
     Emitter<SignInState> emit,
   ) {
-    final error = _validatePassword(event.password);
+    final String? error = _validatePassword(event.password);
     emit(
       state.copyWith(
         password: event.password,
@@ -52,8 +53,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     SignInSubmitted event,
     Emitter<SignInState> emit,
   ) async {
-    final emailError = _validateEmail(state.email);
-    final passwordError = _validatePassword(state.password);
+    final String? emailError = _validateEmail(state.email);
+    final String? passwordError = _validatePassword(state.password);
 
     if (emailError == null && passwordError == null) {
       try {

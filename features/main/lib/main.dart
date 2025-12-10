@@ -6,5 +6,5 @@ export 'src/ui/main_screen.dart';
 @AutoRouterConfig()
 class MainRouter extends RootStackRouter {
   @override
-  List<AutoRoute> get routes => [];
+  List<AutoRoute> get routes => <AutoRoute>[];
 }

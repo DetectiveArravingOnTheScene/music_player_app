@@ -8,5 +8,5 @@ export 'src/ui/widgets/player_widget.dart';
 @AutoRouterConfig()
 class PlayerRouter extends RootStackRouter {
   @override
-  List<AutoRoute> get routes => [];
+  List<AutoRoute> get routes => <AutoRoute>[];
 }

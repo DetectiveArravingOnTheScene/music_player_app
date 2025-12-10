@@ -1,16 +1,16 @@
 import 'package:core/core.dart';
-import 'package:navigation/navigation.dart';
-import 'package:navigation/src/guards.dart';
+import '../navigation.dart';
+import 'guards.dart';
 
 @AutoRouterConfig()
 class AppRouter extends RootStackRouter {
   @override
-  List<AutoRoute> get routes => [
+  List<AutoRoute> get routes => <AutoRoute>[
     AutoRoute(
       page: AuthRoute.page,
       path: '/auth',
-      guards: [GuestGuard(serviceLocator.get<AuthWatcher>())],
-      children: [
+      guards: <AutoRouteGuard>[GuestGuard(serviceLocator.get<AuthWatcher>())],
+      children: <AutoRoute>[
         AutoRoute(page: SignInRoute.page, path: 'signin', initial: true),
         AutoRoute(page: SignUpRoute.page, path: 'signup'),
       ],
@@ -18,8 +18,8 @@ class AppRouter extends RootStackRouter {
     AutoRoute(
       page: MainRoute.page,
       path: '/',
-      guards: [AuthGuard(serviceLocator.get<AuthWatcher>())],
-      children: [
+      guards: <AutoRouteGuard>[AuthGuard(serviceLocator.get<AuthWatcher>())],
+      children: <AutoRoute>[
         AutoRoute(page: HomeRoute.page, initial: true, path: 'home'),
         AutoRoute(page: SearchRoute.page, path: 'search'),
         AutoRoute(page: UserCollectionRoute.page, path: 'collection'),

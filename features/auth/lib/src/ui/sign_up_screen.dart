@@ -1,11 +1,11 @@
-import 'package:auth/src/bloc/blocs.dart';
-
-import 'package:auth/src/ui/widgets/auth_scope.dart';
-import 'package:auth/src/ui/widgets/auth_screen_template.dart';
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
+
+import '../bloc/blocs.dart';
+import 'widgets/auth_scope.dart';
+import 'widgets/auth_screen_template.dart';
 
 @RoutePage()
 class SignUpScreen extends StatelessWidget {
@@ -13,34 +13,34 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SignUpBloc(
+    return BlocProvider<SignUpBloc>(
+      create: (BuildContext context) => SignUpBloc(
         signUpWithEmailUseCase: serviceLocator.get<SignUpWithEmailUseCase>(),
         signInWithGoogleUseCase: serviceLocator.get<SignInWithGoogleUseCase>(),
       ),
       child: BlocConsumer<SignUpBloc, SignUpState>(
-        listenWhen: (p, c) => p.status != c.status,
-        listener: (context, state) {
+        listenWhen: (SignUpState p, SignUpState c) => p.status != c.status,
+        listener: (BuildContext context, SignUpState state) {
           if (state.status == SignUpStatus.failure) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
           }
           if (state.status == SignUpStatus.success) {
-            final authScope = AuthScope.of(context);
+            final AuthScope? authScope = AuthScope.of(context);
             if (authScope?.onResult != null) {
               // SCENARIO: Deep Link / Guard Redirection
               // Trigger the guard callback to resume the original route
-              authScope!.onResult!(true);
+              authScope!.onResult!(didLogin: true);
             }
           }
         },
-        builder: (context, state) {
+        builder: (BuildContext context, SignUpState state) {
           return AuthScreenTemplate(
             title: t.login.signUp,
-            textFields: [
+            textFields: <Widget>[
               TextField(
-                onChanged: (value) =>
+                onChanged: (String value) =>
                     context.read<SignUpBloc>().add(SignUpEmailChanged(value)),
                 // controller: emailController,
                 decoration: InputDecoration(
@@ -50,7 +50,7 @@ class SignUpScreen extends StatelessWidget {
               ),
               TextField(
                 obscureText: true,
-                onChanged: (value) => context.read<SignUpBloc>().add(
+                onChanged: (String value) => context.read<SignUpBloc>().add(
                   SignUpPasswordChanged(value),
                 ),
                 // controller: passwordController,
@@ -61,7 +61,7 @@ class SignUpScreen extends StatelessWidget {
               ),
               TextField(
                 obscureText: true,
-                onChanged: (value) => context.read<SignUpBloc>().add(
+                onChanged: (String value) => context.read<SignUpBloc>().add(
                   SignUpConfirmPasswordChanged(value),
                 ),
                 // controller: passwordController,
@@ -72,25 +72,25 @@ class SignUpScreen extends StatelessWidget {
               ),
             ],
             button: Row(
-              children: [
+              children: <Widget>[
                 Expanded(
                   child: FilledButton.tonal(
                     onPressed: () {
-                      context.read<SignUpBloc>().add(SignUpSubmitted());
+                      context.read<SignUpBloc>().add(const SignUpSubmitted());
                     },
                     child: Text(t.login.signUp),
                   ),
                 ),
               ],
             ),
-            authProviders: [
+            authProviders: <Widget>[
               Row(
-                children: [
+                children: <Widget>[
                   Expanded(
                     child: FilledButton(
                       onPressed: () {
                         context.read<SignUpBloc>().add(
-                          SignUpWithGoogleSubmitted(),
+                          const SignUpWithGoogleSubmitted(),
                         );
                       },
                       child: Text(t.login.google),
@@ -101,7 +101,7 @@ class SignUpScreen extends StatelessWidget {
             ],
             bottomWidget: TextButton(
               onPressed: () {
-                context.navigateTo(SignInRoute());
+                context.navigateTo(const SignInRoute());
               },
               child: Text(t.login.haveAccount),
             ),

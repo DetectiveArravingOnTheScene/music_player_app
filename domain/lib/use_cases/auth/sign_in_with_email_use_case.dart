@@ -1,4 +1,4 @@
-import 'package:domain/domain.dart';
+import '../../domain.dart';
 
 class SignInWithEmailUseCase
     extends FutureUseCase<SignInWithEmailPayload, void> {

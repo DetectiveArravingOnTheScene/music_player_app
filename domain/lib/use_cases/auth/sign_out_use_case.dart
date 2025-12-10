@@ -1,4 +1,4 @@
-import 'package:domain/domain.dart';
+import '../../domain.dart';
 
 class SignOutUseCase extends FutureUseCaseNoParams<void> {
   SignOutUseCase(this._authRepository);
