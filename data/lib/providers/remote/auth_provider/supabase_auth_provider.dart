@@ -35,7 +35,7 @@ class SupabaseAuthProvider implements AuthProvider {
         password: input.password,
       );
     } catch (e) {
-      rethrow;
+      throw AuthAppException(t.login.fail);
     }
   }
 
@@ -47,7 +47,7 @@ class SupabaseAuthProvider implements AuthProvider {
         password: input.password,
       );
     } catch (e) {
-      rethrow;
+      throw AuthAppException(t.login.fail);
     }
   }
 
@@ -79,8 +79,10 @@ class SupabaseAuthProvider implements AuthProvider {
         idToken: idToken,
         accessToken: authorization.accessToken,
       );
-    } catch (e) {
+    } on AuthException {
       rethrow;
+    } catch (e) {
+      throw AuthAppException(t.login.fail);
     }
   }
 

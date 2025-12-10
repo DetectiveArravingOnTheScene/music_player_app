@@ -6,6 +6,8 @@ import 'package:music_player_app/app/music_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: 'api_keys.env');
+
   LocaleSettings.setLocale(AppLocale.en);
   dataDependencyInjection.initialize();
   coreDependencyInjection.initialize();
