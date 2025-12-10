@@ -1,4 +1,3 @@
-import 'package:core/core.dart';
 import '../navigation.dart';
 import 'guards.dart';
 
@@ -9,7 +8,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(
       page: AuthRoute.page,
       path: '/auth',
-      guards: <AutoRouteGuard>[GuestGuard(serviceLocator.get<AuthWatcher>())],
+      guards: <AutoRouteGuard>[GuestGuard()],
       children: <AutoRoute>[
         AutoRoute(page: SignInRoute.page, path: 'signin', initial: true),
         AutoRoute(page: SignUpRoute.page, path: 'signup'),
@@ -18,7 +17,7 @@ class AppRouter extends RootStackRouter {
     AutoRoute(
       page: MainRoute.page,
       path: '/',
-      guards: <AutoRouteGuard>[AuthGuard(serviceLocator.get<AuthWatcher>())],
+      guards: <AutoRouteGuard>[AuthGuard()],
       children: <AutoRoute>[
         AutoRoute(page: HomeRoute.page, initial: true, path: 'home'),
         AutoRoute(page: SearchRoute.page, path: 'search'),

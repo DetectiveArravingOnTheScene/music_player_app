@@ -9,4 +9,3 @@ export 'package:search/search.gr.dart';
 export 'package:user_collection/user_collection.gr.dart';
 
 export 'src/app_router.dart';
-export 'src/auth_watcher.dart';
