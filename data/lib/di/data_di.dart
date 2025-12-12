@@ -5,6 +5,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../data.dart';
+import '../providers/api_provider.dart';
+import '../providers/remote/remote_music_provider/remote_music_provider.dart';
+import '../providers/remote/remote_music_provider/sound_cloud_provider.dart';
 
 final DataDependencyInjection dataDependencyInjection =
     DataDependencyInjection();
@@ -38,6 +41,12 @@ class DataDependencyInjection {
   }
 
   void _initProviders() {
+    serviceLocator.registerSingleton<ApiProvider>(ApiProvider());
+
+    serviceLocator.registerSingleton<RemoteMusicProvider>(
+      SoundCloudProvider(serviceLocator.get<ApiProvider>()),
+    );
+
     serviceLocator.registerSingletonAsync<AuthProvider>(() async {
       return SupabaseAuthProvider(
         serviceLocator.get<Supabase>(),
