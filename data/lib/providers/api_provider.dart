@@ -5,7 +5,6 @@ class ApiProvider {
   ApiProvider() {
     _dio.options.baseUrl = 'https://api.soundcloud.com';
     _dio.options.headers['accept'] = 'application/json; charset=utf-8';
-    // TODO: Add logic to auth and retry if 401;
   }
 
   void setAuthToken(String token) {
