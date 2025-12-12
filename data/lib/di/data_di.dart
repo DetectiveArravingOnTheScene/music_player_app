@@ -5,6 +5,21 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../data.dart';
+import '../providers/api_provider.dart';
+import '../providers/remote/cloud_database_tables_providers/liked_artists_table/cloud_liked_artists_table_provider.dart';
+import '../providers/remote/cloud_database_tables_providers/liked_artists_table/supabase_liked_artists_table_provider.dart';
+import '../providers/remote/cloud_database_tables_providers/liked_playlists_table/cloud_liked_playlists_table_provider.dart';
+import '../providers/remote/cloud_database_tables_providers/liked_playlists_table/supabase_liked_playlists_table_provider.dart';
+import '../providers/remote/cloud_database_tables_providers/liked_songs_table/cloud_liked_songs_table_provider.dart';
+import '../providers/remote/cloud_database_tables_providers/liked_songs_table/supabase_liked_songs_table_provider.dart';
+import '../providers/remote/cloud_database_tables_providers/playlist_track_table/cloud_playlist_track_table_provider.dart';
+import '../providers/remote/cloud_database_tables_providers/playlist_track_table/supabase_playlist_track_table_provider.dart';
+import '../providers/remote/cloud_database_tables_providers/user_playlist_table/cloud_user_playlists_table_provider.dart';
+import '../providers/remote/cloud_database_tables_providers/user_playlist_table/supabase_user_playlists_table_provider.dart';
+import '../providers/remote/cloud_database_tables_providers/user_settings_table/cloud_user_settings_table_provider.dart';
+import '../providers/remote/cloud_database_tables_providers/user_settings_table/supabase_user_settings_table_provider.dart';
+import '../providers/remote/remote_music_provider/remote_music_provider.dart';
+import '../providers/remote/remote_music_provider/sound_cloud_provider.dart';
 
 final DataDependencyInjection dataDependencyInjection =
     DataDependencyInjection();
@@ -38,12 +53,72 @@ class DataDependencyInjection {
   }
 
   void _initProviders() {
+    serviceLocator.registerSingleton<ApiProvider>(ApiProvider());
+
+    serviceLocator.registerSingleton<RemoteMusicProvider>(
+      SoundCloudProvider(serviceLocator.get<ApiProvider>()),
+    );
+
     serviceLocator.registerSingletonAsync<AuthProvider>(() async {
       return SupabaseAuthProvider(
         serviceLocator.get<Supabase>(),
         serviceLocator.get<GoogleSignIn>(),
       );
     }, dependsOn: <Type>[Supabase]);
+
+    serviceLocator.registerSingletonAsync<CloudLikedSongsTableProvider>(
+      () async {
+        return SupabaseLikedSongsTableProvider(
+          supabase: serviceLocator.get<Supabase>(),
+        );
+      },
+      dependsOn: <Type>[Supabase],
+    );
+
+    serviceLocator.registerSingletonAsync<CloudLikedPlaylistsTableProvider>(
+      () async {
+        return SupabaseLikedPlaylistsTableProvider(
+          supabase: serviceLocator.get<Supabase>(),
+        );
+      },
+      dependsOn: <Type>[Supabase],
+    );
+
+    serviceLocator.registerSingletonAsync<CloudLikedArtistsTableProvider>(
+      () async {
+        return SupabaseLikedArtistsTableProvider(
+          supabase: serviceLocator.get<Supabase>(),
+        );
+      },
+      dependsOn: <Type>[Supabase],
+    );
+
+    serviceLocator.registerSingletonAsync<CloudUserPlaylistsTableProvider>(
+      () async {
+        return SupabaseUserPlaylistsTableProvider(
+          supabase: serviceLocator.get<Supabase>(),
+        );
+      },
+      dependsOn: <Type>[Supabase],
+    );
+
+    serviceLocator.registerSingletonAsync<CloudPlaylistTracksTableProvider>(
+      () async {
+        return SupabasePlaylistTracksTableProvider(
+          supabase: serviceLocator.get<Supabase>(),
+        );
+      },
+      dependsOn: <Type>[Supabase],
+    );
+
+    serviceLocator.registerSingletonAsync<CloudUserSettingsTableProvider>(
+      () async {
+        return SupabaseUserSettingsTableProvider(
+          supabase: serviceLocator.get<Supabase>(),
+        );
+      },
+      dependsOn: <Type>[Supabase],
+    );
   }
 
   void _initRepositories() {

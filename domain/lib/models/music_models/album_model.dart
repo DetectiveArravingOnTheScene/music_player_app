@@ -2,7 +2,7 @@ import '../models.dart';
 
 class AlbumModel {
   final String title;
-  final List<SongModel> songs;
+  final List<TrackModel> songs;
   final DateTime? releaseDate;
   final List<ArtistModel> authors;
 
