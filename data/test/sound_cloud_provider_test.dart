@@ -121,7 +121,7 @@ void main() {
 
         final ArtistEntity result = await provider.getArtist('user-urn-123');
 
-        expect(result.id, 'soundcloud:users:12345'); // Check ID mapping
+        expect(result.urn, 'soundcloud:users:12345'); // Check ID mapping
         expect(result.username, 'TestUser');
         expect(result.location, 'Berlin, Germany');
         expect(result.likes, 100);
@@ -163,7 +163,10 @@ void main() {
               .getArtistsPlaylists('user-urn-123', <String>[], 10);
 
           expect(result.length, 2);
-          expect(result.first.id, 'soundcloud:playlists:1'); // Check ID mapping
+          expect(
+            result.first.urn,
+            'soundcloud:playlists:1',
+          ); // Check ID mapping
           expect(result.first.duration, 1000);
           expect(result.first.title, 'Playlist 1');
         },
@@ -227,7 +230,7 @@ void main() {
             'playlist:1',
           );
 
-          expect(result.id, 'soundcloud:playlists:123'); // Check ID mapping
+          expect(result.urn, 'soundcloud:playlists:123'); // Check ID mapping
           expect(result.title, 'Test Playlist');
           expect(result.releaseDate, DateTime(2023, 10, 15));
           expect(result.trackUrls, <String>['track:1', 'track:2']);
@@ -257,7 +260,7 @@ void main() {
           'pl:1',
         );
         expect(result.length, 1);
-        expect(result.first.id, 'soundcloud:tracks:99'); // Check ID mapping
+        expect(result.first.urn, 'soundcloud:tracks:99'); // Check ID mapping
         expect(result.first.title, 'Track 1');
       });
 
@@ -280,9 +283,8 @@ void main() {
 
         final TrackEntity result = await provider.getTrack('track:1');
 
-        expect(result.id, 'soundcloud:tracks:555'); // Check ID mapping
+        expect(result.urn, 'soundcloud:tracks:555'); // Check ID mapping
         expect(result.title, 'My Song');
-        expect(result.userUrl, 'user:1');
       });
 
       test('getRelatedTracks returns list with IDs', () async {
@@ -303,7 +305,7 @@ void main() {
           'track:1',
         );
         expect(result.length, 1);
-        expect(result.first.id, 'soundcloud:tracks:888'); // Check ID mapping
+        expect(result.first.urn, 'soundcloud:tracks:888'); // Check ID mapping
       });
 
       test('getTrackStreams extracts string values', () async {
@@ -449,7 +451,7 @@ void main() {
         'soundcloud:users:12345',
       );
 
-      expect(result.id, 'soundcloud:users:12345'); // Check ID mapping
+      expect(result.urn, 'soundcloud:users:12345'); // Check ID mapping
       expect(result.username, 'some.user');
       expect(result.location, 'City, Country');
       expect(result.likes, 20);
@@ -475,7 +477,7 @@ void main() {
 
       final PlaylistEntity result = await provider.getPlaylist('123');
 
-      expect(result.id, 'soundcloud:playlists:123'); // Check ID mapping
+      expect(result.urn, 'soundcloud:playlists:123'); // Check ID mapping
       expect(result.title, 'Swagger Playlist');
       expect(result.releaseDate, DateTime(2020, 07, 16, 16, 09, 54));
       expect(result.trackUrls, <String>['soundcloud:tracks:1234']);
@@ -499,7 +501,7 @@ void main() {
 
       final TrackEntity result = await provider.getTrack('123');
 
-      expect(result.id, 'soundcloud:tracks:555'); // Check ID mapping
+      expect(result.urn, 'soundcloud:tracks:555'); // Check ID mapping
       expect(result.title, 'Test drum sample');
       expect(result.artworkUrl, null);
     });
@@ -531,7 +533,7 @@ void main() {
       );
 
       expect(result.length, 1);
-      expect(result.first.id, 'soundcloud:playlists:777'); // Check ID mapping
+      expect(result.first.urn, 'soundcloud:playlists:777'); // Check ID mapping
       expect(result.first.title, 'List Item 1');
     });
   });

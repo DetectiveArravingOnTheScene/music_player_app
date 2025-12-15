@@ -1,12 +1,10 @@
 class LikedPlaylistMetadataEntity {
-  final String id;
   final String urn;
   final String userId;
   final int listenCount;
   final DateTime? createdAt;
 
   LikedPlaylistMetadataEntity({
-    required this.id,
     required this.urn,
     required this.userId,
     required this.listenCount,
@@ -15,7 +13,6 @@ class LikedPlaylistMetadataEntity {
 
   factory LikedPlaylistMetadataEntity.fromJson(Map<String, dynamic> json) {
     return LikedPlaylistMetadataEntity(
-      id: json['id'] as String,
       urn: json['urn'] as String,
       userId: json['user_id'] as String,
       listenCount: json['listen_count'] as int? ?? 0,
@@ -27,7 +24,6 @@ class LikedPlaylistMetadataEntity {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'id': id,
       'urn': urn,
       'user_id': userId,
       'listen_count': listenCount,

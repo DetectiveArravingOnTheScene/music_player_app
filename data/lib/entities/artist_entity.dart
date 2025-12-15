@@ -1,5 +1,5 @@
 class ArtistEntity {
-  final String id;
+  final String urn;
   final String? avatarUrls;
   final String? location;
   final String? description;
@@ -14,6 +14,6 @@ class ArtistEntity {
     required this.fullName,
     required this.likes,
     required this.username,
-    required this.id,
+    required this.urn,
   });
 }

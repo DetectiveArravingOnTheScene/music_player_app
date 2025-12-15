@@ -1,8 +1,8 @@
 class PlaylistEntity {
-  final String id;
+  final String urn;
   final String? artworkUrl;
-  final DateTime? releaseDate;
-  final int? duration;
+  final DateTime releaseDate;
+  final int duration;
   final String? genre;
   final int likesCount;
   final List<String>? trackUrls;
@@ -18,6 +18,6 @@ class PlaylistEntity {
     required this.trackUrls,
     required this.userUrl,
     required this.title,
-    required this.id,
+    required this.urn,
   });
 }

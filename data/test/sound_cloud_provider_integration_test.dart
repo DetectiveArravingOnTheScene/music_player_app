@@ -85,16 +85,16 @@ void main() {
       final TrackEntity firstTrack = searchResults.first;
 
       print(
-        'Step 1: Found track "${firstTrack.title}" with ID: ${firstTrack.id}',
+        'Step 1: Found track "${firstTrack.title}" with ID: ${firstTrack.urn}',
       );
       expect(
-        firstTrack.id,
+        firstTrack.urn,
         isNotEmpty,
         reason: 'Track must have a valid URN/ID',
       );
 
       // 2. Use that ID to fetch full details
-      final TrackEntity details = await provider.getTrack(firstTrack.id);
+      final TrackEntity details = await provider.getTrack(firstTrack.urn);
 
       print('Step 2: Successfully fetched details for "${details.title}"');
       expect(details.title, equals(firstTrack.title));

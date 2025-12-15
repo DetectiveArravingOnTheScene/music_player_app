@@ -188,7 +188,7 @@ class SoundCloudProvider extends RemoteMusicProvider {
     ].where((String element) => element.isNotEmpty).join(', ');
 
     return ArtistEntity(
-      id: data['urn'] as String,
+      urn: data['urn'] as String,
       avatarUrls: data['avatar_url'] as String?,
       location: location,
       description: data['description'] as String?,
@@ -236,7 +236,7 @@ class SoundCloudProvider extends RemoteMusicProvider {
     }
 
     return PlaylistEntity(
-      id: data['urn'],
+      urn: data['urn'],
       artworkUrl: data['artwork_url'] as String?,
       releaseDate: date,
       duration: (data['duration'] ?? 0) as int,
@@ -249,20 +249,18 @@ class SoundCloudProvider extends RemoteMusicProvider {
   }
 
   TrackEntity _mapToTrackEntity(Map<String, dynamic> data) {
-    // Extract User URN
-    String userUrl = '';
-    if (data['user'] is Map) {
-      userUrl = data['user']['urn'] as String? ?? '';
-    }
+    final Map<String, dynamic> userObj = data['user'] as Map<String, dynamic>;
+
+    final ArtistEntity artist = _mapToArtistEntity(userObj);
 
     return TrackEntity(
-      id: data['urn'],
-      title: data['title'] as String,
+      urn: (data['urn'] ?? data['id']).toString(),
+      title: (data['title'] ?? 'Unknown Track').toString(),
       artworkUrl: data['artwork_url'] as String?,
       duration: (data['duration'] ?? 0) as int,
       genre: data['genre'] as String?,
       streamUrl: data['stream_url'] as String?,
-      userUrl: userUrl,
+      artist: artist,
     );
   }
 

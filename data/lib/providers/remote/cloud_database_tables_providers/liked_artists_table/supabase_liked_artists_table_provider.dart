@@ -12,11 +12,11 @@ class SupabaseLikedArtistsTableProvider
   static const String table = 'liked_artists';
 
   @override
-  Future<LikedArtistMetadataEntity?> getById(String id) async {
+  Future<LikedArtistMetadataEntity?> getByUrn(String urn) async {
     final Map<String, dynamic>? response = await _db.client
         .from(table)
         .select()
-        .eq('id', id)
+        .eq('urn', urn)
         .maybeSingle();
 
     if (response == null) return null;
@@ -51,11 +51,11 @@ class SupabaseLikedArtistsTableProvider
 
   @override
   Future<void> update(LikedArtistMetadataEntity entity) async {
-    await _db.client.from(table).update(entity.toJson()).eq('id', entity.id);
+    await _db.client.from(table).update(entity.toJson()).eq('urn', entity.urn);
   }
 
   @override
-  Future<void> delete(String id) async {
-    await _db.client.from(table).delete().eq('id', id);
+  Future<void> delete(String urn) async {
+    await _db.client.from(table).delete().eq('urn', urn);
   }
 }

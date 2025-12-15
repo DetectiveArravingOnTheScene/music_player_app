@@ -12,11 +12,11 @@ class SupabaseLikedSongsTableProvider implements CloudLikedSongsTableProvider {
   static const String _table = 'liked_songs';
 
   @override
-  Future<LikedSongMetadataEntity?> getById(String id) async {
+  Future<LikedSongMetadataEntity?> getByUrn(String urn) async {
     final List<Map<String, dynamic>> response = await _db.client
         .from(_table)
         .select()
-        .eq('id', id)
+        .eq('urn', urn)
         .limit(1);
 
     if (response.isEmpty) return null;
@@ -47,11 +47,11 @@ class SupabaseLikedSongsTableProvider implements CloudLikedSongsTableProvider {
 
   @override
   Future<void> update(LikedSongMetadataEntity entity) async {
-    await _db.client.from(_table).update(entity.toJson()).eq('id', entity.id);
+    await _db.client.from(_table).update(entity.toJson()).eq('urn', entity.urn);
   }
 
   @override
-  Future<void> delete(String id) async {
-    await _db.client.from(_table).delete().eq('id', id);
+  Future<void> delete(String urn) async {
+    await _db.client.from(_table).delete().eq('urn', urn);
   }
 }

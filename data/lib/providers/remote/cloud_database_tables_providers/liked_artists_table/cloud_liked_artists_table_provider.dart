@@ -1,7 +1,7 @@
 import '../../../../entities/supabase/liked_artist_metadata_entity.dart';
 
 abstract class CloudLikedArtistsTableProvider {
-  Future<LikedArtistMetadataEntity?> getById(String id);
+  Future<LikedArtistMetadataEntity?> getByUrn(String urn);
 
   Future<List<LikedArtistMetadataEntity>> getByUserId(String userId);
 
@@ -9,5 +9,5 @@ abstract class CloudLikedArtistsTableProvider {
 
   Future<void> update(LikedArtistMetadataEntity entity);
 
-  Future<void> delete(String id);
+  Future<void> delete(String urn);
 }
