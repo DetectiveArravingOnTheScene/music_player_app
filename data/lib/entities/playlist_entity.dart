@@ -1,3 +1,6 @@
+import 'artist_entity.dart';
+import 'track_entity.dart';
+
 class PlaylistEntity {
   final String urn;
   final String? artworkUrl;
@@ -5,8 +8,8 @@ class PlaylistEntity {
   final int duration;
   final String? genre;
   final int likesCount;
-  final List<String>? trackUrls;
-  final String userUrl;
+  final List<TrackEntity> tracks;
+  final ArtistEntity artist;
   final String title;
 
   PlaylistEntity({
@@ -15,8 +18,8 @@ class PlaylistEntity {
     required this.duration,
     required this.genre,
     required this.likesCount,
-    required this.trackUrls,
-    required this.userUrl,
+    required this.tracks,
+    required this.artist,
     required this.title,
     required this.urn,
   });

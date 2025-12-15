@@ -199,7 +199,7 @@ class SoundCloudProvider extends RemoteMusicProvider {
   }
 
   PlaylistEntity _mapToPlaylistEntity(Map<String, dynamic> data) {
-    // Parse date: prioritize release_date, fallback to created_at
+    // 1. Parse Date
     DateTime? date;
     if (data['release_year'] != null &&
         data['release_month'] != null &&
@@ -209,47 +209,53 @@ class SoundCloudProvider extends RemoteMusicProvider {
         (data['release_month'] as num).toInt(),
         (data['release_day'] as num).toInt(),
       );
-    } else {
+    } else if (data['created_at'] != null) {
       String created = data['created_at'].toString();
       created = created.replaceAll('/', '-').split(' +')[0];
       created = created.replaceAll(' ', 'T');
-      date = DateTime.parse(created);
+      date = DateTime.tryParse(created);
+    }
+    // Fallback if date parsing fails
+    date ??= DateTime.now();
+
+    final Map<String, dynamic> userMap = data['user'] is Map<String, dynamic>
+        ? data['user'] as Map<String, dynamic>
+        : <String, dynamic>{};
+
+    if (userMap.isEmpty && data.containsKey('user_urn')) {
+      userMap['urn'] = data['user_urn'];
+      userMap['username'] = 'Unknown Artist';
     }
 
-    // Extract track URNs from the 'tracks' list
-    List<String> tracks = <String>[];
+    final ArtistEntity artist = _mapToArtistEntity(userMap);
+
+    List<TrackEntity> tracks = <TrackEntity>[];
     if (data['tracks'] is List) {
       tracks = (data['tracks'] as List<dynamic>)
-          // We use whereType to safely filter and cast items to Map<String, dynamic>
           .whereType<Map<String, dynamic>>()
-          .map((dynamic t) => t['urn'] as String? ?? '')
-          .where((String s) => s.isNotEmpty)
+          .map(_mapToTrackEntity)
+          .whereType<TrackEntity>()
           .toList();
     }
 
-    // Extract User URN
-    String userUrl = '';
-    if (data['user'] is Map) {
-      userUrl = data['user']['urn'] as String? ?? '';
-    } else if (data['user_urn'] is String) {
-      userUrl = data['user_urn'] as String;
-    }
-
     return PlaylistEntity(
-      urn: data['urn'],
+      urn: (data['urn'] ?? '').toString(),
       artworkUrl: data['artwork_url'] as String?,
       releaseDate: date,
       duration: (data['duration'] ?? 0) as int,
       genre: data['genre'] as String?,
       likesCount: (data['likes_count'] ?? 0) as int,
-      trackUrls: tracks,
-      userUrl: userUrl,
-      title: data['title'],
+      tracks: tracks,
+      artist: artist,
+      title: (data['title'] ?? 'Untitled').toString(),
     );
   }
 
   TrackEntity _mapToTrackEntity(Map<String, dynamic> data) {
-    final Map<String, dynamic> userObj = data['user'] as Map<String, dynamic>;
+    // Safety check: sometimes 'user' is null in restricted tracks
+    final Map<String, dynamic> userObj = data['user'] is Map<String, dynamic>
+        ? data['user'] as Map<String, dynamic>
+        : <String, dynamic>{};
 
     final ArtistEntity artist = _mapToArtistEntity(userObj);
 
@@ -272,10 +278,8 @@ class SoundCloudProvider extends RemoteMusicProvider {
 
     if (responseData is Map<String, dynamic> &&
         responseData.containsKey('collection')) {
-      // Standard paginated response: { "collection": [...], "next_href": ... }
       listData = responseData['collection'] as List<dynamic>;
     } else if (responseData is List) {
-      // Deprecated array response
       listData = responseData;
     }
 
