@@ -7,9 +7,7 @@ import '../entities/supabase/liked_song_metadata_entity.dart';
 import '../entities/track_entity.dart';
 import '../mappers/track_mapper.dart';
 import '../providers/remote/cloud_database_tables_providers/liked_songs_table/cloud_liked_songs_table_provider.dart';
-import '../providers/remote/cloud_database_tables_providers/liked_songs_table/supabase_liked_songs_table_provider.dart';
 import '../providers/remote/remote_music_provider/remote_music_provider.dart';
-import '../providers/remote/remote_music_provider/sound_cloud_provider.dart';
 import '../requests/search_tracks_request.dart';
 
 class TrackRepositoryImpl extends TrackRepository {
@@ -17,8 +15,8 @@ class TrackRepositoryImpl extends TrackRepository {
   final CloudLikedSongsTableProvider _likedSongsTableProvider;
 
   TrackRepositoryImpl({
-    required SoundCloudProvider remoteProvider,
-    required SupabaseLikedSongsTableProvider localProvider,
+    required RemoteMusicProvider remoteProvider,
+    required CloudLikedSongsTableProvider localProvider,
   }) : _remoteMusicProvider = remoteProvider,
        _likedSongsTableProvider = localProvider;
 

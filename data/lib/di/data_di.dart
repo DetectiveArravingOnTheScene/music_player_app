@@ -55,9 +55,9 @@ class DataDependencyInjection {
   void _initProviders() {
     serviceLocator.registerSingleton<ApiProvider>(ApiProvider());
 
-    serviceLocator.registerSingleton<RemoteMusicProvider>(
-      SoundCloudProvider(serviceLocator.get<ApiProvider>()),
-    );
+    serviceLocator.registerSingletonAsync<RemoteMusicProvider>(() async {
+      return SoundCloudProvider(serviceLocator.get<ApiProvider>());
+    });
 
     serviceLocator.registerSingletonAsync<AuthProvider>(() async {
       return SupabaseAuthProvider(
@@ -125,6 +125,13 @@ class DataDependencyInjection {
     serviceLocator.registerSingletonWithDependencies<AuthRepository>(() {
       return AuthRepositoryImpl(serviceLocator.get<AuthProvider>());
     }, dependsOn: <Type>[AuthProvider]);
+
+    serviceLocator.registerSingletonWithDependencies<TrackRepository>(() {
+      return TrackRepositoryImpl(
+        remoteProvider: serviceLocator.get<RemoteMusicProvider>(),
+        localProvider: serviceLocator.get<CloudLikedSongsTableProvider>(),
+      );
+    }, dependsOn: <Type>[RemoteMusicProvider, CloudLikedSongsTableProvider]);
   }
 
   void _initServices() {
