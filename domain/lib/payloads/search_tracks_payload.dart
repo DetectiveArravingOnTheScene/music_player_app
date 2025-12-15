@@ -1,4 +1,4 @@
-class SearchTracksRequest {
+class SearchTracksPayload {
   final String query;
   final List<String>? ids;
   final List<String>? urns;
@@ -10,7 +10,7 @@ class SearchTracksRequest {
   final List<String>? access;
   final int? limit;
 
-  SearchTracksRequest({
+  SearchTracksPayload({
     required this.query,
     this.ids,
     this.urns,
@@ -24,18 +24,18 @@ class SearchTracksRequest {
   });
 }
 
-class SearchPlaylistsRequest {
+class SearchPlaylistsPayload {
   final String query;
   final List<String>? access;
   final int? limit;
 
-  SearchPlaylistsRequest({required this.query, this.access, this.limit});
+  SearchPlaylistsPayload({required this.query, this.access, this.limit});
 }
 
-class SearchUsersRequest {
+class SearchUsersPayload {
   final String query;
   final List<String>? access;
   final int? limit;
 
-  SearchUsersRequest({required this.query, this.access, this.limit});
+  SearchUsersPayload({required this.query, this.access, this.limit});
 }

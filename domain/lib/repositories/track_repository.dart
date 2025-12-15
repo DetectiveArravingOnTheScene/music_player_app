@@ -1,13 +1,7 @@
 import '../domain.dart';
 
 abstract class TrackRepository {
-  Future<List<TrackModel>> searchTracks(
-    String query, {
-    int? limit,
-    (int, int)? bpm,
-    (int, int)? duration,
-    List<String>? genres,
-  });
+  Future<List<TrackModel>> searchTracks(SearchTracksPayload request);
 
   Future<TrackModel> getTrack(String trackUrl);
 

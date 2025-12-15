@@ -1,5 +1,6 @@
 import 'package:core/di/app_di.dart';
 import 'package:domain/models/music_models/track_model.dart';
+import 'package:domain/payloads/search_tracks_payload.dart';
 import 'package:domain/repositories/track_repository.dart';
 import 'package:domain/services/auth_service.dart';
 
@@ -8,7 +9,6 @@ import '../entities/track_entity.dart';
 import '../mappers/track_mapper.dart';
 import '../providers/remote/cloud_database_tables_providers/liked_songs_table/cloud_liked_songs_table_provider.dart';
 import '../providers/remote/remote_music_provider/remote_music_provider.dart';
-import '../requests/search_tracks_request.dart';
 
 class TrackRepositoryImpl extends TrackRepository {
   final RemoteMusicProvider _remoteMusicProvider;
@@ -46,27 +46,10 @@ class TrackRepositoryImpl extends TrackRepository {
   }
 
   @override
-  Future<List<TrackModel>> searchTracks(
-    String query, {
-    int? limit,
-    (int, int)? bpm,
-    (int, int)? duration,
-    List<String>? genres,
-  }) async {
-    // 1. Construct Request
-    final SearchTracksRequest request = SearchTracksRequest(
-      query: query,
-      limit: limit,
-      bpm: bpm,
-      duration: duration,
-      genres: genres,
-    );
-
-    // 2. Fetch Remote
+  Future<List<TrackModel>> searchTracks(SearchTracksPayload payload) async {
     final List<TrackEntity> trackEntities = await _remoteMusicProvider
-        .searchTracks(request);
+        .searchTracks(payload);
 
-    // 3. Map with Likes
     return _mapCollectionWithLikes(trackEntities);
   }
 

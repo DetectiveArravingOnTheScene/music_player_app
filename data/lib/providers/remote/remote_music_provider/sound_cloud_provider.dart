@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:domain/domain.dart';
 
 import '../../../entities/artist_entity.dart';
 import '../../../entities/playlist_entity.dart';
 import '../../../entities/track_entity.dart';
-import '../../../requests/search_tracks_request.dart';
 import '../../api_provider.dart';
 import 'remote_music_provider.dart';
 
@@ -119,7 +119,7 @@ class SoundCloudProvider extends RemoteMusicProvider {
   }
 
   @override
-  Future<List<ArtistEntity>> searchArtists(SearchUsersRequest query) async {
+  Future<List<ArtistEntity>> searchArtists(SearchUsersPayload query) async {
     final dynamic response = await _api.get(
       url: '/users',
       queryParameters: <String, dynamic>{
@@ -132,7 +132,7 @@ class SoundCloudProvider extends RemoteMusicProvider {
 
   @override
   Future<List<PlaylistEntity>> searchPlaylists(
-    SearchPlaylistsRequest query,
+    SearchPlaylistsPayload query,
   ) async {
     final Response<dynamic> response = await _api.get(
       url: '/playlists',
@@ -146,7 +146,7 @@ class SoundCloudProvider extends RemoteMusicProvider {
   }
 
   @override
-  Future<List<TrackEntity>> searchTracks(SearchTracksRequest query) async {
+  Future<List<TrackEntity>> searchTracks(SearchTracksPayload query) async {
     final Map<String, dynamic> params = <String, dynamic>{'q': query.query};
 
     if (query.limit != null) params['limit'] = query.limit;
@@ -167,7 +167,10 @@ class SoundCloudProvider extends RemoteMusicProvider {
     }
 
     if (query.createdAt != null) {
-      String fmt(DateTime dt) => dt.toIso8601String();
+      String fmt(DateTime dt) {
+        return dt.toIso8601String().replaceAll('T', ' ').split('.')[0];
+      }
+
       params['created_at[from]'] = fmt(query.createdAt!.$1);
       params['created_at[to]'] = fmt(query.createdAt!.$2);
     }
@@ -176,6 +179,7 @@ class SoundCloudProvider extends RemoteMusicProvider {
       url: '/tracks',
       queryParameters: params,
     );
+
     return _mapCollection(response.data, _mapToTrackEntity);
   }
 
@@ -267,6 +271,8 @@ class SoundCloudProvider extends RemoteMusicProvider {
       genre: data['genre'] as String?,
       streamUrl: data['stream_url'] as String?,
       artist: artist,
+      playbackCount: (data['playback_count'] ?? 0) as int,
+      likesCount: (data['favoritings_count'] ?? 0) as int,
     );
   }
 

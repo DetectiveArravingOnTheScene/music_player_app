@@ -7,6 +7,8 @@ class TrackEntity {
   final int duration;
   final String? genre;
   final String? streamUrl;
+  final int playbackCount;
+  final int likesCount;
   final ArtistEntity artist;
 
   TrackEntity({
@@ -17,5 +19,7 @@ class TrackEntity {
     required this.streamUrl,
     required this.urn,
     required this.artist,
+    required this.playbackCount,
+    required this.likesCount,
   });
 }

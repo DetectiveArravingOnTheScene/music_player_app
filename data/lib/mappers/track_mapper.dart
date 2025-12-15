@@ -29,6 +29,8 @@ class TrackMapper {
       duration: entity.duration,
       genre: entity.genre,
       authors: <ArtistModel>[artistModel],
+      likesCount: entity.likesCount,
+      playbackCount: entity.playbackCount,
       album: albumModel,
       path: TrackPath(
         provider: TrackProvider.remote,

@@ -1,14 +1,15 @@
+import 'package:domain/domain.dart';
+
 import '../../../data.dart';
-import '../../../requests/search_tracks_request.dart';
 
 abstract class RemoteMusicProvider {
   Future<void> authenticate(String clientId, String clientSecret);
 
-  Future<List<TrackEntity>> searchTracks(SearchTracksRequest query);
+  Future<List<TrackEntity>> searchTracks(SearchTracksPayload query);
 
-  Future<List<PlaylistEntity>> searchPlaylists(SearchPlaylistsRequest query);
+  Future<List<PlaylistEntity>> searchPlaylists(SearchPlaylistsPayload query);
 
-  Future<List<ArtistEntity>> searchArtists(SearchUsersRequest query);
+  Future<List<ArtistEntity>> searchArtists(SearchUsersPayload query);
 
   Future<TrackEntity> getTrack(String trackUrl);
 

@@ -4,6 +4,8 @@ class TrackModel {
   final String urn;
   final String title;
   final String? artworkUrl;
+  final int playbackCount;
+  final int likesCount;
   final int duration;
   final String? genre;
   final List<ArtistModel> authors;
@@ -26,5 +28,7 @@ class TrackModel {
     this.isLiked = false,
     this.userListenCount = 0,
     this.likedAt,
+    required this.playbackCount,
+    required this.likesCount,
   });
 }
