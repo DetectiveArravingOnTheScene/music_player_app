@@ -14,7 +14,7 @@ abstract class RemoteMusicProvider {
   );
 
   Future<CollectionEntity<ArtistEntity>> searchArtists(
-    SearchUsersPayload query,
+    SearchArtistsPayload query,
   );
 
   Future<TrackEntity> getTrack(String trackUrn);
