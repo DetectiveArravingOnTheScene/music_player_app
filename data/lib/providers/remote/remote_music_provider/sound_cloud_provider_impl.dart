@@ -157,7 +157,7 @@ class SoundCloudProviderImpl extends RemoteMusicProvider {
 
   @override
   Future<CollectionEntity<ArtistEntity>> searchArtists(
-    SearchUsersPayload query,
+    SearchArtistsPayload query,
   ) async {
     final Response<dynamic> response = await _api.get(
       url: SoundCloudStrings.usersEndpoint,
