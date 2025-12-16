@@ -1,15 +1,16 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../entities/supabase/liked_track_metadata_entity.dart';
-import 'cloud_liked_songs_table_provider.dart';
+import 'cloud_liked_tracks_table_provider.dart';
 
-class SupabaseLikedSongsTableProvider implements CloudLikedSongsTableProvider {
+class SupabaseLikedTracksTableProvider
+    implements CloudLikedTracksTableProvider {
   final Supabase _db;
 
-  SupabaseLikedSongsTableProvider({required Supabase supabase})
+  SupabaseLikedTracksTableProvider({required Supabase supabase})
     : _db = supabase;
 
-  static const String _table = 'liked_songs';
+  static const String _table = 'liked_tracks';
 
   @override
   Future<LikedTrackMetadataEntity?> getByUrn(String urn) async {

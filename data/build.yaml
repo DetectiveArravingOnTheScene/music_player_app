@@ -1,0 +1,16 @@
+targets:
+  $default:
+    builders:
+      # Redirect .freezed.dart files
+      freezed:
+        options:
+          build_extensions:
+            '^lib/entities/soundcloud/{{}}.dart': 'lib/entities/soundcloud/gen/{{}}.freezed.dart'
+            '^lib/entities/supabase/{{}}.dart': 'lib/entities/supabase/gen/{{}}.freezed.dart'
+      
+      # Redirect .g.dart files (used by json_serializable)
+      source_gen:combining_builder:
+        options:
+          build_extensions:
+            '^lib/entities/soundcloud/{{}}.dart': 'lib/entities/soundcloud/gen/{{}}.g.dart'
+            '^lib/entities/supabase/{{}}.dart': 'lib/entities/supabase/gen/{{}}.g.dart'

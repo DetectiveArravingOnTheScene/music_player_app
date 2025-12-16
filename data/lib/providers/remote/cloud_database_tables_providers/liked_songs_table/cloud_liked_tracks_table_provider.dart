@@ -1,6 +1,6 @@
 import '../../../../entities/supabase/liked_track_metadata_entity.dart';
 
-abstract class CloudLikedSongsTableProvider {
+abstract class CloudLikedTracksTableProvider {
   Future<LikedTrackMetadataEntity?> getByUrn(String urn);
 
   Future<List<LikedTrackMetadataEntity>> getByUserId(String userId);
