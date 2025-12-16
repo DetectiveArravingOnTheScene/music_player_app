@@ -1,7 +1,7 @@
 import 'package:core/core.dart';
 
-part 'gen/liked_track_metadata_entity.freezed.dart';
-part 'gen/liked_track_metadata_entity.g.dart';
+part '../gen/liked_track_metadata_entity.freezed.dart';
+part '../gen/liked_track_metadata_entity.g.dart';
 
 @Freezed()
 abstract class LikedTrackMetadataEntity with _$LikedTrackMetadataEntity {

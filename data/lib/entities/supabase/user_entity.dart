@@ -1,8 +1,8 @@
 import 'package:core/core.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-part 'gen/user_entity.freezed.dart';
-part 'gen/user_entity.g.dart';
+part '../gen/user_entity.freezed.dart';
+part '../gen/user_entity.g.dart';
 
 @Freezed()
 abstract class UserEntity with _$UserEntity {
