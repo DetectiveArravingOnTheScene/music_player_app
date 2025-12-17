@@ -10,16 +10,14 @@ class ArtistMapper {
   }) {
     return ArtistModel(
       urn: entity.urn,
-      name: entity.fullName ?? entity.username,
       username: entity.username,
-      avatarUrl: entity.avatarUrl,
-      location: '',
-      description: entity.description,
-      globalLikesCount: entity.followers,
-
+      followers: entity.followers,
       isLiked: likedData != null,
       userListenCount: likedData?.listenCount ?? 0,
-      likedAt: likedData?.createdAt,
+      city: entity.city,
+      country: entity.country,
+      description: entity.description,
+      avatarUrl: entity.avatarUrl,
     );
   }
 

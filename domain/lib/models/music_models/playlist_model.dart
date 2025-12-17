@@ -1,32 +1,41 @@
 import '../models.dart';
+import 'collection_model.dart';
+import 'playlist_type.dart';
 
 class PlaylistModel {
   final String urn;
   final String title;
-  final ArtistModel creator;
-  final List<TrackModel> songs;
-  final String? artworkUrl;
-  final String? genre;
   final int duration;
-  final DateTime releaseDate;
+  final DateTime createdAt;
   final int globalLikesCount;
-
+  final int totalTrackCount;
+  final CollectionModel<TrackModel> tracks;
+  final ArtistModel artist;
   final bool isLiked;
   final int userListenCount;
-  final DateTime? likedAt;
+  final PlaylistType type;
+  final String? artworkUrl;
+  final String? genre;
+  final int? releaseDay;
+  final int? releaseMonth;
+  final int? releaseYear;
 
-  const PlaylistModel({
+  PlaylistModel({
     required this.urn,
     required this.title,
-    required this.creator,
-    required this.songs,
-    required this.artworkUrl,
-    required this.genre,
     required this.duration,
-    required this.releaseDate,
+    required this.createdAt,
     required this.globalLikesCount,
-    this.isLiked = false,
-    this.userListenCount = 0,
-    this.likedAt,
+    required this.totalTrackCount,
+    required this.tracks,
+    required this.artist,
+    required this.isLiked,
+    required this.userListenCount,
+    required this.type,
+    this.artworkUrl,
+    this.genre,
+    this.releaseDay,
+    this.releaseMonth,
+    this.releaseYear,
   });
 }

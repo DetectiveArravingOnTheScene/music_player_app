@@ -1,11 +1,13 @@
 import '../domain.dart';
+import '../models/music_models/collection_model.dart';
+import '../models/music_models/stream_type.dart';
 
 abstract class TrackRepository {
-  Future<List<TrackModel>> searchTracks(SearchTracksPayload request);
+  Future<CollectionModel<TrackModel>> searchTracks(SearchTracksPayload request);
 
   Future<TrackModel> getTrack(String trackUrl);
 
-  Future<String> getTrackStream(String streamUrl);
+  Future<Map<StreamType, String>> getTrackStream(String streamUrl);
 
-  Future<List<TrackModel>> getRelatedTracks(String id);
+  Future<CollectionModel<TrackModel>> getRelatedTracks(String id);
 }

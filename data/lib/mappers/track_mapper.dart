@@ -1,4 +1,5 @@
 import 'package:domain/domain.dart';
+import 'package:domain/models/music_models/track_type.dart';
 
 import '../entities/soundcloud/track_entity.dart';
 import '../entities/supabase/liked_track_metadata_entity.dart';
@@ -9,34 +10,18 @@ class TrackMapper {
     TrackEntity entity, {
     LikedTrackMetadataEntity? likedData,
   }) {
-    final ArtistModel artistModel = ArtistMapper.toModel(entity: entity.artist);
-
-    final AlbumModel albumModel = AlbumModel(
-      urn: entity.urn,
-      title: entity.title,
-      artist: artistModel,
-      artworkUrl: entity.artworkUrl,
-      trackCount: 1,
-      duration: entity.duration,
-      isLiked: likedData != null,
-      genre: entity.genre,
-    );
-
     return TrackModel(
       urn: entity.urn,
       title: entity.title,
-      artworkUrl: entity.artworkUrl,
       duration: entity.duration,
-      genre: entity.genre,
-      authors: <ArtistModel>[artistModel],
-      likesCount: entity.likesCount,
       playbackCount: entity.playbackCount,
-      album: albumModel,
-      path: TrackPath(provider: TrackProvider.remote, path: entity.streamUrl),
-
+      likesCount: entity.likesCount,
+      artist: ArtistMapper.toModel(entity: entity.artist),
       isLiked: likedData != null,
       userListenCount: likedData?.listenCount ?? 0,
-      likedAt: likedData?.createdAt,
+      type: TrackType.stream,
+      artworkUrl: entity.artworkUrl,
+      genre: entity.genre,
     );
   }
 
