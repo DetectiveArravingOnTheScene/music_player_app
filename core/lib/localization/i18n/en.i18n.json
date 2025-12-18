@@ -31,5 +31,9 @@
         "haveAccount": "Already have an account?",
         "haveNoAccount": "Don't have an account?",
         "google": "Google"
+    },
+    "track": {
+        "failedToFetch": "Failed to fetch track",
+        "failedToStream": "Failed to stream track"
     }
 }

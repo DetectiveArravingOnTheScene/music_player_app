@@ -1,0 +1,1 @@
+enum TrackType { local, stream }
