@@ -31,5 +31,9 @@
         "haveAccount": "Уже есть аккаунт?",
         "haveNoAccount": "Еще нет аккаунта?",
         "google": "Google"
+    },
+    "track": {
+        "failedToFetch": "Не удалось загрузить трек",
+        "failedToStream": "Не удалось проиграть трек"
     }
 }

@@ -1,9 +1,9 @@
 import 'package:core/di/app_di.dart';
+import 'package:core/localization/gen/strings.g.dart';
+import 'package:domain/domain.dart';
+import 'package:domain/errors/api_app_exception.dart';
 import 'package:domain/models/music_models/collection_model.dart';
 import 'package:domain/models/music_models/stream_type.dart';
-import 'package:domain/models/music_models/track_model.dart';
-import 'package:domain/payloads/search_tracks_payload.dart';
-import 'package:domain/repositories/track_repository.dart';
 import 'package:domain/services/auth_service.dart';
 
 import '../entities/soundcloud/collection_entity.dart';
@@ -30,47 +30,65 @@ class TrackRepositoryImpl extends TrackRepository {
 
   @override
   Future<TrackModel> getTrack(String trackUrl) async {
-    final TrackEntity trackEntity = await _remoteMusicProvider.getTrack(
-      trackUrl,
-    );
+    try {
+      final TrackEntity trackEntity = await _remoteMusicProvider.getTrack(
+        trackUrl,
+      );
 
-    LikedTrackMetadataEntity? likedMetadata;
-    if (_currentUserId != null) {
-      likedMetadata = await _likedSongsTableProvider.getByUrn(trackEntity.urn);
+      LikedTrackMetadataEntity? likedMetadata;
+      if (_currentUserId != null) {
+        likedMetadata = await _likedSongsTableProvider.getByUrn(
+          trackEntity.urn,
+        );
+      }
+
+      return TrackMapper.toModel(trackEntity, likedData: likedMetadata);
+    } catch (e) {
+      throw ApiAppException(t.track.failedToFetch);
     }
-
-    return TrackMapper.toModel(trackEntity, likedData: likedMetadata);
   }
 
   @override
   Future<CollectionModel<TrackModel>> getRelatedTracks(String id) async {
-    final CollectionEntity<TrackEntity> trackEntities =
-        await _remoteMusicProvider.getRelatedTracks(id);
+    try {
+      final CollectionEntity<TrackEntity> trackEntities =
+          await _remoteMusicProvider.getRelatedTracks(id);
 
-    return CollectionModel<TrackModel>(
-      items: await _mapCollectionWithLikes(trackEntities.collection),
-      nextHref: trackEntities.nextHref,
-    );
+      return CollectionModel<TrackModel>(
+        items: await _mapCollectionWithLikes(trackEntities.collection),
+        nextHref: trackEntities.nextHref,
+      );
+    } catch (e) {
+      throw ApiAppException(t.track.failedToFetch);
+    }
   }
 
   @override
   Future<CollectionModel<TrackModel>> searchTracks(
     SearchTracksPayload payload,
   ) async {
-    final CollectionEntity<TrackEntity> trackEntities =
-        await _remoteMusicProvider.searchTracks(payload);
+    try {
+      final CollectionEntity<TrackEntity> trackEntities =
+          await _remoteMusicProvider.searchTracks(payload);
 
-    return CollectionModel<TrackModel>(
-      items: await _mapCollectionWithLikes(trackEntities.collection),
-      nextHref: trackEntities.nextHref,
-    );
+      return CollectionModel<TrackModel>(
+        items: await _mapCollectionWithLikes(trackEntities.collection),
+        nextHref: trackEntities.nextHref,
+      );
+    } catch (e) {
+      throw ApiAppException(t.track.failedToFetch);
+    }
   }
 
   @override
   Future<Map<StreamType, String>> getTrackStream(String streamUrl) async {
-    return StreamTypeMapper.mapToModel(
-      await _remoteMusicProvider.getTrackStreams(streamUrl),
-    );
+    try {
+      return StreamTypeMapper.mapToModel(
+        await _remoteMusicProvider.getTrackStreams(streamUrl),
+      );
+    } catch (e) {
+      throw ApiAppException(t.track.failedToStream);
+    }
   }
 
   Future<List<TrackModel>> _mapCollectionWithLikes(
