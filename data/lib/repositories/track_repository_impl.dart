@@ -5,7 +5,7 @@ import 'package:domain/repositories/track_repository.dart';
 import 'package:domain/services/auth_service.dart';
 
 import '../entities/soundcloud/track_entity.dart';
-import '../entities/supabase/liked_song_metadata_entity.dart';
+import '../entities/supabase/liked_track_metadata_entity.dart';
 import '../mappers/track_mapper.dart';
 import '../providers/remote/cloud_database_tables_providers/liked_songs_table/cloud_liked_songs_table_provider.dart';
 import '../providers/remote/remote_music_provider/remote_music_provider.dart';
@@ -30,7 +30,7 @@ class TrackRepositoryImpl extends TrackRepository {
       trackUrl,
     );
 
-    LikedSongMetadataEntity? likedMetadata;
+    LikedTrackMetadataEntity? likedMetadata;
     if (_currentUserId != null) {
       likedMetadata = await _likedSongsTableProvider.getByUrn(trackEntity.urn);
     }
@@ -67,13 +67,13 @@ class TrackRepositoryImpl extends TrackRepository {
     if (tracks.isEmpty) return <TrackModel>[];
 
     final String? userId = _currentUserId;
-    final Map<String, LikedSongMetadataEntity> likedMap =
-        <String, LikedSongMetadataEntity>{};
+    final Map<String, LikedTrackMetadataEntity> likedMap =
+        <String, LikedTrackMetadataEntity>{};
 
     if (userId != null) {
-      final List<LikedSongMetadataEntity> allLiked =
+      final List<LikedTrackMetadataEntity> allLiked =
           await _likedSongsTableProvider.getByUserId(userId);
-      for (final LikedSongMetadataEntity item in allLiked) {
+      for (final LikedTrackMetadataEntity item in allLiked) {
         likedMap[item.urn] = item;
       }
     }
