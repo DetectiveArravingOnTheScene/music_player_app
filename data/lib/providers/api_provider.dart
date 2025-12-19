@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import 'api_provider_strings.dart';
+import 'api_provider_consts.dart';
 
 class ApiProvider {
   final Dio _dio = Dio();

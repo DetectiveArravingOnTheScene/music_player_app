@@ -10,7 +10,7 @@ import '../../../entities/soundcloud/stream_enum.dart';
 import '../../../entities/soundcloud/track_entity.dart';
 import '../../../requests/auth_request.dart';
 import '../../api_provider.dart';
-import '../../api_provider_strings.dart';
+import '../../api_provider_consts.dart';
 import 'remote_music_provider.dart';
 import 'sound_cloud_strings.dart';
 
