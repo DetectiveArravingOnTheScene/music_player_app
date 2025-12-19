@@ -9,11 +9,12 @@ part 'gen/playlist_entity.g.dart';
 @freezed
 abstract class PlaylistEntity with _$PlaylistEntity {
   const factory PlaylistEntity({
-    @JsonKey(name: 'created_at', fromJson: _parseDate) required String urn,
+    @JsonKey(name: 'created_at', fromJson: _parseDate)
+    required DateTime releaseDate,
     @JsonKey(name: 'likes_count') required int likesCount,
     @JsonKey(name: 'track_count') required int totalTrackCount,
     @JsonKey(name: 'user') required ArtistEntity artist,
-    required DateTime releaseDate,
+    required String urn,
     required int duration,
     required List<TrackEntity> tracks,
     required String title,
