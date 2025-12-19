@@ -1,5 +1,6 @@
+#Ignore generated files
+*.g.dart
 *.freezed.dart
-*g.dart
 # Miscellaneous
 *.class
 *.log

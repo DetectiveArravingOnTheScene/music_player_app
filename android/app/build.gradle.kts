@@ -32,6 +32,16 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
+    flavorDimensions "environment"
+    productFlavors {
+        dev {
+            dimension "environment"
+            applicationIdSuffix ".dev"
+        }
+        prod {
+            dimension "environment"
+        }
+    }
 
     buildTypes {
         release {
