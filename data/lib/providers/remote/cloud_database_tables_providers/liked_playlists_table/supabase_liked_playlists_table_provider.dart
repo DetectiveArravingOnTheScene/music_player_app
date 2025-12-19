@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../entities/supabase/liked_playlist_metadata_entity.dart';
+import '../supabase_consts.dart';
 import 'cloud_liked_playlists_table_provider.dart';
 
 class SupabaseLikedPlaylistsTableProvider
@@ -17,7 +18,7 @@ class SupabaseLikedPlaylistsTableProvider
     final List<Map<String, dynamic>> response = await _db.client
         .from(_table)
         .select()
-        .eq('urn', urn)
+        .eq(SupabaseConsts.urnField, urn)
         .limit(1);
 
     if (response.isEmpty) return null;
@@ -29,7 +30,7 @@ class SupabaseLikedPlaylistsTableProvider
     final List<Map<String, dynamic>> response = await _db.client
         .from(_table)
         .select()
-        .eq('userId', userId);
+        .eq(SupabaseConsts.userIdField, userId);
 
     return response
         .map<LikedPlaylistMetadataEntity>(LikedPlaylistMetadataEntity.fromJson)
@@ -50,11 +51,14 @@ class SupabaseLikedPlaylistsTableProvider
 
   @override
   Future<void> update(LikedPlaylistMetadataEntity entity) async {
-    await _db.client.from(_table).update(entity.toJson()).eq('urn', entity.urn);
+    await _db.client
+        .from(_table)
+        .update(entity.toJson())
+        .eq(SupabaseConsts.urnField, entity.urn);
   }
 
   @override
   Future<void> delete(String urn) async {
-    await _db.client.from(_table).delete().eq('urn', urn);
+    await _db.client.from(_table).delete().eq(SupabaseConsts.urnField, urn);
   }
 }

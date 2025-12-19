@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../entities/supabase/playlist_track_metadata_entity.dart';
+import '../supabase_consts.dart';
 import 'cloud_playlist_track_table_provider.dart';
 
 class SupabasePlaylistTracksTableProvider
@@ -19,7 +20,7 @@ class SupabasePlaylistTracksTableProvider
     final List<Map<String, dynamic>> response = await _db.client
         .from(_table)
         .select()
-        .eq('playlist_id', playlistId);
+        .eq(SupabaseConsts.playlistIdField, playlistId);
 
     return response
         .map<PlaylistTrackMetadataEntity>(PlaylistTrackMetadataEntity.fromJson)
@@ -43,8 +44,8 @@ class SupabasePlaylistTracksTableProvider
     await _db.client
         .from(_table)
         .update(entity.toJson())
-        .eq('playlist_id', entity.playlistId)
-        .eq('urn', entity.urn);
+        .eq(SupabaseConsts.playlistIdField, entity.playlistId)
+        .eq(SupabaseConsts.urnField, entity.urn);
   }
 
   @override
@@ -52,7 +53,7 @@ class SupabasePlaylistTracksTableProvider
     await _db.client
         .from(_table)
         .delete()
-        .eq('playlist_id', playlistId)
-        .eq('urn', urn);
+        .eq(SupabaseConsts.playlistIdField, playlistId)
+        .eq(SupabaseConsts.urnField, urn);
   }
 }

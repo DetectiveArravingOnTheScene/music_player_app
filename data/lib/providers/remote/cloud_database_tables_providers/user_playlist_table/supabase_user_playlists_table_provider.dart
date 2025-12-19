@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../entities/supabase/user_playlist_metadata_entity.dart';
+import '../supabase_consts.dart';
 import 'cloud_user_playlists_table_provider.dart';
 
 class SupabaseUserPlaylistsTableProvider
@@ -17,7 +18,7 @@ class SupabaseUserPlaylistsTableProvider
     final List<Map<String, dynamic>> response = await _db.client
         .from(_table)
         .select()
-        .eq('id', id)
+        .eq(SupabaseConsts.idField, id)
         .limit(1);
 
     if (response.isEmpty) return null;
@@ -29,7 +30,7 @@ class SupabaseUserPlaylistsTableProvider
     final List<Map<String, dynamic>> response = await _db.client
         .from(_table)
         .select()
-        .eq('user_id', userId);
+        .eq(SupabaseConsts.userIdField, userId);
 
     return response
         .map<UserPlaylistMetadataEntity>(UserPlaylistMetadataEntity.fromJson)
@@ -50,11 +51,14 @@ class SupabaseUserPlaylistsTableProvider
 
   @override
   Future<void> update(UserPlaylistMetadataEntity entity) async {
-    await _db.client.from(_table).update(entity.toJson()).eq('id', entity.id);
+    await _db.client
+        .from(_table)
+        .update(entity.toJson())
+        .eq(SupabaseConsts.idField, entity.id);
   }
 
   @override
   Future<void> delete(String id) async {
-    await _db.client.from(_table).delete().eq('id', id);
+    await _db.client.from(_table).delete().eq(SupabaseConsts.idField, id);
   }
 }
