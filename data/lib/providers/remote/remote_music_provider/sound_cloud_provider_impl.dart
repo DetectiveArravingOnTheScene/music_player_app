@@ -25,11 +25,11 @@ class SoundCloudProviderImpl extends RemoteMusicProvider {
         'Basic ${base64Encode(utf8.encode('$clientId:$clientSecret'))}';
 
     final Response<dynamic> response = await _api.post(
-      url: ApiProviderStrings.apiSecureUrl,
+      url: ApiProviderConsts.apiSecureUrl,
       data: authRequest,
       options: Options(
         headers: <String, String>{
-          ApiProviderStrings.autorizationHeaderKey: basicAuth,
+          ApiProviderConsts.autorizationHeaderKey: basicAuth,
         },
         contentType: Headers.formUrlEncodedContentType,
       ),

@@ -10,10 +10,10 @@ abstract class ArtistEntity with _$ArtistEntity {
     required String username,
     @JsonKey(name: 'followers_count') required int followers,
     @JsonKey(name: 'avatar_url') String? avatarUrl,
+    @JsonKey(name: 'full_name') String? fullName,
     String? city,
     String? country,
     String? description,
-    @JsonKey(name: 'full_name') String? fullName,
   }) = _ArtistEntity;
 
   factory ArtistEntity.fromJson(Map<String, dynamic> json) =>

@@ -1,4 +1,4 @@
-class ApiProviderStrings {
+class ApiProviderConsts {
   static const String acceptHeaderKey = 'access';
   static const String acceptHeaderBody = 'application/json; charset=utf-8';
 

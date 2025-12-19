@@ -3,5 +3,9 @@ class SearchArtistsPayload {
   final List<String>? access;
   final int? limit;
 
-  SearchArtistsPayload({required this.query, this.access, this.limit});
+  SearchArtistsPayload({
+    required this.query,
+    this.access,
+    this.limit,
+  });
 }

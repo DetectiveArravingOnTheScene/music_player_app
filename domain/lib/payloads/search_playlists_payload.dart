@@ -3,5 +3,9 @@ class SearchPlaylistsPayload {
   final List<String>? access;
   final int? limit;
 
-  SearchPlaylistsPayload({required this.query, this.access, this.limit});
+  SearchPlaylistsPayload({
+    required this.query,
+    this.access,
+    this.limit,
+  });
 }

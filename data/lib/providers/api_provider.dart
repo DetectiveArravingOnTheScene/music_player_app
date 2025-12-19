@@ -6,14 +6,14 @@ class ApiProvider {
   final Dio _dio = Dio();
 
   ApiProvider() {
-    _dio.options.baseUrl = ApiProviderStrings.apiBaseUrl;
-    _dio.options.headers[ApiProviderStrings.acceptHeaderKey] =
-        ApiProviderStrings.acceptHeaderBody;
+    _dio.options.baseUrl = ApiProviderConsts.apiBaseUrl;
+    _dio.options.headers[ApiProviderConsts.acceptHeaderKey] =
+        ApiProviderConsts.acceptHeaderBody;
   }
 
   void setAuthToken(String token) {
-    _dio.options.headers[ApiProviderStrings.autorizationHeaderKey] =
-        ApiProviderStrings.autorizationHeaderBody(token);
+    _dio.options.headers[ApiProviderConsts.autorizationHeaderKey] =
+        ApiProviderConsts.autorizationHeaderBody(token);
   }
 
   Future<Response<T>> get<T>({
