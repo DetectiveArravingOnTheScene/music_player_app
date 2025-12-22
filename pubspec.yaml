@@ -81,5 +81,5 @@ melos:
 flutter:
     uses-material-design: true
     assets:
-      - api_keys.env
+      - api_keys_dev.env
       - assets/song.mp3
