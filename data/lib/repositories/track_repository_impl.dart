@@ -2,26 +2,24 @@ import 'package:core/di/app_di.dart';
 import 'package:core/localization/gen/strings.g.dart';
 import 'package:domain/domain.dart';
 import 'package:domain/errors/api_app_exception.dart';
-import 'package:domain/models/music_models/collection_model.dart';
-import 'package:domain/models/music_models/stream_type.dart';
 import 'package:domain/services/auth_service.dart';
 
 import '../entities/soundcloud/collection_entity.dart';
+import '../entities/soundcloud/playlist_entity.dart';
 import '../entities/soundcloud/track_entity.dart';
 import '../entities/supabase/liked_track_metadata_entity.dart';
 import '../mappers/liked_tracks_mapper.dart';
-import '../mappers/stream_type_mapper.dart';
 import '../mappers/track_mapper.dart';
-import '../providers/remote/cloud_database_tables_providers/liked_songs_table/cloud_liked_songs_table_provider.dart';
+import '../providers/remote/cloud_database_tables_providers/liked_tracks_table/cloud_liked_tracks_table_provider.dart';
 import '../providers/remote/remote_music_provider/remote_music_provider.dart';
 
 class TrackRepositoryImpl extends TrackRepository {
   final RemoteMusicProvider _remoteMusicProvider;
-  final CloudLikedSongsTableProvider _likedSongsTableProvider;
+  final CloudLikedTracksTableProvider _likedSongsTableProvider;
 
   TrackRepositoryImpl({
     required RemoteMusicProvider remoteProvider,
-    required CloudLikedSongsTableProvider localProvider,
+    required CloudLikedTracksTableProvider localProvider,
   }) : _remoteMusicProvider = remoteProvider,
        _likedSongsTableProvider = localProvider;
 
@@ -84,9 +82,10 @@ class TrackRepositoryImpl extends TrackRepository {
   @override
   Future<CollectionModel<TrackModel>> getTrendingTracks() async {
     try {
-      PlaylistEntity playlistEntity = await _remoteMusicProvider.getPlaylist(
-        'soundcloud:playlists:1714689261',
-      ); // Hardcoded value for official playlist "top 50 tracks in US";
+      final PlaylistEntity playlistEntity = await _remoteMusicProvider
+          .getPlaylist(
+            'soundcloud:playlists:1714689261',
+          ); // Hardcoded value for official playlist "top 50 tracks in US";
 
       return CollectionModel<TrackModel>(
         items: await _fetchLikes(playlistEntity.tracks),
@@ -97,11 +96,9 @@ class TrackRepositoryImpl extends TrackRepository {
   }
 
   @override
-  Future<Map<StreamType, String>> getTrackStream(String streamUrl) async {
+  Future<Map<StreamTypeEnum, String>> getTrackStream(String streamUrl) async {
     try {
-      return StreamTypeMapper.mapToModel(
-        await _remoteMusicProvider.getTrackStreams(streamUrl),
-      );
+      return _remoteMusicProvider.getTrackStreams(streamUrl);
     } catch (e) {
       throw ApiAppException(t.track.failedToStream);
     }
@@ -118,7 +115,6 @@ class TrackRepositoryImpl extends TrackRepository {
 
       return LikedTracksMapper.mapLikedTracks(tracks, allLiked);
     }
-
-    return tracks;
+    return tracks.map(TrackMapper.toModel).toList();
   }
 }

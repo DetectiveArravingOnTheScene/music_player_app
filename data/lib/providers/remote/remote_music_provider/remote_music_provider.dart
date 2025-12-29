@@ -2,7 +2,6 @@ import 'package:domain/domain.dart';
 
 import '../../../data.dart';
 import '../../../entities/soundcloud/collection_entity.dart';
-import '../../../entities/soundcloud/stream_enum.dart';
 
 abstract class RemoteMusicProvider {
   Future<void> authenticate(String clientId, String clientSecret);
@@ -23,7 +22,7 @@ abstract class RemoteMusicProvider {
 
   Future<CollectionEntity<TrackEntity>> getPlaylistTracks(String playlistUrn);
 
-  Future<Map<StreamType, String>> getTrackStreams(String trackUrn);
+  Future<Map<StreamTypeEnum, String>> getTrackStreams(String trackUrn);
 
   Future<CollectionEntity<TrackEntity>> getRelatedTracks(String trackUrn);
 
