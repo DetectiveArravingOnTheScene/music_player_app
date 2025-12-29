@@ -1,0 +1,1 @@
+enum PlaylistType { playlist, album }

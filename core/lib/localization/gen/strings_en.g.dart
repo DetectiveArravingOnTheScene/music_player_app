@@ -49,6 +49,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 
 	late final TranslationsErrorEn error = TranslationsErrorEn._(_root);
 	late final TranslationsLoginEn login = TranslationsLoginEn._(_root);
+	late final TranslationsTrackEn track = TranslationsTrackEn._(_root);
 }
 
 // Path: error
@@ -107,6 +108,21 @@ class TranslationsLoginEn {
 
 	/// en: 'Google'
 	String get google => 'Google';
+}
+
+// Path: track
+class TranslationsTrackEn {
+	TranslationsTrackEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Failed to fetch track'
+	String get failedToFetch => 'Failed to fetch track';
+
+	/// en: 'Failed to stream track'
+	String get failedToStream => 'Failed to stream track';
 }
 
 // Path: login.emailError
@@ -194,6 +210,8 @@ extension on Translations {
 			'login.haveAccount' => 'Already have an account?',
 			'login.haveNoAccount' => 'Don\'t have an account?',
 			'login.google' => 'Google',
+			'track.failedToFetch' => 'Failed to fetch track',
+			'track.failedToStream' => 'Failed to stream track',
 			_ => null,
 		};
 	}

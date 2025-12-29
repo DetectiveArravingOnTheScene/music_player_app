@@ -1,3 +1,5 @@
+import '../models/music_models/access_type.dart';
+
 class SearchTracksPayload {
   final String query;
   final List<String>? ids;
@@ -7,7 +9,7 @@ class SearchTracksPayload {
   final (int from, int to)? bpm;
   final (int from, int to)? duration;
   final (DateTime from, DateTime to)? createdAt;
-  final List<String>? access;
+  final List<AccessType>? access;
   final int? limit;
 
   SearchTracksPayload({

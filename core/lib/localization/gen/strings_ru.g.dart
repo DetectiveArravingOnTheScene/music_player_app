@@ -41,6 +41,7 @@ class TranslationsRu with BaseTranslations<AppLocale, Translations> implements T
 	@override String get save => 'Сохранить';
 	@override late final _TranslationsErrorRu error = _TranslationsErrorRu._(_root);
 	@override late final _TranslationsLoginRu login = _TranslationsLoginRu._(_root);
+	@override late final _TranslationsTrackRu track = _TranslationsTrackRu._(_root);
 }
 
 // Path: error
@@ -74,6 +75,17 @@ class _TranslationsLoginRu implements TranslationsLoginEn {
 	@override String get haveAccount => 'Уже есть аккаунт?';
 	@override String get haveNoAccount => 'Еще нет аккаунта?';
 	@override String get google => 'Google';
+}
+
+// Path: track
+class _TranslationsTrackRu implements TranslationsTrackEn {
+	_TranslationsTrackRu._(this._root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get failedToFetch => 'Не удалось загрузить трек';
+	@override String get failedToStream => 'Не удалось проиграть трек';
 }
 
 // Path: login.emailError
@@ -143,6 +155,8 @@ extension on TranslationsRu {
 			'login.haveAccount' => 'Уже есть аккаунт?',
 			'login.haveNoAccount' => 'Еще нет аккаунта?',
 			'login.google' => 'Google',
+			'track.failedToFetch' => 'Не удалось загрузить трек',
+			'track.failedToStream' => 'Не удалось проиграть трек',
 			_ => null,
 		};
 	}
