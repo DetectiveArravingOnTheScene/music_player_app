@@ -1,6 +1,7 @@
 import '../../domain.dart';
 import '../../models/music_models/access_type.dart';
 import '../../models/music_models/collection_model.dart';
+import '../../payloads/search_tracks_payload.dart';
 
 class GetTrandingTracksUseCase
     extends FutureUseCaseNoParams<CollectionModel<TrackModel>> {

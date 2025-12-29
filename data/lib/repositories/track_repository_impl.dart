@@ -9,6 +9,7 @@ import 'package:domain/services/auth_service.dart';
 import '../entities/soundcloud/collection_entity.dart';
 import '../entities/soundcloud/track_entity.dart';
 import '../entities/supabase/liked_track_metadata_entity.dart';
+import '../mappers/liked_tracks_mapper.dart';
 import '../mappers/stream_type_mapper.dart';
 import '../mappers/track_mapper.dart';
 import '../providers/remote/cloud_database_tables_providers/liked_songs_table/cloud_liked_songs_table_provider.dart';
@@ -55,7 +56,7 @@ class TrackRepositoryImpl extends TrackRepository {
           await _remoteMusicProvider.getRelatedTracks(id);
 
       return CollectionModel<TrackModel>(
-        items: await _mapCollectionWithLikes(trackEntities.collection),
+        items: await _fetchLikes(trackEntities.collection),
         nextHref: trackEntities.nextHref,
       );
     } catch (e) {
@@ -72,7 +73,7 @@ class TrackRepositoryImpl extends TrackRepository {
           await _remoteMusicProvider.searchTracks(payload);
 
       return CollectionModel<TrackModel>(
-        items: await _mapCollectionWithLikes(trackEntities.collection),
+        items: await _fetchLikes(trackEntities.collection),
         nextHref: trackEntities.nextHref,
       );
     } catch (e) {
@@ -91,25 +92,18 @@ class TrackRepositoryImpl extends TrackRepository {
     }
   }
 
-  Future<List<TrackModel>> _mapCollectionWithLikes(
-    List<TrackEntity> tracks,
-  ) async {
+  Future<List<TrackModel>> _fetchLikes(List<TrackEntity> tracks) async {
     if (tracks.isEmpty) return <TrackModel>[];
 
     final String? userId = _currentUserId;
-    final Map<String, LikedTrackMetadataEntity> likedMap =
-        <String, LikedTrackMetadataEntity>{};
 
     if (userId != null) {
       final List<LikedTrackMetadataEntity> allLiked =
           await _likedSongsTableProvider.getByUserId(userId);
-      for (final LikedTrackMetadataEntity item in allLiked) {
-        likedMap[item.urn] = item;
-      }
+
+      return LikedTracksMapper.mapLikedTracks(tracks, allLiked);
     }
 
-    return tracks.map((TrackEntity track) {
-      return TrackMapper.toModel(track, likedData: likedMap[track.urn]);
-    }).toList();
+    return tracks;
   }
 }
