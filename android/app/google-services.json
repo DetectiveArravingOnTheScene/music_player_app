@@ -1,46 +1,82 @@
 {
-    "project_info": {
-        "project_number": "184659531066",
-        "project_id": "music-player-d5024",
-        "storage_bucket": "music-player-d5024.firebasestorage.app"
-    },
-    "client": [
-        {
-            "client_info": {
-                "mobilesdk_app_id": "1:184659531066:android:522515f4e14510945aac03",
-                "android_client_info": {
-                    "package_name": "com.example.music_player_app"
-                }
-            },
-            "oauth_client": [
-                {
-                    "client_id": "184659531066-l2s5p9cet414l3i2k9di1epq6bg472pi.apps.googleusercontent.com",
-                    "client_type": 3
-                }
-            ],
-            "api_key": [
-                {
-                    "current_key": "AIzaSyDE9rnGMKNk-Ql7GJsn6OLvcXZMIGyZz7o"
-                }
-            ],
-            "services": {
-                "appinvite_service": {
-                    "other_platform_oauth_client": [
-                        {
-                            "client_id": "184659531066-l2s5p9cet414l3i2k9di1epq6bg472pi.apps.googleusercontent.com",
-                            "client_type": 3
-                        },
-                        {
-                            "client_id": "184659531066-2ok5v5qbjolf77v4jclobp9hmv4id2s0.apps.googleusercontent.com",
-                            "client_type": 2,
-                            "ios_info": {
-                                "bundle_id": "com.example.musicPlayerApp"
-                            }
-                        }
-                    ]
-                }
-            }
+  "project_info": {
+    "project_number": "184659531066",
+    "project_id": "music-player-d5024",
+    "storage_bucket": "music-player-d5024.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184659531066:android:522515f4e14510945aac03",
+        "android_client_info": {
+          "package_name": "com.example.music_player_app"
         }
-    ],
-    "configuration_version": "1"
+      },
+      "oauth_client": [
+        {
+          "client_id": "184659531066-l2s5p9cet414l3i2k9di1epq6bg472pi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDE9rnGMKNk-Ql7GJsn6OLvcXZMIGyZz7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "184659531066-l2s5p9cet414l3i2k9di1epq6bg472pi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "184659531066-2ok5v5qbjolf77v4jclobp9hmv4id2s0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.musicPlayerApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184659531066:android:8d6249fc1b8115275aac03",
+        "android_client_info": {
+          "package_name": "com.example.music_player_app.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "184659531066-l2s5p9cet414l3i2k9di1epq6bg472pi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDE9rnGMKNk-Ql7GJsn6OLvcXZMIGyZz7o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "184659531066-l2s5p9cet414l3i2k9di1epq6bg472pi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "184659531066-2ok5v5qbjolf77v4jclobp9hmv4id2s0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.musicPlayerApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
 }
