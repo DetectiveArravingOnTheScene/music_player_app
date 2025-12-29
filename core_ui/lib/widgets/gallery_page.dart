@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'accent_button_widget.dart';
 import 'artist_tile.dart';
 import 'horizontal_list.dart';
+import 'mini_player.dart';
 import 'outline_button_widget.dart';
 import 'playlist_tile.dart';
 import 'tonal_button_widget.dart';
@@ -17,8 +18,37 @@ class GalleryPage extends StatefulWidget {
   State<GalleryPage> createState() => _GalleryPageState();
 }
 
+class Track {
+  final String title;
+  final String author;
+  final String coverUrl;
+  final Duration duration;
+  final Duration currentPosition;
+
+  Track({
+    required this.title,
+    required this.author,
+    required this.coverUrl,
+    required this.duration,
+    required this.currentPosition,
+  });
+}
+
 class _GalleryPageState extends State<GalleryPage> {
   Duration currentDuration = const Duration(seconds: 90);
+
+  final List<Track> _allTracks = List.generate(
+    5,
+    (index) => Track(
+      title: "Track Number ${index + 1}",
+      author: "Artist ${index + 1}",
+      coverUrl: "https://picsum.photos/100?random=$index",
+      duration: const Duration(minutes: 3),
+      currentPosition: Duration(seconds: 30 + (index * 10)),
+    ),
+  );
+
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +61,7 @@ class _GalleryPageState extends State<GalleryPage> {
             children: <Widget>[
               _showTrackDurationWidget(),
               _showButtons(),
+              _showMiniPlayer(),
               _showPlaylists(),
               _showArtists(),
               _showTracks(),
@@ -76,6 +107,29 @@ class _GalleryPageState extends State<GalleryPage> {
           icon: const Icon(Icons.play_arrow),
         ),
       ],
+    );
+  }
+
+  Widget _showMiniPlayer() {
+    return SizedBox(
+      height: 64,
+      child: SwipeableMiniPlayer(
+        currentTrack: _allTracks[_currentIndex],
+        nextTrack: _currentIndex < _allTracks.length - 1
+            ? _allTracks[_currentIndex + 1]
+            : null,
+        prevTrack: _currentIndex > 0 ? _allTracks[_currentIndex - 1] : null,
+        onSwipeNext: () {
+          setState(() {
+            _currentIndex = _currentIndex + 1;
+          });
+        },
+        onSwipePrev: () {
+          setState(() {
+            _currentIndex = _currentIndex - 1;
+          });
+        },
+      ),
     );
   }
 
