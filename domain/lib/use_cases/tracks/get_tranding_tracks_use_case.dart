@@ -1,5 +1,4 @@
 import '../../domain.dart';
-import '../../models/music_models/collection_model.dart';
 
 class GetTrandingTracksUseCase
     extends FutureUseCaseNoParams<CollectionModel<TrackModel>> {

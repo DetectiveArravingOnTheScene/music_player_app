@@ -11,8 +11,8 @@ import '../providers/remote/cloud_database_tables_providers/liked_artists_table/
 import '../providers/remote/cloud_database_tables_providers/liked_artists_table/supabase_liked_artists_table_provider.dart';
 import '../providers/remote/cloud_database_tables_providers/liked_playlists_table/cloud_liked_playlists_table_provider.dart';
 import '../providers/remote/cloud_database_tables_providers/liked_playlists_table/supabase_liked_playlists_table_provider.dart';
-import '../providers/remote/cloud_database_tables_providers/liked_songs_table/cloud_liked_songs_table_provider.dart';
-import '../providers/remote/cloud_database_tables_providers/liked_songs_table/supabase_liked_songs_table_provider.dart';
+import '../providers/remote/cloud_database_tables_providers/liked_tracks_table/cloud_liked_tracks_table_provider.dart';
+import '../providers/remote/cloud_database_tables_providers/liked_tracks_table/supabase_liked_tracks_table_provider.dart';
 import '../providers/remote/cloud_database_tables_providers/playlist_track_table/cloud_playlist_track_table_provider.dart';
 import '../providers/remote/cloud_database_tables_providers/playlist_track_table/supabase_playlist_track_table_provider.dart';
 import '../providers/remote/cloud_database_tables_providers/user_playlist_table/cloud_user_playlists_table_provider.dart';
@@ -21,6 +21,7 @@ import '../providers/remote/cloud_database_tables_providers/user_settings_table/
 import '../providers/remote/cloud_database_tables_providers/user_settings_table/supabase_user_settings_table_provider.dart';
 import '../providers/remote/remote_music_provider/remote_music_provider.dart';
 import '../providers/remote/remote_music_provider/sound_cloud_provider_impl.dart';
+import '../repositories/track_repository_impl.dart';
 
 final DataDependencyInjection dataDependencyInjection =
     DataDependencyInjection();
@@ -67,9 +68,9 @@ class DataDependencyInjection {
       );
     }, dependsOn: <Type>[Supabase]);
 
-    serviceLocator.registerSingletonAsync<CloudLikedSongsTableProvider>(
+    serviceLocator.registerSingletonAsync<CloudLikedTracksTableProvider>(
       () async {
-        return SupabaseLikedSongsTableProvider(
+        return SupabaseLikedTracksTableProvider(
           supabase: serviceLocator.get<Supabase>(),
         );
       },
@@ -130,9 +131,9 @@ class DataDependencyInjection {
     serviceLocator.registerSingletonWithDependencies<TrackRepository>(() {
       return TrackRepositoryImpl(
         remoteProvider: serviceLocator.get<RemoteMusicProvider>(),
-        localProvider: serviceLocator.get<CloudLikedSongsTableProvider>(),
+        localProvider: serviceLocator.get<CloudLikedTracksTableProvider>(),
       );
-    }, dependsOn: <Type>[RemoteMusicProvider, CloudLikedSongsTableProvider]);
+    }, dependsOn: <Type>[RemoteMusicProvider, CloudLikedTracksTableProvider]);
   }
 
   void _initServices() {
