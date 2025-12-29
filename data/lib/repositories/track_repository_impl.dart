@@ -82,6 +82,21 @@ class TrackRepositoryImpl extends TrackRepository {
   }
 
   @override
+  Future<CollectionModel<TrackModel>> getTrendingTracks() async {
+    try {
+      PlaylistEntity playlistEntity = await _remoteMusicProvider.getPlaylist(
+        'soundcloud:playlists:1714689261',
+      ); // Hardcoded value for official playlist "top 50 tracks in US";
+
+      return CollectionModel<TrackModel>(
+        items: await _fetchLikes(playlistEntity.tracks),
+      );
+    } catch (e) {
+      throw ApiAppException(t.track.failedToFetch);
+    }
+  }
+
+  @override
   Future<Map<StreamType, String>> getTrackStream(String streamUrl) async {
     try {
       return StreamTypeMapper.mapToModel(

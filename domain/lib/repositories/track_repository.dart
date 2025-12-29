@@ -11,4 +11,6 @@ abstract class TrackRepository {
   Future<Map<StreamType, String>> getTrackStream(String streamUrl);
 
   Future<CollectionModel<TrackModel>> getRelatedTracks(String id);
+
+  Future<CollectionModel<TrackModel>> getTrendingTracks();
 }
