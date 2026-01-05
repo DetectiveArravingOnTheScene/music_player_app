@@ -6,8 +6,8 @@ import 'package:domain/domain.dart';
 import '../../../entities/soundcloud/artist_entity.dart';
 import '../../../entities/soundcloud/collection_entity.dart';
 import '../../../entities/soundcloud/playlist_entity.dart';
-import '../../../entities/soundcloud/stream_enum.dart';
 import '../../../entities/soundcloud/track_entity.dart';
+import '../../../mappers/soundcloud_stream_type_enum_mapper.dart';
 import '../../../requests/auth_request.dart';
 import '../../api_provider.dart';
 import '../../api_provider_consts.dart';
@@ -136,17 +136,18 @@ class SoundCloudProviderImpl extends RemoteMusicProvider {
   }
 
   @override
-  Future<Map<StreamType, String>> getTrackStreams(String trackUrn) async {
+  Future<Map<StreamTypeEnum, String>> getTrackStreams(String trackUrn) async {
     final Response<dynamic> response = await _api.get(
       url: SoundCloudStrings.getTrackStreamsEndpoint(trackUrn),
     );
 
-    final Map<StreamType, String> streams = <StreamType, String>{};
+    final Map<StreamTypeEnum, String> streams = <StreamTypeEnum, String>{};
     final Map<String, dynamic> data = response.data as Map<String, dynamic>;
 
     for (final MapEntry<String, dynamic> entry in data.entries) {
-      final StreamType? type = StreamType.fromKey(entry.key);
-
+      final StreamTypeEnum? type = SoundCloudStreamTypeMapper.fromKey(
+        entry.key,
+      );
       if (type != null && entry.value is String) {
         streams[type] = entry.value as String;
       }

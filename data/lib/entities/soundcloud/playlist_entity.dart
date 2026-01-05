@@ -18,6 +18,7 @@ abstract class PlaylistEntity with _$PlaylistEntity {
     required int duration,
     required List<TrackEntity> tracks,
     required String title,
+    required String type,
     String? genre,
     @JsonKey(name: 'artwork_url') String? artworkUrl,
     @JsonKey(name: 'release_day') int? releaseDay,
