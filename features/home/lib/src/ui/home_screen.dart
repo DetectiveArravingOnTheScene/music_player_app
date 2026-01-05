@@ -1,5 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:core/core.dart';
+import 'package:domain/domain.dart';
+import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
+
+import '../bloc/home_bloc.dart';
+import 'home_content.dart';
 
 @RoutePage()
 class HomeScreen extends StatelessWidget {
@@ -7,6 +12,12 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return BlocProvider<HomeBloc>(
+      create: (BuildContext context) => HomeBloc(
+        getTrandingTracksUseCase: serviceLocator
+            .get<GetTrandingTracksUseCase>(),
+      ),
+      child: const HomeContent(),
+    );
   }
 }
