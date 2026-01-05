@@ -1,6 +1,7 @@
 {
     "hello": "Hello $name",
     "save": "Save",
+    "retry": "Retry",
     "error": {
         "generalError": "Something went wrong"
     },
@@ -26,7 +27,7 @@
             "mismatch": "Passwords do not match"
         },
         "success": "Logged in successfully",
-        "fail": "Logged in failed",
+        "fail": "Log in failed",
         "orContinue": "or continue with",
         "haveAccount": "Already have an account?",
         "haveNoAccount": "Don't have an account?",
@@ -35,5 +36,8 @@
     "track": {
         "failedToFetch": "Failed to fetch track",
         "failedToStream": "Failed to stream track"
+    },
+    "home": {
+        "trendingTracks": "Trending Tracks"
     }
 }

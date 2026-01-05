@@ -37,12 +37,12 @@ class Track {
 class _GalleryPageState extends State<GalleryPage> {
   Duration currentDuration = const Duration(seconds: 90);
 
-  final List<Track> _allTracks = List.generate(
+  final List<Track> _allTracks = List<Track>.generate(
     5,
-    (index) => Track(
-      title: "Track Number ${index + 1}",
-      author: "Artist ${index + 1}",
-      coverUrl: "https://picsum.photos/100?random=$index",
+    (int index) => Track(
+      title: 'Track Number ${index + 1}',
+      author: 'Artist ${index + 1}',
+      coverUrl: 'https://picsum.photos/100?random=$index',
       duration: const Duration(minutes: 3),
       currentPosition: Duration(seconds: 30 + (index * 10)),
     ),

@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
       create: (BuildContext context) => HomeBloc(
         getTrandingTracksUseCase: serviceLocator
             .get<GetTrandingTracksUseCase>(),
-      ),
+      )..add(const HomePageOpenedEvent()),
       child: const HomeContent(),
     );
   }

@@ -47,9 +47,13 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	/// en: 'Save'
 	String get save => 'Save';
 
+	/// en: 'Retry'
+	String get retry => 'Retry';
+
 	late final TranslationsErrorEn error = TranslationsErrorEn._(_root);
 	late final TranslationsLoginEn login = TranslationsLoginEn._(_root);
 	late final TranslationsTrackEn track = TranslationsTrackEn._(_root);
+	late final TranslationsHomeEn home = TranslationsHomeEn._(_root);
 }
 
 // Path: error
@@ -125,6 +129,18 @@ class TranslationsTrackEn {
 	String get failedToStream => 'Failed to stream track';
 }
 
+// Path: home
+class TranslationsHomeEn {
+	TranslationsHomeEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Trending Tracks'
+	String get trendingTracks => 'Trending Tracks';
+}
+
 // Path: login.emailError
 class TranslationsLoginEmailErrorEn {
 	TranslationsLoginEmailErrorEn._(this._root);
@@ -189,6 +205,7 @@ extension on Translations {
 		return switch (path) {
 			'hello' => ({required Object name}) => 'Hello ${name}',
 			'save' => 'Save',
+			'retry' => 'Retry',
 			'error.generalError' => 'Something went wrong',
 			'login.signIn' => 'Sign In',
 			'login.signUp' => 'Sign Up',
@@ -212,6 +229,7 @@ extension on Translations {
 			'login.google' => 'Google',
 			'track.failedToFetch' => 'Failed to fetch track',
 			'track.failedToStream' => 'Failed to stream track',
+			'home.trendingTracks' => 'Trending Tracks',
 			_ => null,
 		};
 	}

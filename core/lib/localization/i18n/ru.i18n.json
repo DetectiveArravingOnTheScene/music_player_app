@@ -1,6 +1,7 @@
 {
     "hello": "Привет, $name",
     "save": "Сохранить",
+    "retry": "Повторить",
     "error": {
         "generalError": "Что-то пошло не так"
     },
@@ -35,5 +36,8 @@
     "track": {
         "failedToFetch": "Не удалось загрузить трек",
         "failedToStream": "Не удалось проиграть трек"
+    },
+    "home": {
+        "trendingTracks": "Популярные треки"
     }
 }
