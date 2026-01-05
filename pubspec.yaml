@@ -83,3 +83,5 @@ flutter:
     assets:
       - api_keys_dev.env
       - assets/song.mp3
+      - assets/song_cover.jpg
+      - assets/artist_cover.png
