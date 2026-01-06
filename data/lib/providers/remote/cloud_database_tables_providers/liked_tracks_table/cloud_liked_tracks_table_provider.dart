@@ -1,13 +1,15 @@
-import '../../../../entities/supabase/liked_track_metadata_entity.dart';
+import '../../../../entities/supabase/cloud_liked_track_metadata_entity.dart';
 
 abstract class CloudLikedTracksTableProvider {
-  Future<LikedTrackMetadataEntity?> getByUrn(String urn);
+  Future<CloudLikedTrackMetadataEntity?> getByUrn(String urn);
 
-  Future<List<LikedTrackMetadataEntity>> getByUserId(String userId);
+  Future<List<CloudLikedTrackMetadataEntity>> getByUserId(String userId);
 
-  Future<LikedTrackMetadataEntity> create(LikedTrackMetadataEntity entity);
+  Future<CloudLikedTrackMetadataEntity> create(
+    CloudLikedTrackMetadataEntity entity,
+  );
 
-  Future<void> update(LikedTrackMetadataEntity entity);
+  Future<void> update(CloudLikedTrackMetadataEntity entity);
 
   Future<void> delete(String urn);
 }

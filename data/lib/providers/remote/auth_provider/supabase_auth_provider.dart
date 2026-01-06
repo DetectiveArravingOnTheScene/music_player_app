@@ -15,14 +15,14 @@ class SupabaseAuthProvider implements AuthProvider {
   final GoogleSignIn _googleSignIn;
 
   @override
-  Stream<UserEntity?> get authStateChanges =>
+  Stream<CloudUserEntity?> get authStateChanges =>
       _supabaseDb.client.auth.onAuthStateChange.map((AuthState state) {
         final User? user = state.session?.user;
         if (user == null) {
           return null;
         }
 
-        return UserEntity(
+        return CloudUserEntity(
           id: user.id,
           email: user.email!,
           avatarUrl: user.userMetadata?['avatar_url'],

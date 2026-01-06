@@ -4,10 +4,10 @@ import 'package:domain/domain.dart';
 import 'package:domain/errors/api_app_exception.dart';
 import 'package:domain/services/auth_service.dart';
 
+import '../entities/abstract/liked_track_metadata_entity.dart';
 import '../entities/soundcloud/collection_entity.dart';
 import '../entities/soundcloud/playlist_entity.dart';
 import '../entities/soundcloud/track_entity.dart';
-import '../entities/supabase/liked_track_metadata_entity.dart';
 import '../mappers/liked_tracks_mapper.dart';
 import '../mappers/track_mapper.dart';
 import '../providers/remote/cloud_database_tables_providers/liked_tracks_table/cloud_liked_tracks_table_provider.dart';

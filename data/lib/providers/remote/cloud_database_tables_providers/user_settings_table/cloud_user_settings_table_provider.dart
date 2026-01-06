@@ -1,9 +1,9 @@
-import '../../../../entities/supabase/user_settings_metadata_entity.dart';
+import '../../../../entities/supabase/cloud_user_settings_metadata_entity.dart';
 
 abstract class CloudUserSettingsTableProvider {
-  Future<UserSettingsMetadataEntity?> getByUserId(String userId);
+  Future<CloudUserSettingsMetadataEntity?> getByUserId(String userId);
 
-  Future<void> upsertSettings(UserSettingsMetadataEntity entity);
+  Future<void> upsertSettings(CloudUserSettingsMetadataEntity entity);
 
   Future<void> deleteSettings(String userId);
 }

@@ -1,6 +1,6 @@
 import 'package:domain/payloads/payloads.dart';
 
-import '../../../data.dart';
+import '../../../entities/abstract/user_entity.dart';
 
 abstract class AuthProvider {
   Stream<UserEntity?> get authStateChanges;

@@ -1,6 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../../entities/supabase/liked_track_metadata_entity.dart';
+import '../../../../entities/supabase/cloud_liked_track_metadata_entity.dart';
 import '../supabase_consts.dart';
 import 'cloud_liked_tracks_table_provider.dart';
 
@@ -14,7 +14,7 @@ class SupabaseLikedTracksTableProvider
   static const String _table = 'liked_tracks';
 
   @override
-  Future<LikedTrackMetadataEntity?> getByUrn(String urn) async {
+  Future<CloudLikedTrackMetadataEntity?> getByUrn(String urn) async {
     final List<Map<String, dynamic>> response = await _db.client
         .from(_table)
         .select()
@@ -22,35 +22,37 @@ class SupabaseLikedTracksTableProvider
         .limit(1);
 
     if (response.isEmpty) return null;
-    return LikedTrackMetadataEntity.fromJson(response.first);
+    return CloudLikedTrackMetadataEntity.fromJson(response.first);
   }
 
   @override
-  Future<List<LikedTrackMetadataEntity>> getByUserId(String userId) async {
+  Future<List<CloudLikedTrackMetadataEntity>> getByUserId(String userId) async {
     final List<Map<String, dynamic>> response = await _db.client
         .from(_table)
         .select()
         .eq(SupabaseConsts.userIdField, userId);
 
     return response
-        .map<LikedTrackMetadataEntity>(LikedTrackMetadataEntity.fromJson)
+        .map<CloudLikedTrackMetadataEntity>(
+          CloudLikedTrackMetadataEntity.fromJson,
+        )
         .toList();
   }
 
   @override
-  Future<LikedTrackMetadataEntity> create(
-    LikedTrackMetadataEntity entity,
+  Future<CloudLikedTrackMetadataEntity> create(
+    CloudLikedTrackMetadataEntity entity,
   ) async {
     final List<Map<String, dynamic>> response = await _db.client
         .from(_table)
         .insert(entity.toJson())
         .select();
 
-    return LikedTrackMetadataEntity.fromJson(response.first);
+    return CloudLikedTrackMetadataEntity.fromJson(response.first);
   }
 
   @override
-  Future<void> update(LikedTrackMetadataEntity entity) async {
+  Future<void> update(CloudLikedTrackMetadataEntity entity) async {
     await _db.client
         .from(_table)
         .update(entity.toJson())

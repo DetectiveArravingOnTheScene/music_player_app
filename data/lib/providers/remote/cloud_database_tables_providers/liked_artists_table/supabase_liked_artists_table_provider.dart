@@ -1,6 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../../entities/supabase/liked_artist_metadata_entity.dart';
+import '../../../../entities/supabase/cloud_liked_artist_metadata_entity.dart';
 import '../supabase_consts.dart';
 import 'cloud_liked_artists_table_provider.dart';
 
@@ -13,7 +13,7 @@ class SupabaseLikedArtistsTableProvider
   static const String table = 'liked_artists';
 
   @override
-  Future<LikedArtistMetadataEntity?> getByUrn(String urn) async {
+  Future<CloudLikedArtistMetadataEntity?> getByUrn(String urn) async {
     final Map<String, dynamic>? response = await _db.client
         .from(table)
         .select()
@@ -22,24 +22,28 @@ class SupabaseLikedArtistsTableProvider
 
     if (response == null) return null;
 
-    return LikedArtistMetadataEntity.fromJson(response);
+    return CloudLikedArtistMetadataEntity.fromJson(response);
   }
 
   @override
-  Future<List<LikedArtistMetadataEntity>> getByUserId(String userId) async {
+  Future<List<CloudLikedArtistMetadataEntity>> getByUserId(
+    String userId,
+  ) async {
     final List<Map<String, dynamic>> response = await _db.client
         .from(table)
         .select()
         .eq(SupabaseConsts.userIdField, userId);
 
     return response
-        .map<LikedArtistMetadataEntity>(LikedArtistMetadataEntity.fromJson)
+        .map<CloudLikedArtistMetadataEntity>(
+          CloudLikedArtistMetadataEntity.fromJson,
+        )
         .toList();
   }
 
   @override
-  Future<LikedArtistMetadataEntity> create(
-    LikedArtistMetadataEntity entity,
+  Future<CloudLikedArtistMetadataEntity> create(
+    CloudLikedArtistMetadataEntity entity,
   ) async {
     final Map<String, dynamic> response = await _db.client
         .from(table)
@@ -47,11 +51,11 @@ class SupabaseLikedArtistsTableProvider
         .select()
         .single();
 
-    return LikedArtistMetadataEntity.fromJson(response);
+    return CloudLikedArtistMetadataEntity.fromJson(response);
   }
 
   @override
-  Future<void> update(LikedArtistMetadataEntity entity) async {
+  Future<void> update(CloudLikedArtistMetadataEntity entity) async {
     await _db.client
         .from(table)
         .update(entity.toJson())
