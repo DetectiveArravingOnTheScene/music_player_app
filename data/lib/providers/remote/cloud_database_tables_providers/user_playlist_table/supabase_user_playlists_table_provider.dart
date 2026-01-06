@@ -1,6 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../../../entities/supabase/user_playlist_metadata_entity.dart';
+import '../../../../entities/supabase/cloud_user_playlist_metadata_entity.dart';
 import '../supabase_consts.dart';
 import 'cloud_user_playlists_table_provider.dart';
 
@@ -14,7 +14,7 @@ class SupabaseUserPlaylistsTableProvider
   static const String _table = 'user_playlists';
 
   @override
-  Future<UserPlaylistMetadataEntity?> getById(String id) async {
+  Future<CloudUserPlaylistMetadataEntity?> getById(String id) async {
     final List<Map<String, dynamic>> response = await _db.client
         .from(_table)
         .select()
@@ -22,35 +22,39 @@ class SupabaseUserPlaylistsTableProvider
         .limit(1);
 
     if (response.isEmpty) return null;
-    return UserPlaylistMetadataEntity.fromJson(response.first);
+    return CloudUserPlaylistMetadataEntity.fromJson(response.first);
   }
 
   @override
-  Future<List<UserPlaylistMetadataEntity>> getByUserId(String userId) async {
+  Future<List<CloudUserPlaylistMetadataEntity>> getByUserId(
+    String userId,
+  ) async {
     final List<Map<String, dynamic>> response = await _db.client
         .from(_table)
         .select()
         .eq(SupabaseConsts.userIdField, userId);
 
     return response
-        .map<UserPlaylistMetadataEntity>(UserPlaylistMetadataEntity.fromJson)
+        .map<CloudUserPlaylistMetadataEntity>(
+          CloudUserPlaylistMetadataEntity.fromJson,
+        )
         .toList();
   }
 
   @override
-  Future<UserPlaylistMetadataEntity> create(
-    UserPlaylistMetadataEntity entity,
+  Future<CloudUserPlaylistMetadataEntity> create(
+    CloudUserPlaylistMetadataEntity entity,
   ) async {
     final List<Map<String, dynamic>> response = await _db.client
         .from(_table)
         .insert(entity.toJson())
         .select();
 
-    return UserPlaylistMetadataEntity.fromJson(response.first);
+    return CloudUserPlaylistMetadataEntity.fromJson(response.first);
   }
 
   @override
-  Future<void> update(UserPlaylistMetadataEntity entity) async {
+  Future<void> update(CloudUserPlaylistMetadataEntity entity) async {
     await _db.client
         .from(_table)
         .update(entity.toJson())

@@ -11,8 +11,8 @@ resolution: workspace
 dependencies:
     supabase_flutter: ^2.10.3
     firebase_core: ^4.2.1
-    isar_plus: ^1.1.8
-    isar_plus_flutter_libs: ^1.1.8
+    isar_plus: ^1.2.0
+    isar_plus_flutter_libs: ^1.2.0
     path_provider: ^2.1.5
     google_sign_in: ^7.2.0
     dio: ^5.9.0

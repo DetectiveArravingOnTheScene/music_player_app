@@ -1,7 +1,7 @@
 import 'package:domain/domain.dart';
 
+import '../entities/abstract/liked_track_metadata_entity.dart';
 import '../entities/soundcloud/track_entity.dart';
-import '../entities/supabase/liked_track_metadata_entity.dart';
 import 'track_mapper.dart';
 
 class LikedTracksMapper {

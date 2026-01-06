@@ -1,13 +1,15 @@
-import '../../../../entities/supabase/liked_artist_metadata_entity.dart';
+import '../../../../entities/supabase/cloud_liked_artist_metadata_entity.dart';
 
 abstract class CloudLikedArtistsTableProvider {
-  Future<LikedArtistMetadataEntity?> getByUrn(String urn);
+  Future<CloudLikedArtistMetadataEntity?> getByUrn(String urn);
 
-  Future<List<LikedArtistMetadataEntity>> getByUserId(String userId);
+  Future<List<CloudLikedArtistMetadataEntity>> getByUserId(String userId);
 
-  Future<LikedArtistMetadataEntity> create(LikedArtistMetadataEntity entity);
+  Future<CloudLikedArtistMetadataEntity> create(
+    CloudLikedArtistMetadataEntity entity,
+  );
 
-  Future<void> update(LikedArtistMetadataEntity entity);
+  Future<void> update(CloudLikedArtistMetadataEntity entity);
 
   Future<void> delete(String urn);
 }

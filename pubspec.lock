@@ -585,18 +585,18 @@ packages:
     dependency: transitive
     description:
       name: isar_plus
-      sha256: "16fdd10760f618e084ad6b49a953f8b90408830b2a61d5ea20f12e73c87b4391"
+      sha256: "43d874216d2f1fcec06f209ebbc75e7ca9705076d8c7077ec6ac5ea511dad9dd"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.8"
+    version: "1.2.0"
   isar_plus_flutter_libs:
     dependency: transitive
     description:
       name: isar_plus_flutter_libs
-      sha256: cb5c8bc31e2de25a168d16c3eeda53e6593cf8c7f004e8fbd3c6b2572fd919ed
+      sha256: e142590a13b5c9d349555ebd72a25ee34901992a2bb32ba6ccfd414519b48adf
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.8"
+    version: "1.2.0"
   js:
     dependency: transitive
     description:
