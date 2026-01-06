@@ -14,3 +14,4 @@ targets:
           build_extensions:
             '^lib/entities/soundcloud/{{}}.dart': 'lib/entities/soundcloud/gen/{{}}.g.dart'
             '^lib/entities/supabase/{{}}.dart': 'lib/entities/supabase/gen/{{}}.g.dart'
+            '^lib/entities/isar/{{}}.dart': 'lib/entities/isar/gen/{{}}.g.dart'

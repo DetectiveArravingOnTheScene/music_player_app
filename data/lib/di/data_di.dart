@@ -3,10 +3,24 @@ import 'package:domain/domain.dart';
 import 'package:domain/services/auth_service.dart';
 import 'package:domain/use_cases/tracks/get_tranding_tracks_use_case.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:isar_plus/isar_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../data.dart';
 import '../providers/api_provider.dart';
+import '../providers/local/isar_provider.dart';
+import '../providers/local/local_database_tables_providers/liked_artists_table/isar_liked_artist_table_provider.dart';
+import '../providers/local/local_database_tables_providers/liked_artists_table/local_liked_artist_table_provider.dart';
+import '../providers/local/local_database_tables_providers/liked_playlists_table/isar_liked_playlist_table_provider.dart';
+import '../providers/local/local_database_tables_providers/liked_playlists_table/local_liked_playlist_table_provider.dart';
+import '../providers/local/local_database_tables_providers/liked_tracks_table/isar_liked_playlist_table_provider.dart';
+import '../providers/local/local_database_tables_providers/liked_tracks_table/local_liked_tracks_table_provider.dart';
+import '../providers/local/local_database_tables_providers/playlist_track_table/isar_playlist_track_table_provider.dart';
+import '../providers/local/local_database_tables_providers/playlist_track_table/local_playlist_track_table_provider.dart';
+import '../providers/local/local_database_tables_providers/user_playlist_table/isar_user_playlist_table_provider.dart';
+import '../providers/local/local_database_tables_providers/user_playlist_table/local_user_playlist_table_provider.dart';
+import '../providers/local/local_database_tables_providers/user_settings_table/isar_user_settings_table_provider.dart';
+import '../providers/local/local_database_tables_providers/user_settings_table/local_user_settings_table_provider.dart';
 import '../providers/remote/cloud_database_tables_providers/liked_artists_table/cloud_liked_artists_table_provider.dart';
 import '../providers/remote/cloud_database_tables_providers/liked_artists_table/supabase_liked_artists_table_provider.dart';
 import '../providers/remote/cloud_database_tables_providers/liked_playlists_table/cloud_liked_playlists_table_provider.dart';
@@ -30,6 +44,7 @@ class DataDependencyInjection {
   void initialize() {
     _initGoogleSignIn();
     _initSupabase();
+    _initIsar();
     _initProviders();
     _initRepositories();
     _initServices();
@@ -51,6 +66,14 @@ class DataDependencyInjection {
         url: SupabaseOptions.projectUrl,
         anonKey: SupabaseOptions.publishibleKey,
       );
+    });
+  }
+
+  void _initIsar() {
+    serviceLocator.registerSingletonAsync<IsarProvider>(() async {
+      final IsarProvider provider = IsarProvider();
+      await provider.initialize();
+      return provider;
     });
   }
 
@@ -120,6 +143,47 @@ class DataDependencyInjection {
         );
       },
       dependsOn: <Type>[Supabase],
+    );
+    serviceLocator.registerSingletonAsync<LocalLikedArtistsTableProvider>(
+      () async {
+        return IsarLikedArtistsTableProvider(serviceLocator.get<Isar>());
+      },
+      dependsOn: <Type>[Isar],
+    );
+
+    serviceLocator.registerSingletonAsync<LocalLikedPlaylistsTableProvider>(
+      () async {
+        return IsarLikedPlaylistsTableProvider(serviceLocator.get<Isar>());
+      },
+      dependsOn: <Type>[Isar],
+    );
+
+    serviceLocator.registerSingletonAsync<LocalLikedTracksTableProvider>(
+      () async {
+        return IsarLikedTracksTableProvider(serviceLocator.get<Isar>());
+      },
+      dependsOn: <Type>[Isar],
+    );
+
+    serviceLocator.registerSingletonAsync<LocalPlaylistTracksTableProvider>(
+      () async {
+        return IsarPlaylistTracksTableProvider(serviceLocator.get<Isar>());
+      },
+      dependsOn: <Type>[Isar],
+    );
+
+    serviceLocator.registerSingletonAsync<LocalUserPlaylistsTableProvider>(
+      () async {
+        return IsarUserPlaylistsTableProvider(serviceLocator.get<Isar>());
+      },
+      dependsOn: <Type>[Isar],
+    );
+
+    serviceLocator.registerSingletonAsync<LocalUserSettingsTableProvider>(
+      () async {
+        return IsarUserSettingsTableProvider(serviceLocator.get<Isar>());
+      },
+      dependsOn: <Type>[Isar],
     );
   }
 

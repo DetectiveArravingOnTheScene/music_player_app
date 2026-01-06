@@ -3,6 +3,7 @@ import 'package:domain/models/music_models/playlist_model.dart';
 import 'package:domain/models/music_models/track_model.dart';
 
 import '../entities/abstract/liked_playlist_metadata_entity.dart';
+import '../entities/isar/local_liked_playlist_metadata_entity.dart';
 import '../entities/soundcloud/playlist_entity.dart';
 import '../entities/supabase/cloud_liked_playlist_metadata_entity.dart';
 import 'artist_mapper.dart';
@@ -43,6 +44,18 @@ class PlaylistMapper {
     String userId,
   ) {
     return CloudLikedPlaylistMetadataEntity(
+      urn: model.urn,
+      userId: userId,
+      listenCount: model.userListenCount,
+      createdAt: DateTime.now(),
+    );
+  }
+
+  static LocalLikedPlaylistMetadataEntity toLocal(
+    PlaylistModel model,
+    String userId,
+  ) {
+    return LocalLikedPlaylistMetadataEntity(
       urn: model.urn,
       userId: userId,
       listenCount: model.userListenCount,
