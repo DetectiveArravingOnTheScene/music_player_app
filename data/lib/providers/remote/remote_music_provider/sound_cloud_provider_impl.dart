@@ -241,4 +241,14 @@ class SoundCloudProviderImpl extends RemoteMusicProvider {
       (dynamic json) => TrackEntity.fromJson(json as Map<String, dynamic>),
     );
   }
+
+  @override
+  Future<CollectionEntity<TrackEntity>> getNextTracksPage(String url) async {
+    final Response<dynamic> response = await _api.get(url: url);
+
+    return CollectionEntity<TrackEntity>.fromJson(
+      response.data as Map<String, dynamic>,
+      (dynamic json) => TrackEntity.fromJson(json as Map<String, dynamic>),
+    );
+  }
 }

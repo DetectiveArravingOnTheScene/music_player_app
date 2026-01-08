@@ -39,4 +39,6 @@ abstract class RemoteMusicProvider {
     List<String> access,
     int limit,
   );
+
+  Future<CollectionEntity<TrackEntity>> getNextTracksPage(String url);
 }
