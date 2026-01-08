@@ -1,6 +1,8 @@
 import '../domain.dart';
 
 abstract class TrackRepository {
+  Stream<TrackModel> get trackUpdates;
+
   Future<CollectionModel<TrackModel>> searchTracks(SearchTracksPayload request);
 
   Future<TrackModel> getTrack(String trackUrl);
@@ -10,4 +12,9 @@ abstract class TrackRepository {
   Future<CollectionModel<TrackModel>> getRelatedTracks(String id);
 
   Future<CollectionModel<TrackModel>> getTrendingTracks();
+
+  Future<void> likeTrack(TrackModel model);
+  Future<void> removeLikeTrack(TrackModel model);
+
+  void dispose();
 }

@@ -192,12 +192,19 @@ class DataDependencyInjection {
       return AuthRepositoryImpl(serviceLocator.get<AuthProvider>());
     }, dependsOn: <Type>[AuthProvider]);
 
-    serviceLocator.registerSingletonWithDependencies<TrackRepository>(() {
-      return TrackRepositoryImpl(
-        remoteProvider: serviceLocator.get<RemoteMusicProvider>(),
-        localProvider: serviceLocator.get<CloudLikedTracksTableProvider>(),
-      );
-    }, dependsOn: <Type>[RemoteMusicProvider, CloudLikedTracksTableProvider]);
+    serviceLocator.registerSingletonWithDependencies<TrackRepository>(
+      () {
+        return TrackRepositoryImpl(
+          remoteProvider: serviceLocator.get<RemoteMusicProvider>(),
+          cloudProvider: serviceLocator.get<CloudLikedTracksTableProvider>(),
+          localProvider: serviceLocator.get<LocalLikedTracksTableProvider>(),
+        );
+      },
+      dependsOn: <Type>[RemoteMusicProvider, CloudLikedTracksTableProvider],
+      dispose: (TrackRepository repo) {
+        repo.dispose();
+      },
+    );
   }
 
   void _initServices() {

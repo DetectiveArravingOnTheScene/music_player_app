@@ -52,6 +52,7 @@ class _TranslationsErrorRu implements TranslationsErrorEn {
 
 	// Translations
 	@override String get generalError => 'Что-то пошло не так';
+	@override String get loginRequiredError => 'Пожалуйста, войдите в аккаунт';
 }
 
 // Path: login
@@ -86,6 +87,7 @@ class _TranslationsTrackRu implements TranslationsTrackEn {
 	// Translations
 	@override String get failedToFetch => 'Не удалось загрузить трек';
 	@override String get failedToStream => 'Не удалось проиграть трек';
+	@override String get failedToUpdate => 'Не удалось обновить трек';
 }
 
 // Path: login.emailError
@@ -135,6 +137,7 @@ extension on TranslationsRu {
 			'hello' => ({required Object name}) => 'Привет, ${name}',
 			'save' => 'Сохранить',
 			'error.generalError' => 'Что-то пошло не так',
+			'error.loginRequiredError' => 'Пожалуйста, войдите в аккаунт',
 			'login.signIn' => 'Войти',
 			'login.signUp' => 'Зарегистироваться',
 			'login.email' => 'Электронная почта',
@@ -157,6 +160,7 @@ extension on TranslationsRu {
 			'login.google' => 'Google',
 			'track.failedToFetch' => 'Не удалось загрузить трек',
 			'track.failedToStream' => 'Не удалось проиграть трек',
+			'track.failedToUpdate' => 'Не удалось обновить трек',
 			_ => null,
 		};
 	}

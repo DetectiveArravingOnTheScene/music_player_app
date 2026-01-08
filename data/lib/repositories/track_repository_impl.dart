@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/di/app_di.dart';
 import 'package:core/localization/gen/strings.g.dart';
 import 'package:domain/domain.dart';
@@ -10,22 +12,32 @@ import '../entities/soundcloud/playlist_entity.dart';
 import '../entities/soundcloud/track_entity.dart';
 import '../mappers/liked_tracks_mapper.dart';
 import '../mappers/track_mapper.dart';
+import '../providers/local/local_database_tables_providers/liked_tracks_table/local_liked_tracks_table_provider.dart';
 import '../providers/remote/cloud_database_tables_providers/liked_tracks_table/cloud_liked_tracks_table_provider.dart';
 import '../providers/remote/remote_music_provider/remote_music_provider.dart';
 
 class TrackRepositoryImpl extends TrackRepository {
   final RemoteMusicProvider _remoteMusicProvider;
-  final CloudLikedTracksTableProvider _likedSongsTableProvider;
+  final CloudLikedTracksTableProvider _cloudLikedTracksProvider;
+  final LocalLikedTracksTableProvider _localLikedTracksProvider;
 
   TrackRepositoryImpl({
     required RemoteMusicProvider remoteProvider,
-    required CloudLikedTracksTableProvider localProvider,
+    required CloudLikedTracksTableProvider cloudProvider,
+    required LocalLikedTracksTableProvider localProvider,
   }) : _remoteMusicProvider = remoteProvider,
-       _likedSongsTableProvider = localProvider;
+       _cloudLikedTracksProvider = cloudProvider,
+       _localLikedTracksProvider = localProvider;
 
   String? get _currentUserId {
     return serviceLocator.get<AuthService>().currentUser?.id;
   }
+
+  final StreamController<TrackModel> _trackUpdateController =
+      StreamController<TrackModel>.broadcast();
+
+  @override
+  Stream<TrackModel> get trackUpdates => _trackUpdateController.stream;
 
   @override
   Future<TrackModel> getTrack(String trackUrl) async {
@@ -36,7 +48,7 @@ class TrackRepositoryImpl extends TrackRepository {
 
       LikedTrackMetadataEntity? likedMetadata;
       if (_currentUserId != null) {
-        likedMetadata = await _likedSongsTableProvider.getByUrn(
+        likedMetadata = await _localLikedTracksProvider.getByUrn(
           trackEntity.urn,
         );
       }
@@ -104,6 +116,40 @@ class TrackRepositoryImpl extends TrackRepository {
     }
   }
 
+  @override
+  Future<void> likeTrack(TrackModel track) async {
+    final String? userId = _currentUserId;
+    if (userId == null) {
+      throw AuthAppException(t.error.loginRequiredError);
+    }
+
+    try {
+      await _cloudLikedTracksProvider.create(
+        TrackMapper.toCloud(track, userId),
+      );
+      await _localLikedTracksProvider.create(
+        TrackMapper.toLocal(track, userId),
+      );
+    } catch (e) {
+      throw ApiAppException(t.track.failedToUpdate);
+    }
+  }
+
+  @override
+  Future<void> removeLikeTrack(TrackModel track) async {
+    final String? userId = _currentUserId;
+    if (userId == null) {
+      throw ApiAppException(t.error.loginRequiredError);
+    }
+
+    try {
+      await _cloudLikedTracksProvider.delete(track.urn);
+      await _localLikedTracksProvider.delete(track.urn);
+    } catch (e) {
+      throw ApiAppException(t.track.failedToUpdate);
+    }
+  }
+
   Future<List<TrackModel>> _fetchLikes(List<TrackEntity> tracks) async {
     if (tracks.isEmpty) return <TrackModel>[];
 
@@ -111,10 +157,15 @@ class TrackRepositoryImpl extends TrackRepository {
 
     if (userId != null) {
       final List<LikedTrackMetadataEntity> allLiked =
-          await _likedSongsTableProvider.getByUserId(userId);
+          await _localLikedTracksProvider.getByUserId(userId);
 
       return LikedTracksMapper.mapLikedTracks(tracks, allLiked);
     }
     return tracks.map(TrackMapper.toModel).toList();
+  }
+
+  @override
+  void dispose() {
+    _trackUpdateController.close();
   }
 }

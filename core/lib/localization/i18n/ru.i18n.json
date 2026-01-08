@@ -2,7 +2,8 @@
     "hello": "Привет, $name",
     "save": "Сохранить",
     "error": {
-        "generalError": "Что-то пошло не так"
+        "generalError": "Что-то пошло не так",
+        "loginRequiredError": "Пожалуйста, войдите в аккаунт"
     },
     "login": {
         "signIn": "Войти",
@@ -34,6 +35,7 @@
     },
     "track": {
         "failedToFetch": "Не удалось загрузить трек",
-        "failedToStream": "Не удалось проиграть трек"
+        "failedToStream": "Не удалось проиграть трек",
+        "failedToUpdate": "Не удалось обновить трек"
     }
 }
