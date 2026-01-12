@@ -2,7 +2,6 @@ import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 import 'package:domain/services/auth_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:isar_plus/isar_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../data.dart';
@@ -145,44 +144,56 @@ class DataDependencyInjection {
     );
     serviceLocator.registerSingletonAsync<LocalLikedArtistsTableProvider>(
       () async {
-        return IsarLikedArtistsTableProvider(serviceLocator.get<Isar>());
+        return IsarLikedArtistsTableProvider(
+          serviceLocator.get<IsarProvider>().instance,
+        );
       },
-      dependsOn: <Type>[Isar],
+      dependsOn: <Type>[IsarProvider],
     );
 
     serviceLocator.registerSingletonAsync<LocalLikedPlaylistsTableProvider>(
       () async {
-        return IsarLikedPlaylistsTableProvider(serviceLocator.get<Isar>());
+        return IsarLikedPlaylistsTableProvider(
+          serviceLocator.get<IsarProvider>().instance,
+        );
       },
-      dependsOn: <Type>[Isar],
+      dependsOn: <Type>[IsarProvider],
     );
 
     serviceLocator.registerSingletonAsync<LocalLikedTracksTableProvider>(
       () async {
-        return IsarLikedTracksTableProvider(serviceLocator.get<Isar>());
+        return IsarLikedTracksTableProvider(
+          serviceLocator.get<IsarProvider>().instance,
+        );
       },
-      dependsOn: <Type>[Isar],
+      dependsOn: <Type>[IsarProvider],
     );
 
     serviceLocator.registerSingletonAsync<LocalPlaylistTracksTableProvider>(
       () async {
-        return IsarPlaylistTracksTableProvider(serviceLocator.get<Isar>());
+        return IsarPlaylistTracksTableProvider(
+          serviceLocator.get<IsarProvider>().instance,
+        );
       },
-      dependsOn: <Type>[Isar],
+      dependsOn: <Type>[IsarProvider],
     );
 
     serviceLocator.registerSingletonAsync<LocalUserPlaylistsTableProvider>(
       () async {
-        return IsarUserPlaylistsTableProvider(serviceLocator.get<Isar>());
+        return IsarUserPlaylistsTableProvider(
+          serviceLocator.get<IsarProvider>().instance,
+        );
       },
-      dependsOn: <Type>[Isar],
+      dependsOn: <Type>[IsarProvider],
     );
 
     serviceLocator.registerSingletonAsync<LocalUserSettingsTableProvider>(
       () async {
-        return IsarUserSettingsTableProvider(serviceLocator.get<Isar>());
+        return IsarUserSettingsTableProvider(
+          serviceLocator.get<IsarProvider>().instance,
+        );
       },
-      dependsOn: <Type>[Isar],
+      dependsOn: <Type>[IsarProvider],
     );
   }
 
@@ -199,7 +210,11 @@ class DataDependencyInjection {
           localProvider: serviceLocator.get<LocalLikedTracksTableProvider>(),
         );
       },
-      dependsOn: <Type>[RemoteMusicProvider, CloudLikedTracksTableProvider],
+      dependsOn: <Type>[
+        RemoteMusicProvider,
+        CloudLikedTracksTableProvider,
+        LocalLikedTracksTableProvider,
+      ],
       dispose: (TrackRepository repo) {
         repo.dispose();
       },
@@ -214,6 +229,8 @@ class DataDependencyInjection {
     serviceLocator.registerSingletonWithDependencies<AuthService>(() {
       return AuthService(serviceLocator.get<AuthRepository>().user);
     }, dependsOn: <Type>[AuthRepository]);
+
+    serviceLocator.registerSingleton<PlayerService>(PlayerService());
   }
 
   void _initUseCases() {
@@ -239,6 +256,13 @@ class DataDependencyInjection {
     serviceLocator.registerSingletonWithDependencies<GetTrandingTracksUseCase>(
       () {
         return GetTrandingTracksUseCase(serviceLocator.get<TrackRepository>());
+      },
+      dependsOn: <Type>[TrackRepository],
+    );
+
+    serviceLocator.registerSingletonWithDependencies<GetTrackStreamsUseCase>(
+      () {
+        return GetTrackStreamsUseCase(serviceLocator.get<TrackRepository>());
       },
       dependsOn: <Type>[TrackRepository],
     );

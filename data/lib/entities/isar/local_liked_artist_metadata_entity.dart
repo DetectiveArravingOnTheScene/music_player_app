@@ -11,7 +11,7 @@ class LocalLikedArtistMetadataEntity implements LikedArtistMetadataEntity {
     required this.userId,
     required this.listenCount,
     required this.createdAt,
-    this.id,
+    required this.id,
   });
 
   @override
@@ -28,5 +28,5 @@ class LocalLikedArtistMetadataEntity implements LikedArtistMetadataEntity {
   @override
   late DateTime createdAt;
 
-  int? id;
+  int id;
 }

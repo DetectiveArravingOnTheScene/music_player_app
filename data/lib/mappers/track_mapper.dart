@@ -48,6 +48,7 @@ class TrackMapper {
       userId: userId,
       listenCount: model.userListenCount,
       createdAt: DateTime.now(),
+      id: 1,
     );
   }
 }

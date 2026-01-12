@@ -60,6 +60,7 @@ class PlaylistMapper {
       userId: userId,
       listenCount: model.userListenCount,
       createdAt: DateTime.now(),
+      id: 1,
     );
   }
 }

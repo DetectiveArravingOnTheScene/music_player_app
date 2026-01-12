@@ -12,6 +12,8 @@ dependencies:
     flutter:
         sdk: flutter
 
+    domain:
+        path: ./../../domain
     core:
         path: ./../../core
     navigation:

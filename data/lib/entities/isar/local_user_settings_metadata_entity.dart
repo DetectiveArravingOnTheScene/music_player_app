@@ -8,7 +8,7 @@ part 'gen/local_user_settings_metadata_entity.g.dart';
 class LocalUserSettingsMetadataEntity implements UserSettingsMetadataEntity {
   LocalUserSettingsMetadataEntity({required this.id});
 
-  int? id;
+  int id;
 
   @override
   @Index(unique: true)
