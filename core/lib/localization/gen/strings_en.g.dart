@@ -85,6 +85,9 @@ class TranslationsErrorEn {
 
 	/// en: 'Something went wrong'
 	String get generalError => 'Something went wrong';
+
+	/// en: 'Please login'
+	String get loginRequiredError => 'Please login';
 }
 
 // Path: login
@@ -146,6 +149,9 @@ class TranslationsTrackEn {
 
 	/// en: 'Failed to stream track'
 	String get failedToStream => 'Failed to stream track';
+
+	/// en: 'Failed to update track'
+	String get failedToUpdate => 'Failed to update track';
 }
 
 // Path: home
@@ -229,6 +235,7 @@ extension on Translations {
 			'pages.search' => 'Search',
 			'pages.collection' => 'Collection',
 			'error.generalError' => 'Something went wrong',
+			'error.loginRequiredError' => 'Please login',
 			'login.signIn' => 'Sign In',
 			'login.signUp' => 'Sign Up',
 			'login.email' => 'Email',
@@ -251,6 +258,7 @@ extension on Translations {
 			'login.google' => 'Google',
 			'track.failedToFetch' => 'Failed to fetch track',
 			'track.failedToStream' => 'Failed to stream track',
+			'track.failedToUpdate' => 'Failed to update track',
 			'home.trendingTracks' => 'Trending Tracks',
 			_ => null,
 		};

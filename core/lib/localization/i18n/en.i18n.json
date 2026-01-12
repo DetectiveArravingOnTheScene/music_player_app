@@ -8,7 +8,8 @@
         "collection": "Collection"
     },
     "error": {
-        "generalError": "Something went wrong"
+        "generalError": "Something went wrong",
+        "loginRequiredError": "Please login"
     },
     "login": {
         "signIn": "Sign In",
@@ -40,6 +41,8 @@
     },
     "track": {
         "failedToFetch": "Failed to fetch track",
+        "failedToStream": "Failed to stream track",
+        "failedToUpdate": "Failed to update track"
         "failedToStream": "Failed to stream track"
     },
     "home": {

@@ -12,7 +12,7 @@ abstract class CloudUserSettingsMetadataEntity
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory CloudUserSettingsMetadataEntity({
     required String userId,
-    required Map<String, dynamic> settings,
+    required String settings,
     required DateTime updatedAt,
   }) = _CloudUserSettingsMetadataEntity;
 
