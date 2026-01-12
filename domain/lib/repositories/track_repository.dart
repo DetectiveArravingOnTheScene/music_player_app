@@ -10,4 +10,6 @@ abstract class TrackRepository {
   Future<CollectionModel<TrackModel>> getRelatedTracks(String id);
 
   Future<CollectionModel<TrackModel>> getTrendingTracks();
+
+  Future<CollectionModel<TrackModel>> getNextPage(String nextUrl);
 }

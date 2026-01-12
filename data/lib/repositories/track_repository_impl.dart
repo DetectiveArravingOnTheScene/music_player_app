@@ -117,4 +117,23 @@ class TrackRepositoryImpl extends TrackRepository {
     }
     return tracks.map(TrackMapper.toModel).toList();
   }
+
+  @override
+  Future<CollectionModel<TrackModel>> getNextPage(String nextUrl) async {
+    try {
+      final CollectionEntity<TrackEntity> trackEntities =
+          await _remoteMusicProvider.getNextTracksPage(nextUrl);
+
+      final List<TrackModel> mappedTracks = await _fetchLikes(
+        trackEntities.collection,
+      );
+
+      return CollectionModel<TrackModel>(
+        items: mappedTracks,
+        nextHref: trackEntities.nextHref,
+      );
+    } catch (e) {
+      throw ApiAppException(t.track.failedToFetch);
+    }
+  }
 }
