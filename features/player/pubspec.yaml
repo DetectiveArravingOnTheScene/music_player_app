@@ -13,7 +13,8 @@ resolution: workspace
 dependencies:
     flutter:
         sdk: flutter
-    just_audio: ^0.10.5
+    domain:
+        path: ./../../domain
     navigation:
         path: ./../../navigation
 
