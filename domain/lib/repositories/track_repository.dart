@@ -17,4 +17,5 @@ abstract class TrackRepository {
   Future<void> removeLikeTrack(TrackModel model);
 
   void dispose();
+  Future<CollectionModel<TrackModel>> getNextPage(String nextUrl);
 }

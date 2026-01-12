@@ -47,9 +47,32 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	/// en: 'Save'
 	String get save => 'Save';
 
+	/// en: 'Retry'
+	String get retry => 'Retry';
+
+	late final TranslationsPagesEn pages = TranslationsPagesEn._(_root);
 	late final TranslationsErrorEn error = TranslationsErrorEn._(_root);
 	late final TranslationsLoginEn login = TranslationsLoginEn._(_root);
 	late final TranslationsTrackEn track = TranslationsTrackEn._(_root);
+	late final TranslationsHomeEn home = TranslationsHomeEn._(_root);
+}
+
+// Path: pages
+class TranslationsPagesEn {
+	TranslationsPagesEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Home'
+	String get home => 'Home';
+
+	/// en: 'Search'
+	String get search => 'Search';
+
+	/// en: 'Collection'
+	String get collection => 'Collection';
 }
 
 // Path: error
@@ -97,8 +120,8 @@ class TranslationsLoginEn {
 	/// en: 'Logged in successfully'
 	String get success => 'Logged in successfully';
 
-	/// en: 'Logged in failed'
-	String get fail => 'Logged in failed';
+	/// en: 'Log in failed'
+	String get fail => 'Log in failed';
 
 	/// en: 'or continue with'
 	String get orContinue => 'or continue with';
@@ -129,6 +152,18 @@ class TranslationsTrackEn {
 
 	/// en: 'Failed to update track'
 	String get failedToUpdate => 'Failed to update track';
+}
+
+// Path: home
+class TranslationsHomeEn {
+	TranslationsHomeEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Trending Tracks'
+	String get trendingTracks => 'Trending Tracks';
 }
 
 // Path: login.emailError
@@ -195,6 +230,10 @@ extension on Translations {
 		return switch (path) {
 			'hello' => ({required Object name}) => 'Hello ${name}',
 			'save' => 'Save',
+			'retry' => 'Retry',
+			'pages.home' => 'Home',
+			'pages.search' => 'Search',
+			'pages.collection' => 'Collection',
 			'error.generalError' => 'Something went wrong',
 			'error.loginRequiredError' => 'Please login',
 			'login.signIn' => 'Sign In',
@@ -212,7 +251,7 @@ extension on Translations {
 			'login.confirmPasswordError.empty' => 'Please confirm your password',
 			'login.confirmPasswordError.mismatch' => 'Passwords do not match',
 			'login.success' => 'Logged in successfully',
-			'login.fail' => 'Logged in failed',
+			'login.fail' => 'Log in failed',
 			'login.orContinue' => 'or continue with',
 			'login.haveAccount' => 'Already have an account?',
 			'login.haveNoAccount' => 'Don\'t have an account?',
@@ -220,6 +259,7 @@ extension on Translations {
 			'track.failedToFetch' => 'Failed to fetch track',
 			'track.failedToStream' => 'Failed to stream track',
 			'track.failedToUpdate' => 'Failed to update track',
+			'home.trendingTracks' => 'Trending Tracks',
 			_ => null,
 		};
 	}

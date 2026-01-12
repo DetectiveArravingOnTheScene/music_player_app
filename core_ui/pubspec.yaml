@@ -1,5 +1,7 @@
 name: core_ui
+publish_to: none
 description: "A new Flutter package project."
+publish_to: none
 version: 0.0.1
 homepage:
 
@@ -8,8 +10,15 @@ environment:
     flutter: ">=1.17.0"
 resolution: workspace
 dependencies:
+    bloc: ^9.2.0
+
+    domain:
+        path: ./../domain
+
     flutter:
         sdk: flutter
+    core: 
+        path: ./../core
 
 dev_dependencies:
     flutter_test:

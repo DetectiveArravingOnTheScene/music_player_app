@@ -1,7 +1,6 @@
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 import 'package:domain/services/auth_service.dart';
-import 'package:domain/use_cases/tracks/get_tranding_tracks_use_case.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:isar_plus/isar_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -237,8 +236,11 @@ class DataDependencyInjection {
       dependsOn: <Type>[AuthRepository],
     );
 
-    serviceLocator.registerSingletonAsync(() async {
-      return GetTrandingTracksUseCase(serviceLocator.get<TrackRepository>());
-    }, dependsOn: <Type>[TrackRepository]);
+    serviceLocator.registerSingletonWithDependencies<GetTrandingTracksUseCase>(
+      () {
+        return GetTrandingTracksUseCase(serviceLocator.get<TrackRepository>());
+      },
+      dependsOn: <Type>[TrackRepository],
+    );
   }
 }

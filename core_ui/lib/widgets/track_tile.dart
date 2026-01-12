@@ -31,25 +31,35 @@ class TrackTile extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(4.0),
-                  child: SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: trackImage,
+            SizedBox(
+              width: 250,
+              child: Row(
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(4.0),
+                    child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: trackImage,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(trackName, style: context.textTheme.titleMedium),
-                    Text(artistName, style: context.textTheme.bodyMedium),
-                  ],
-                ),
-              ],
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          trackName,
+                          style: context.textTheme.titleMedium,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                        Text(artistName, style: context.textTheme.bodyMedium),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
             Row(
               children: <Widget>[

@@ -1,6 +1,12 @@
 {
     "hello": "Привет, $name",
     "save": "Сохранить",
+    "retry": "Повторить",
+    "pages": {
+        "home": "Домой",
+        "search": "Поиск",
+        "collection": "Коллекция"
+    },
     "error": {
         "generalError": "Что-то пошло не так",
         "loginRequiredError": "Пожалуйста, войдите в аккаунт"
@@ -37,5 +43,9 @@
         "failedToFetch": "Не удалось загрузить трек",
         "failedToStream": "Не удалось проиграть трек",
         "failedToUpdate": "Не удалось обновить трек"
+        "failedToStream": "Не удалось проиграть трек"
+    },
+    "home": {
+        "trendingTracks": "Популярные треки"
     }
 }

@@ -167,5 +167,21 @@ class TrackRepositoryImpl extends TrackRepository {
   @override
   void dispose() {
     _trackUpdateController.close();
+  Future<CollectionModel<TrackModel>> getNextPage(String nextUrl) async {
+    try {
+      final CollectionEntity<TrackEntity> trackEntities =
+          await _remoteMusicProvider.getNextTracksPage(nextUrl);
+
+      final List<TrackModel> mappedTracks = await _fetchLikes(
+        trackEntities.collection,
+      );
+
+      return CollectionModel<TrackModel>(
+        items: mappedTracks,
+        nextHref: trackEntities.nextHref,
+      );
+    } catch (e) {
+      throw ApiAppException(t.track.failedToFetch);
+    }
   }
 }

@@ -39,9 +39,24 @@ class TranslationsRu with BaseTranslations<AppLocale, Translations> implements T
 	// Translations
 	@override String hello({required Object name}) => 'Привет, ${name}';
 	@override String get save => 'Сохранить';
+	@override String get retry => 'Повторить';
+	@override late final _TranslationsPagesRu pages = _TranslationsPagesRu._(_root);
 	@override late final _TranslationsErrorRu error = _TranslationsErrorRu._(_root);
 	@override late final _TranslationsLoginRu login = _TranslationsLoginRu._(_root);
 	@override late final _TranslationsTrackRu track = _TranslationsTrackRu._(_root);
+	@override late final _TranslationsHomeRu home = _TranslationsHomeRu._(_root);
+}
+
+// Path: pages
+class _TranslationsPagesRu implements TranslationsPagesEn {
+	_TranslationsPagesRu._(this._root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get home => 'Домой';
+	@override String get search => 'Поиск';
+	@override String get collection => 'Коллекция';
 }
 
 // Path: error
@@ -90,6 +105,16 @@ class _TranslationsTrackRu implements TranslationsTrackEn {
 	@override String get failedToUpdate => 'Не удалось обновить трек';
 }
 
+// Path: home
+class _TranslationsHomeRu implements TranslationsHomeEn {
+	_TranslationsHomeRu._(this._root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get trendingTracks => 'Популярные треки';
+}
+
 // Path: login.emailError
 class _TranslationsLoginEmailErrorRu implements TranslationsLoginEmailErrorEn {
 	_TranslationsLoginEmailErrorRu._(this._root);
@@ -136,6 +161,10 @@ extension on TranslationsRu {
 		return switch (path) {
 			'hello' => ({required Object name}) => 'Привет, ${name}',
 			'save' => 'Сохранить',
+			'retry' => 'Повторить',
+			'pages.home' => 'Домой',
+			'pages.search' => 'Поиск',
+			'pages.collection' => 'Коллекция',
 			'error.generalError' => 'Что-то пошло не так',
 			'error.loginRequiredError' => 'Пожалуйста, войдите в аккаунт',
 			'login.signIn' => 'Войти',
@@ -161,6 +190,7 @@ extension on TranslationsRu {
 			'track.failedToFetch' => 'Не удалось загрузить трек',
 			'track.failedToStream' => 'Не удалось проиграть трек',
 			'track.failedToUpdate' => 'Не удалось обновить трек',
+			'home.trendingTracks' => 'Популярные треки',
 			_ => null,
 		};
 	}
