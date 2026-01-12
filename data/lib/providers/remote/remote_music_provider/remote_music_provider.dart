@@ -4,7 +4,7 @@ import '../../../data.dart';
 import '../../../entities/soundcloud/collection_entity.dart';
 
 abstract class RemoteMusicProvider {
-  Future<void> authenticate(String clientId, String clientSecret);
+  Future<String> authenticate(String clientId, String clientSecret);
 
   Future<CollectionEntity<TrackEntity>> searchTracks(SearchTracksPayload query);
 

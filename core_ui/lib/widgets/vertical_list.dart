@@ -33,6 +33,9 @@ class VerticalList extends StatelessWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
         ),
+        const SizedBox(
+          height: 60,
+        ),
       ],
     );
   }

@@ -16,6 +16,35 @@ class ApiProvider {
         ApiProviderConsts.autorizationHeaderBody(token);
   }
 
+  void setTokenRefresher(Future<String> Function() refresher) {
+    _dio.interceptors.add(
+      QueuedInterceptorsWrapper(
+        onError: (DioException error, ErrorInterceptorHandler handler) async {
+          if (error.response?.statusCode == 401) {
+            try {
+              final String newToken = await refresher();
+
+              error.requestOptions.headers[ApiProviderConsts
+                      .autorizationHeaderKey] =
+                  ApiProviderConsts.autorizationHeaderBody(newToken);
+
+              final Response<dynamic> response = await _dio.fetch(
+                error.requestOptions,
+              );
+
+              return handler.resolve(response);
+            } catch (e) {
+              return handler.next(error);
+            }
+          }
+
+          // Pass non-401 errors along as usual
+          return handler.next(error);
+        },
+      ),
+    );
+  }
+
   Future<Response<T>> get<T>({
     required String url,
     Map<String, dynamic>? queryParameters,

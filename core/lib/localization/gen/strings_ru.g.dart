@@ -39,9 +39,24 @@ class TranslationsRu with BaseTranslations<AppLocale, Translations> implements T
 	// Translations
 	@override String hello({required Object name}) => 'Привет, ${name}';
 	@override String get save => 'Сохранить';
+	@override String get retry => 'Повторить';
+	@override late final _TranslationsPagesRu pages = _TranslationsPagesRu._(_root);
 	@override late final _TranslationsErrorRu error = _TranslationsErrorRu._(_root);
 	@override late final _TranslationsLoginRu login = _TranslationsLoginRu._(_root);
 	@override late final _TranslationsTrackRu track = _TranslationsTrackRu._(_root);
+	@override late final _TranslationsHomeRu home = _TranslationsHomeRu._(_root);
+}
+
+// Path: pages
+class _TranslationsPagesRu implements TranslationsPagesEn {
+	_TranslationsPagesRu._(this._root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get home => 'Домой';
+	@override String get search => 'Поиск';
+	@override String get collection => 'Коллекция';
 }
 
 // Path: error
@@ -86,6 +101,16 @@ class _TranslationsTrackRu implements TranslationsTrackEn {
 	// Translations
 	@override String get failedToFetch => 'Не удалось загрузить трек';
 	@override String get failedToStream => 'Не удалось проиграть трек';
+}
+
+// Path: home
+class _TranslationsHomeRu implements TranslationsHomeEn {
+	_TranslationsHomeRu._(this._root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get trendingTracks => 'Популярные треки';
 }
 
 // Path: login.emailError
@@ -134,6 +159,10 @@ extension on TranslationsRu {
 		return switch (path) {
 			'hello' => ({required Object name}) => 'Привет, ${name}',
 			'save' => 'Сохранить',
+			'retry' => 'Повторить',
+			'pages.home' => 'Домой',
+			'pages.search' => 'Поиск',
+			'pages.collection' => 'Коллекция',
 			'error.generalError' => 'Что-то пошло не так',
 			'login.signIn' => 'Войти',
 			'login.signUp' => 'Зарегистироваться',
@@ -157,6 +186,7 @@ extension on TranslationsRu {
 			'login.google' => 'Google',
 			'track.failedToFetch' => 'Не удалось загрузить трек',
 			'track.failedToStream' => 'Не удалось проиграть трек',
+			'home.trendingTracks' => 'Популярные треки',
 			_ => null,
 		};
 	}

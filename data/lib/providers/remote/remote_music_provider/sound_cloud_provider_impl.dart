@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:core/config/app_config.dart';
+import 'package:core/di/app_di.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/domain.dart';
 
@@ -17,10 +19,17 @@ import 'sound_cloud_strings.dart';
 class SoundCloudProviderImpl extends RemoteMusicProvider {
   final ApiProvider _api;
 
-  SoundCloudProviderImpl(ApiProvider api) : _api = api;
+  SoundCloudProviderImpl(ApiProvider api) : _api = api {
+    _api.setTokenRefresher(() async {
+      return authenticate(
+        serviceLocator.get<AppConfig>().soundCloudClientId,
+        serviceLocator.get<AppConfig>().soundCloudClientSecret,
+      );
+    });
+  }
 
   @override
-  Future<void> authenticate(String clientId, String clientSecret) async {
+  Future<String> authenticate(String clientId, String clientSecret) async {
     final String basicAuth =
         'Basic ${base64Encode(utf8.encode('$clientId:$clientSecret'))}';
 
@@ -39,6 +48,7 @@ class SoundCloudProviderImpl extends RemoteMusicProvider {
     final String accessToken = data[SoundCloudStrings.accessTokenKey] as String;
 
     _api.setAuthToken(accessToken);
+    return accessToken;
   }
 
   @override

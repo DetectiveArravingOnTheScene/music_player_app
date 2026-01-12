@@ -1,4 +1,5 @@
 name: core_ui
+publish_to: none
 description: "A new Flutter package project."
 publish_to: none
 version: 0.0.1
@@ -16,6 +17,8 @@ dependencies:
 
     flutter:
         sdk: flutter
+    core: 
+        path: ./../core
 
 dev_dependencies:
     flutter_test:

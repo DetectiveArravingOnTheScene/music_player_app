@@ -1,7 +1,6 @@
 import 'package:core/config/app_config.dart';
 import 'package:core/core.dart';
 import 'package:data/data.dart';
-import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 
 import 'app/music_app.dart';
@@ -15,8 +14,6 @@ void main() async {
   dataDependencyInjection.initialize();
   coreDependencyInjection.initialize();
   await serviceLocator.allReady();
-
-  await serviceLocator.get<AuthRepository>().signOut();
 
   runApp(TranslationProvider(child: const MusicApp()));
 }
