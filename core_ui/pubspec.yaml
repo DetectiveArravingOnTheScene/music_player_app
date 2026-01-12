@@ -1,7 +1,6 @@
 name: core_ui
 publish_to: none
 description: "A new Flutter package project."
-publish_to: none
 version: 0.0.1
 homepage:
 

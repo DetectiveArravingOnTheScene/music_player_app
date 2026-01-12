@@ -167,6 +167,9 @@ class TrackRepositoryImpl extends TrackRepository {
   @override
   void dispose() {
     _trackUpdateController.close();
+  }
+
+  @override
   Future<CollectionModel<TrackModel>> getNextPage(String nextUrl) async {
     try {
       final CollectionEntity<TrackEntity> trackEntities =
