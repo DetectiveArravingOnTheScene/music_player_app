@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
 import 'package:player/player.dart';
@@ -25,18 +26,18 @@ class MainScreen extends StatelessWidget {
                     return BottomNavigationBar(
                       currentIndex: tabsRouter.activeIndex,
                       onTap: tabsRouter.setActiveIndex,
-                      items: const <BottomNavigationBarItem>[
+                      items: <BottomNavigationBarItem>[
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.home),
-                          label: 'Home',
+                          icon: const Icon(Icons.home),
+                          label: t.pages.home,
                         ),
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.search),
-                          label: 'Search',
+                          icon: const Icon(Icons.search),
+                          label: t.pages.search,
                         ),
                         BottomNavigationBarItem(
-                          icon: Icon(Icons.system_update_tv_rounded),
-                          label: 'Collection',
+                          icon: const Icon(Icons.system_update_tv_rounded),
+                          label: t.pages.collection,
                         ),
                       ],
                     );

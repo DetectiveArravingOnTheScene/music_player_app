@@ -2,6 +2,11 @@
     "hello": "Привет, $name",
     "save": "Сохранить",
     "retry": "Повторить",
+    "pages": {
+        "home": "Домой",
+        "search": "Поиск",
+        "collection": "Коллекция"
+    },
     "error": {
         "generalError": "Что-то пошло не так"
     },
