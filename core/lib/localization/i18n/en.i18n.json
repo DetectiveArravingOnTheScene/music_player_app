@@ -43,7 +43,6 @@
         "failedToFetch": "Failed to fetch track",
         "failedToStream": "Failed to stream track",
         "failedToUpdate": "Failed to update track"
-        "failedToStream": "Failed to stream track"
     },
     "home": {
         "trendingTracks": "Trending Tracks"
