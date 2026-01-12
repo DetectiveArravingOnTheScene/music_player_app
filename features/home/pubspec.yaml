@@ -17,6 +17,8 @@ dependencies:
       path: ./../../navigation
   domain:
       path: ./../../domain
+  player:
+      path: ./../player
   core:
       path: ./../../core
   core_ui:

@@ -7,6 +7,7 @@ import 'package:core_ui/widgets/vertical_list.dart';
 import 'package:domain/models/music_models/collection_model.dart';
 import 'package:domain/models/music_models/track_model.dart';
 import 'package:flutter/material.dart';
+import 'package:player/player.dart';
 
 import '../bloc/home_bloc.dart';
 
@@ -37,7 +38,11 @@ class HomeContent extends StatelessWidget {
                       onLikePressed: () {},
                       onMorePressed: () {},
                       isLiked: false,
-                      onPress: () {},
+                      onPress: () {
+                        context.read<PlayerBloc>().add(
+                          PlayerSetPlaylist(playlist: trandingTracks.items),
+                        );
+                      },
                     );
                   },
                   itemCount: trandingTracks.items.length,

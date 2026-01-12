@@ -1,18 +1,21 @@
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 
 import '../core_ui.dart';
-import 'gallery_page.dart';
+import '../extensions/network_image_or_default.dart';
 
 class SwipeableMiniPlayer extends StatefulWidget {
-  final Track currentTrack;
-  final Track? nextTrack;
-  final Track? prevTrack;
+  final Stream<Duration> positionStream;
+  final TrackModel currentTrack;
+  final TrackModel? nextTrack;
+  final TrackModel? prevTrack;
   final VoidCallback onSwipeNext;
   final VoidCallback onSwipePrev;
 
   const SwipeableMiniPlayer({
     super.key,
     required this.currentTrack,
+    required this.positionStream,
     this.nextTrack,
     this.prevTrack,
     required this.onSwipeNext,
@@ -114,41 +117,55 @@ class _SwipeableMiniPlayerState extends State<SwipeableMiniPlayer>
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        final double width = constraints.maxWidth;
-        final double totalShift = width + _cardGap;
+    return StreamBuilder<Duration>(
+      stream: widget.positionStream,
+      builder: (BuildContext context, AsyncSnapshot<Duration> asyncSnapshot) {
+        return LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            final double width = constraints.maxWidth;
+            final double totalShift = width + _cardGap;
 
-        return GestureDetector(
-          onHorizontalDragUpdate: _handleDragUpdate,
-          onHorizontalDragEnd: (DragEndDetails details) =>
-              _handleDragEnd(details, width),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Container(
-              color: Colors.transparent, // Capture taps
-              child: Stack(
-                children: <Widget>[
-                  if (widget.prevTrack != null)
-                    Transform.translate(
-                      offset: Offset(_dragOffset - totalShift, 0),
-                      child: _MiniPlayerCard(track: widget.prevTrack!),
-                    ),
+            return GestureDetector(
+              onHorizontalDragUpdate: _handleDragUpdate,
+              onHorizontalDragEnd: (DragEndDetails details) =>
+                  _handleDragEnd(details, width),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  color: Colors.transparent, // Capture taps
+                  child: Stack(
+                    children: <Widget>[
+                      if (widget.prevTrack != null)
+                        Transform.translate(
+                          offset: Offset(_dragOffset - totalShift, 0),
+                          child: _MiniPlayerCard(
+                            track: widget.prevTrack!,
+                            position: asyncSnapshot.data,
+                          ),
+                        ),
 
-                  if (widget.nextTrack != null)
-                    Transform.translate(
-                      offset: Offset(_dragOffset + totalShift, 0),
-                      child: _MiniPlayerCard(track: widget.nextTrack!),
-                    ),
+                      if (widget.nextTrack != null)
+                        Transform.translate(
+                          offset: Offset(_dragOffset + totalShift, 0),
+                          child: _MiniPlayerCard(
+                            track: widget.nextTrack!,
+                            position: asyncSnapshot.data,
+                          ),
+                        ),
 
-                  Transform.translate(
-                    offset: Offset(_dragOffset, 0),
-                    child: _MiniPlayerCard(track: widget.currentTrack),
+                      Transform.translate(
+                        offset: Offset(_dragOffset, 0),
+                        child: _MiniPlayerCard(
+                          track: widget.currentTrack,
+                          position: asyncSnapshot.data,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );
@@ -156,9 +173,10 @@ class _SwipeableMiniPlayerState extends State<SwipeableMiniPlayer>
 }
 
 class _MiniPlayerCard extends StatelessWidget {
-  final Track track;
+  final TrackModel track;
+  final Duration? position;
 
-  const _MiniPlayerCard({required this.track});
+  const _MiniPlayerCard({required this.track, required this.position});
 
   @override
   Widget build(BuildContext context) {
@@ -190,12 +208,7 @@ class _MiniPlayerCard extends StatelessWidget {
                 Container(
                   width: 64,
                   color: context.colorScheme.surface,
-                  child: Image.network(
-                    track.coverUrl,
-                    fit: BoxFit.cover,
-                    errorBuilder: (BuildContext c, Object e, StackTrace? s) =>
-                        const Icon(Icons.music_note, color: Colors.white),
-                  ),
+                  child: networkImageOrDefault(track.artworkUrl),
                 ),
                 const SizedBox(width: 12),
                 // Info
@@ -216,7 +229,7 @@ class _MiniPlayerCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        track.author,
+                        track.artist.username,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -243,11 +256,10 @@ class _MiniPlayerCard extends StatelessWidget {
             height: 2,
             child: LinearProgressIndicator(
               color: context.colorScheme.primary,
-              value:
-                  track.currentPosition.inSeconds /
-                  (track.duration.inSeconds == 0
-                      ? 1
-                      : track.duration.inSeconds),
+              value: position == null
+                  ? 0
+                  : position!.inSeconds /
+                        (track.duration == 0 ? 1 : track.duration),
               backgroundColor: Colors.transparent,
             ),
           ),

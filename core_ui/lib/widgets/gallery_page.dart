@@ -61,7 +61,6 @@ class _GalleryPageState extends State<GalleryPage> {
             children: <Widget>[
               _showTrackDurationWidget(),
               _showButtons(),
-              _showMiniPlayer(),
               _showPlaylists(),
               _showArtists(),
               _showTracks(),
@@ -107,29 +106,6 @@ class _GalleryPageState extends State<GalleryPage> {
           icon: const Icon(Icons.play_arrow),
         ),
       ],
-    );
-  }
-
-  Widget _showMiniPlayer() {
-    return SizedBox(
-      height: 64,
-      child: SwipeableMiniPlayer(
-        currentTrack: _allTracks[_currentIndex],
-        nextTrack: _currentIndex < _allTracks.length - 1
-            ? _allTracks[_currentIndex + 1]
-            : null,
-        prevTrack: _currentIndex > 0 ? _allTracks[_currentIndex - 1] : null,
-        onSwipeNext: () {
-          setState(() {
-            _currentIndex = _currentIndex + 1;
-          });
-        },
-        onSwipePrev: () {
-          setState(() {
-            _currentIndex = _currentIndex - 1;
-          });
-        },
-      ),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:core_ui/widgets/mini_player.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
 import 'package:player/player.dart';
@@ -47,8 +48,36 @@ class MainContent extends StatelessWidget {
               bottom: 100,
               start: 0,
               end: 0,
-              child: const Row(
-                children: <Widget>[Expanded(child: PlayerWidget())],
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: BlocBuilder<PlayerBloc, PlayerBlocState>(
+                      builder: (BuildContext context, PlayerBlocState state) {
+                        if (state.currentTrack != null) {
+                          return SizedBox(
+                            height: 64,
+                            child: SwipeableMiniPlayer(
+                              currentTrack: state.currentTrack!,
+                              positionStream: context
+                                  .read<PlayerBloc>()
+                                  .positionStream,
+                              onSwipeNext: () {
+                                context.read<PlayerBloc>().add(PlayerNext());
+                              },
+                              onSwipePrev: () {
+                                context.read<PlayerBloc>().add(
+                                  PlayerPrevious(),
+                                );
+                              },
+                            ),
+                          );
+                        } else {
+                          return const SizedBox(height: 0, width: 0);
+                        }
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
