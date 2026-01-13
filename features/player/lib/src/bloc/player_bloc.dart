@@ -133,7 +133,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
     _PlayerPlaybackStateChanged event,
     Emitter<PlayerBlocState> emit,
   ) {
-    emit(state.copyWith(isPlaying: event.state.playing));
+    emit(state.copyWith(isPlaying: event.state.isPlaying));
 
     if (event.state.processingState == ProcessingState.completed) {
       add(PlayerNext());

@@ -29,6 +29,6 @@ class PlayerToggleLoop extends PlayerEvent {}
 
 // Internal event triggered when the audio player notifies us of state changes
 class _PlayerPlaybackStateChanged extends PlayerEvent {
-  final ja.PlayerState state;
+  final PlayerState state;
   _PlayerPlaybackStateChanged(this.state);
 }
