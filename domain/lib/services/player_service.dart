@@ -4,6 +4,8 @@ import '../domain.dart';
 import 'auth_service.dart';
 
 class PlayerService {
+  int idCounter = 1;
+
   final AudioPlayer _player = AudioPlayer();
   final AuthService _authService;
 
@@ -21,9 +23,17 @@ class PlayerService {
       final AudioSource source = HlsAudioSource(
         headers: _authService.getAuthHeader,
         Uri.parse(streamUrls[StreamTypeEnum.hlsAac160]!),
-        tag:
-            track, //Later this will be updated to support defaul android audio widgets
+        tag: MediaItem(
+          id: '$idCounter',
+          title: track.title,
+          artUri: Uri.tryParse(track.artworkUrl ?? ''),
+          artist: track.artist.username,
+          duration: Duration(milliseconds: track.duration),
+          displayTitle: track.title,
+          displaySubtitle: track.artist.username,
+        ),
       );
+      idCounter++;
 
       await _player.setAudioSource(source);
       await _player.play();

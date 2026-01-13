@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 import 'package:domain/services/auth_service.dart';
+import 'package:domain/services/player_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:isar_plus/isar_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -214,13 +215,10 @@ class DataDependencyInjection {
     serviceLocator.registerSingletonWithDependencies<AuthService>(() {
       return AuthService(serviceLocator.get<AuthRepository>().user);
     }, dependsOn: <Type>[AuthRepository]);
-<<<<<<< HEAD
-=======
 
     serviceLocator.registerSingletonAsync<PlayerService>(() async {
       return PlayerService(serviceLocator.get<AuthService>());
     }, dependsOn: <Type>[AuthService]);
->>>>>>> 9810003 ([5.1] Update PlayerService)
   }
 
   void _initUseCases() {
