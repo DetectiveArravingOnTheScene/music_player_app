@@ -28,7 +28,6 @@ class PlayerBlocState {
     this.shuffleIndices = const <int>[],
     this.isPlaying = false,
     this.isLoading = false,
-    this.position = Duration.zero,
   });
 
   PlayerBlocState copyWith({
