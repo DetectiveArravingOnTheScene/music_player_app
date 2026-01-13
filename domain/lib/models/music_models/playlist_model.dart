@@ -1,5 +1,4 @@
 import '../models.dart';
-import 'playlist_type.dart';
 
 class PlaylistModel {
   final String urn;

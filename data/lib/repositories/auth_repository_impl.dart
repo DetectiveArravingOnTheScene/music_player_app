@@ -2,7 +2,6 @@ import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 
 import '../data.dart';
-import '../entities/abstract/user_entity.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final AuthProvider _authProvider;
