@@ -11,7 +11,6 @@ class PlayerBlocState {
 
   final bool isPlaying;
   final bool isLoading;
-  final Duration position; // Optional: usually keep separate stream for UI perf
 
   TrackModel? get currentTrack {
     if (playlist.isEmpty) return null;
