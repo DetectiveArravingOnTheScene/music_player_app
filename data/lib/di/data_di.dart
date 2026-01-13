@@ -214,6 +214,13 @@ class DataDependencyInjection {
     serviceLocator.registerSingletonWithDependencies<AuthService>(() {
       return AuthService(serviceLocator.get<AuthRepository>().user);
     }, dependsOn: <Type>[AuthRepository]);
+<<<<<<< HEAD
+=======
+
+    serviceLocator.registerSingletonAsync<PlayerService>(() async {
+      return PlayerService(serviceLocator.get<AuthService>());
+    }, dependsOn: <Type>[AuthService]);
+>>>>>>> 9810003 ([5.1] Update PlayerService)
   }
 
   void _initUseCases() {

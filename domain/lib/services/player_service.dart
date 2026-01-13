@@ -1,18 +1,26 @@
 import 'dart:async';
 import 'package:just_audio/just_audio.dart';
 import '../domain.dart';
+import 'auth_service.dart';
 
 class PlayerService {
   final AudioPlayer _player = AudioPlayer();
+  final AuthService _authService;
 
   Stream<PlayerState> get playbackStateStream => _player.playerStateStream;
   Stream<Duration> get positionStream => _player.positionStream;
   Stream<Duration?> get durationStream => _player.durationStream;
 
-  Future<void> playTrack(TrackModel track, String trackStreamUrl) async {
+  PlayerService(AuthService authService) : _authService = authService;
+
+  Future<void> playTrack(
+    TrackModel track,
+    Map<StreamTypeEnum, String> streamUrls,
+  ) async {
     try {
-      final AudioSource source = AudioSource.uri(
-        Uri.parse(trackStreamUrl),
+      final AudioSource source = HlsAudioSource(
+        headers: _authService.getAuthHeader,
+        Uri.parse(streamUrls[StreamTypeEnum.hlsAac160]!),
         tag:
             track, //Later this will be updated to support defaul android audio widgets
       );
