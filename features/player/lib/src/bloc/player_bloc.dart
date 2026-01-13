@@ -4,7 +4,6 @@ import 'package:domain/domain.dart';
 import 'package:domain/services/player_service.dart';
 import 'package:domain/use_cases/tracks/get_track_streams_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:just_audio/just_audio.dart' as ja;
 
 part 'player_event.dart';
 part 'player_state.dart';
@@ -12,7 +11,13 @@ part 'player_state.dart';
 class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
   final PlayerService _service;
   final GetTrackStreamsUseCase _getTrackStreamsUseCase;
-  StreamSubscription<ja.PlayerState>? _playerStateSubscription;
+  StreamSubscription<PlayerState>? _playerStateSubscription;
+  StreamSubscription<Duration>? _playerPositionSubscription;
+
+  final StreamController<Duration> _positionStream =
+      StreamController<Duration>.broadcast();
+
+  Stream<Duration> get positionStream => _positionStream.stream;
 
   PlayerBloc({
     required PlayerService service,
@@ -34,7 +39,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
 
   void _onInit(PlayerInit event, Emitter<PlayerBlocState> emit) {
     _playerStateSubscription = _service.playbackStateStream.listen((
-      ja.PlayerState state,
+      PlayerState state,
     ) {
       add(_PlayerPlaybackStateChanged(state));
     });
@@ -130,7 +135,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
   ) {
     emit(state.copyWith(isPlaying: event.state.playing));
 
-    if (event.state.processingState == ja.ProcessingState.completed) {
+    if (event.state.processingState == ProcessingState.completed) {
       add(PlayerNext());
     }
   }
