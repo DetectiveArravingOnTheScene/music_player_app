@@ -1,16 +1,26 @@
 import 'dart:async';
-import 'package:just_audio/just_audio.dart';
+import 'package:just_audio/just_audio.dart' as ja;
 import '../domain.dart';
 import 'auth_service.dart';
+
+part 'player_state.dart';
 
 class PlayerService {
   //MediaItem requires Unique ID for every instance. This is primitive, but i don't know better.
   int idCounter = 1;
 
-  final AudioPlayer _player = AudioPlayer();
+  final ja.AudioPlayer _player = ja.AudioPlayer();
   final AuthService _authService;
 
-  Stream<PlayerState> get playbackStateStream => _player.playerStateStream;
+  Stream<PlayerState> get playbackStateStream {
+    return _player.playerStateStream.map(
+      (ja.PlayerState jaState) => PlayerState(
+        isPlaying: jaState.playing,
+        processingState: _mapProcessingState(jaState.processingState),
+      ),
+    );
+  }
+
   Stream<Duration> get positionStream => _player.positionStream;
   Stream<Duration?> get durationStream => _player.durationStream;
 
@@ -22,7 +32,7 @@ class PlayerService {
     streamUrls, // I pass all streams, sooner or later i will add NetworkService, and i will be able to choose stream accroding to connection speed.
   ) async {
     try {
-      final AudioSource source = HlsAudioSource(
+      final ja.AudioSource source = ja.HlsAudioSource(
         headers: _authService.getAuthHeader,
         Uri.parse(streamUrls[StreamTypeEnum.hlsAac160]!),
         tag: MediaItem(
