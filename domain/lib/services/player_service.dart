@@ -4,6 +4,7 @@ import '../domain.dart';
 import 'auth_service.dart';
 
 class PlayerService {
+  //MediaItem requires Unique ID for every instance. This is primitive, but i don't know better.
   int idCounter = 1;
 
   final AudioPlayer _player = AudioPlayer();
@@ -17,7 +18,8 @@ class PlayerService {
 
   Future<void> playTrack(
     TrackModel track,
-    Map<StreamTypeEnum, String> streamUrls,
+    Map<StreamTypeEnum, String>
+    streamUrls, // I pass all streams, sooner or later i will add NetworkService, and i will be able to choose stream accroding to connection speed.
   ) async {
     try {
       final AudioSource source = HlsAudioSource(
