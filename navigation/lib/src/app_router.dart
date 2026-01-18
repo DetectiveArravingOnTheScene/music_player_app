@@ -15,13 +15,19 @@ class AppRouter extends RootStackRouter {
       ],
     ),
     AutoRoute(
-      page: MainRoute.page,
+      page: MainWrapperRoute.page,
       path: '/',
       guards: <AutoRouteGuard>[AuthGuard()],
       children: <AutoRoute>[
-        AutoRoute(page: HomeRoute.page, initial: true, path: 'home'),
-        AutoRoute(page: SearchRoute.page, path: 'search'),
-        AutoRoute(page: UserCollectionRoute.page, path: 'collection'),
+        AutoRoute(
+          page: MainRoute.page,
+          path: '',
+          children: <AutoRoute>[
+            AutoRoute(page: HomeRoute.page, initial: true, path: 'home'),
+            AutoRoute(page: SearchRoute.page, path: 'search'),
+            AutoRoute(page: UserCollectionRoute.page, path: 'collection'),
+          ],
+        ),
         AutoRoute(page: PlayerRoute.page, path: 'player'),
       ],
     ),
