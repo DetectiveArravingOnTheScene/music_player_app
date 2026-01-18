@@ -75,7 +75,6 @@ class MainContent extends StatelessWidget {
                                 context.router.push(const PlayerRoute());
                               },
                               onLikeToggle: () {
-                                print("ON LIKE SENT");
                                 context.read<PlayerBloc>().add(
                                   PlayerLikeTrack(
                                     track: state.currentTrack!,

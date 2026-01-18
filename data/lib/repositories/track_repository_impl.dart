@@ -131,11 +131,8 @@ class TrackRepositoryImpl extends TrackRepository {
         TrackMapper.toLocal(track, userId),
       );
 
-      print("UPDATED TRACK");
-
       _trackUpdateController.add(track.copyWith(isLiked: true));
     } catch (e) {
-      print("$e");
       throw ApiAppException(t.track.failedToUpdate);
     }
   }

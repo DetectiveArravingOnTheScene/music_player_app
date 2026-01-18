@@ -86,7 +86,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomeLikeTrack event,
     Emitter<HomeState> emit,
   ) async {
-    print("ON LIKE RECEIVED");
     if (event.liked) {
       await _likeTrackUseCase.execute(event.track);
     } else {

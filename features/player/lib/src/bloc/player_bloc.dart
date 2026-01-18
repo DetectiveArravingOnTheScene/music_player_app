@@ -64,7 +64,6 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
     _trackUpdatesSubscription = _subscribeToTrackUpdatesUseCase
         .execute()
         .listen((TrackModel updated) {
-          print("EVENT LISTENER");
           add(TrackUpdatedEvent(updated));
         });
   }
@@ -192,7 +191,6 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
     PlayerLikeTrack event,
     Emitter<PlayerBlocState> emit,
   ) async {
-    print("ON LIKE RECEIVED");
     if (event.liked) {
       await _likeTrackUseCase.execute(event.track);
     } else {
@@ -206,7 +204,6 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
     );
 
     if (index != -1) {
-      print("TRACK LIKE UPDATED");
       final List<TrackModel> newPlaylist = List<TrackModel>.from(
         state.playlist,
       );
