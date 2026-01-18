@@ -1,6 +1,9 @@
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 import 'package:domain/services/auth_service.dart';
+import 'package:domain/use_cases/tracks/like_track_use_case.dart';
+import 'package:domain/use_cases/tracks/remove_like_use_case.dart';
+import 'package:domain/use_cases/tracks/subscribe_to_track_updates_use_case.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -263,6 +266,21 @@ class DataDependencyInjection {
     serviceLocator.registerSingletonWithDependencies<GetTrackStreamsUseCase>(
       () {
         return GetTrackStreamsUseCase(serviceLocator.get<TrackRepository>());
+      },
+      dependsOn: <Type>[TrackRepository],
+    );
+    serviceLocator
+        .registerSingletonWithDependencies<SubscribeToTrackUpdatesUseCase>(() {
+          return SubscribeToTrackUpdatesUseCase(
+            serviceLocator.get<TrackRepository>(),
+          );
+        }, dependsOn: <Type>[TrackRepository]);
+    serviceLocator.registerSingletonWithDependencies<LikeTrackUseCase>(() {
+      return LikeTrackUseCase(serviceLocator.get<TrackRepository>());
+    }, dependsOn: <Type>[TrackRepository]);
+    serviceLocator.registerSingletonWithDependencies<RemoveLikeTrackUseCase>(
+      () {
+        return RemoveLikeTrackUseCase(serviceLocator.get<TrackRepository>());
       },
       dependsOn: <Type>[TrackRepository],
     );

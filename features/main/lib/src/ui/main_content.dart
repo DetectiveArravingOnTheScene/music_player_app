@@ -50,14 +50,16 @@ class MainContent extends StatelessWidget {
               end: 0,
               child: Row(
                 children: <Widget>[
-                  Expanded(
-                    child: BlocBuilder<PlayerBloc, PlayerBlocState>(
-                      builder: (BuildContext context, PlayerBlocState state) {
-                        if (state.currentTrack != null) {
-                          return SizedBox(
+                  BlocBuilder<PlayerBloc, PlayerBlocState>(
+                    builder: (BuildContext context, PlayerBlocState state) {
+                      if (state.currentTrack != null) {
+                        return Expanded(
+                          child: SizedBox(
                             height: 64,
                             child: SwipeableMiniPlayer(
                               currentTrack: state.currentTrack!,
+                              prevTrack: state.prevTrack,
+                              nextTrack: state.nextTrack,
                               positionStream: context
                                   .read<PlayerBloc>()
                                   .positionStream,
@@ -69,13 +71,33 @@ class MainContent extends StatelessWidget {
                                   PlayerPrevious(),
                                 );
                               },
+                              onTap: () {
+                                context.router.push(const PlayerRoute());
+                              },
+                              onLikeToggle: () {
+                                print("ON LIKE SENT");
+                                context.read<PlayerBloc>().add(
+                                  PlayerLikeTrack(
+                                    track: state.currentTrack!,
+                                    liked: !state.currentTrack!.isLiked,
+                                  ),
+                                );
+                              },
+                              onPauseToggle: () {
+                                if (state.isPlaying) {
+                                  context.read<PlayerBloc>().add(PlayerPause());
+                                } else {
+                                  context.read<PlayerBloc>().add(PlayerPlay());
+                                }
+                              },
+                              isPaused: !state.isPlaying,
                             ),
-                          );
-                        } else {
-                          return const SizedBox(height: 0, width: 0);
-                        }
-                      },
-                    ),
+                          ),
+                        );
+                      } else {
+                        return const SizedBox(height: 0, width: 0);
+                      }
+                    },
                   ),
                 ],
               ),

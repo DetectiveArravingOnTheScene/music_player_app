@@ -130,7 +130,12 @@ class TrackRepositoryImpl extends TrackRepository {
       await _localLikedTracksProvider.create(
         TrackMapper.toLocal(track, userId),
       );
+
+      print("UPDATED TRACK");
+
+      _trackUpdateController.add(track.copyWith(isLiked: true));
     } catch (e) {
+      print("$e");
       throw ApiAppException(t.track.failedToUpdate);
     }
   }
@@ -145,6 +150,8 @@ class TrackRepositoryImpl extends TrackRepository {
     try {
       await _cloudLikedTracksProvider.delete(track.urn);
       await _localLikedTracksProvider.delete(track.urn);
+
+      _trackUpdateController.add(track.copyWith(isLiked: false));
     } catch (e) {
       throw ApiAppException(t.track.failedToUpdate);
     }

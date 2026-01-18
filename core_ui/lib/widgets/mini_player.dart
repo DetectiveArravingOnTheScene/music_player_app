@@ -7,19 +7,27 @@ import '../extensions/network_image_or_default.dart';
 class SwipeableMiniPlayer extends StatefulWidget {
   final Stream<Duration> positionStream;
   final TrackModel currentTrack;
+  final bool isPaused;
   final TrackModel? nextTrack;
   final TrackModel? prevTrack;
   final VoidCallback onSwipeNext;
   final VoidCallback onSwipePrev;
+  final VoidCallback onTap;
+  final VoidCallback onPauseToggle;
+  final VoidCallback onLikeToggle;
 
   const SwipeableMiniPlayer({
     super.key,
     required this.currentTrack,
+    required this.isPaused,
     required this.positionStream,
-    this.nextTrack,
-    this.prevTrack,
     required this.onSwipeNext,
     required this.onSwipePrev,
+    required this.onTap,
+    required this.onPauseToggle,
+    required this.onLikeToggle,
+    this.nextTrack,
+    this.prevTrack,
   });
 
   @override
@@ -126,6 +134,7 @@ class _SwipeableMiniPlayerState extends State<SwipeableMiniPlayer>
             final double totalShift = width + _cardGap;
 
             return GestureDetector(
+              onTap: widget.onTap,
               onHorizontalDragUpdate: _handleDragUpdate,
               onHorizontalDragEnd: (DragEndDetails details) =>
                   _handleDragEnd(details, width),
@@ -139,8 +148,12 @@ class _SwipeableMiniPlayerState extends State<SwipeableMiniPlayer>
                         Transform.translate(
                           offset: Offset(_dragOffset - totalShift, 0),
                           child: _MiniPlayerCard(
+                            onLikeToggle: widget.onLikeToggle,
+                            onPauseToggle: widget.onPauseToggle,
                             track: widget.prevTrack!,
                             position: asyncSnapshot.data,
+                            isLiked: widget.currentTrack.isLiked,
+                            isPaused: widget.isPaused,
                           ),
                         ),
 
@@ -148,16 +161,24 @@ class _SwipeableMiniPlayerState extends State<SwipeableMiniPlayer>
                         Transform.translate(
                           offset: Offset(_dragOffset + totalShift, 0),
                           child: _MiniPlayerCard(
+                            onLikeToggle: widget.onLikeToggle,
+                            onPauseToggle: widget.onPauseToggle,
                             track: widget.nextTrack!,
                             position: asyncSnapshot.data,
+                            isLiked: widget.currentTrack.isLiked,
+                            isPaused: widget.isPaused,
                           ),
                         ),
 
                       Transform.translate(
                         offset: Offset(_dragOffset, 0),
                         child: _MiniPlayerCard(
+                          onLikeToggle: widget.onLikeToggle,
+                          onPauseToggle: widget.onPauseToggle,
                           track: widget.currentTrack,
                           position: asyncSnapshot.data,
+                          isLiked: widget.currentTrack.isLiked,
+                          isPaused: widget.isPaused,
                         ),
                       ),
                     ],
@@ -175,8 +196,19 @@ class _SwipeableMiniPlayerState extends State<SwipeableMiniPlayer>
 class _MiniPlayerCard extends StatelessWidget {
   final TrackModel track;
   final Duration? position;
+  final VoidCallback onPauseToggle;
+  final VoidCallback onLikeToggle;
+  final bool isLiked;
+  final bool isPaused;
 
-  const _MiniPlayerCard({required this.track, required this.position});
+  const _MiniPlayerCard({
+    required this.track,
+    required this.position,
+    required this.onPauseToggle,
+    required this.onLikeToggle,
+    required this.isLiked,
+    required this.isPaused,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -242,10 +274,16 @@ class _MiniPlayerCard extends StatelessWidget {
                 ),
                 IconButton(
                   icon: Icon(
-                    Icons.play_arrow_rounded,
+                    isLiked ? Icons.favorite : Icons.favorite_border,
+                  ),
+                  onPressed: onLikeToggle,
+                ),
+                IconButton(
+                  icon: Icon(
+                    isPaused ? Icons.play_arrow_rounded : Icons.pause,
                     color: context.colorScheme.onPrimaryFixedVariant,
                   ),
-                  onPressed: () {},
+                  onPressed: onPauseToggle,
                 ),
                 const SizedBox(width: 4),
               ],
@@ -258,8 +296,7 @@ class _MiniPlayerCard extends StatelessWidget {
               color: context.colorScheme.primary,
               value: position == null
                   ? 0
-                  : position!.inSeconds /
-                        (track.duration == 0 ? 1 : track.duration),
+                  : position!.inSeconds / (track.duration / 1000),
               backgroundColor: Colors.transparent,
             ),
           ),

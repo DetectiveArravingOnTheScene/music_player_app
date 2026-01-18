@@ -35,9 +35,16 @@ class HomeContent extends StatelessWidget {
                       ),
                       trackName: trandingTracks.items[index].title,
                       artistName: trandingTracks.items[index].artist.username,
-                      onLikePressed: () {},
+                      onLikePressed: () {
+                        context.read<HomeBloc>().add(
+                          HomeLikeTrack(
+                            track: trandingTracks.items[index],
+                            liked: !trandingTracks.items[index].isLiked,
+                          ),
+                        );
+                      },
                       onMorePressed: () {},
-                      isLiked: false,
+                      isLiked: trandingTracks.items[index].isLiked,
                       onPress: () {
                         context.read<PlayerBloc>().add(
                           PlayerSetPlaylist(playlist: trandingTracks.items),
