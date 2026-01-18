@@ -20,6 +20,28 @@ class PlayerBlocState {
     return playlist[index];
   }
 
+  TrackModel? get prevTrack {
+    if (playlist.isEmpty) return null;
+    if (currentIndex == 0) return null;
+
+    final int index = isShuffleMode
+        ? shuffleIndices[currentIndex - 1]
+        : currentIndex - 1;
+
+    return playlist[index];
+  }
+
+  TrackModel? get nextTrack {
+    if (playlist.isEmpty) return null;
+    if (currentIndex == playlist.length - 1) return null;
+
+    final int index = isShuffleMode
+        ? shuffleIndices[currentIndex + 1]
+        : currentIndex + 1;
+
+    return playlist[index];
+  }
+
   const PlayerBlocState({
     this.playlist = const <TrackModel>[],
     this.currentIndex = 0,
