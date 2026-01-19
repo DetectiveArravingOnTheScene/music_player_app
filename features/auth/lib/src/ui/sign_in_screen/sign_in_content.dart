@@ -13,38 +13,59 @@ class SignInContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SignInBloc, SignInState>(
-      listenWhen: (SignInState previous, SignInState current) {
-        return previous.status != current.status;
-      },
       listener: (BuildContext context, SignInState state) {
-        if (state.status == SignInStatus.failure) {
-          context.showErrorSnackbar(state.errorMessage);
-        }
-        if (state.status == SignInStatus.success) {
-          AuthScope.of(context)!.redirectBack(redirect: true);
-        }
+        state.mapOrNull(
+          failure: (state) {
+            context.showErrorSnackbar(state.errorMessage);
+          },
+          success: (_) {
+            AuthScope.of(context)!.redirectBack(redirect: true);
+          },
+        );
       },
       builder: (BuildContext context, SignInState state) {
+        final bool isLoading = state.maybeMap(
+          submitting: (_) => true,
+          orElse: () => false,
+        );
+
+        final String? emailError = state.maybeMap(
+          input: (s) => s.emailError,
+          orElse: () => null,
+        );
+
+        final String? passwordError = state.maybeMap(
+          input: (s) => s.passwordError,
+          orElse: () => null,
+        );
+
+        final bool isInputValid = state.maybeMap(
+          input: (s) => s.isValid,
+          orElse: () => true, // Allow submit attempts in other states
+        );
+
         return AuthScreenTemplate(
           title: t.login.signIn,
           textFields: <Widget>[
             TextField(
+              enabled: !isLoading,
               onChanged: (String value) {
                 context.read<SignInBloc>().add(SignInEmailChanged(value));
               },
               decoration: InputDecoration(
                 label: Text(t.login.email),
-                errorText: state.emailError,
+                errorText: emailError,
               ),
             ),
             TextField(
+              enabled: !isLoading,
               onChanged: (String value) {
                 context.read<SignInBloc>().add(SignInPasswordChanged(value));
               },
               obscureText: true,
               decoration: InputDecoration(
                 label: Text(t.login.password),
-                errorText: state.passwordError,
+                errorText: passwordError,
               ),
             ),
           ],
@@ -52,10 +73,20 @@ class SignInContent extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: FilledButton.tonal(
-                  onPressed: () {
-                    context.read<SignInBloc>().add(const SignInSubmitted());
-                  },
-                  child: Text(t.login.signIn),
+                  onPressed: (isLoading || !isInputValid)
+                      ? null
+                      : () {
+                          context.read<SignInBloc>().add(
+                            const SignInSubmitted(),
+                          );
+                        },
+                  child: isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Text(t.login.signIn),
                 ),
               ),
             ],
@@ -65,11 +96,13 @@ class SignInContent extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: FilledButton(
-                    onPressed: () {
-                      context.read<SignInBloc>().add(
-                        const SignInWithGoogleSubmitted(),
-                      );
-                    },
+                    onPressed: isLoading
+                        ? null
+                        : () {
+                            context.read<SignInBloc>().add(
+                              const SignInWithGoogleSubmitted(),
+                            );
+                          },
                     child: Text(t.login.google),
                   ),
                 ),
@@ -77,9 +110,11 @@ class SignInContent extends StatelessWidget {
             ),
           ],
           bottomWidget: TextButton(
-            onPressed: () {
-              context.navigateTo(const SignUpRoute());
-            },
+            onPressed: isLoading
+                ? null
+                : () {
+                    context.navigateTo(const SignUpRoute());
+                  },
             child: Text(t.login.haveNoAccount),
           ),
         );
