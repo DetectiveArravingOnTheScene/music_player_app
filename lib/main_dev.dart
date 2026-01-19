@@ -1,4 +1,3 @@
-import 'package:core/config/app_config.dart';
 import 'package:core/core.dart';
 import 'package:data/data.dart';
 import 'package:domain/domain.dart';

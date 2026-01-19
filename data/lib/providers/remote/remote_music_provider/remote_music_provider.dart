@@ -1,7 +1,6 @@
 import 'package:domain/domain.dart';
 
 import '../../../data.dart';
-import '../../../entities/soundcloud/collection_entity.dart';
 
 abstract class RemoteMusicProvider {
   Future<String> authenticate(String clientId, String clientSecret);
