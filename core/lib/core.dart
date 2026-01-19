@@ -7,6 +7,7 @@ export 'package:freezed_annotation/freezed_annotation.dart';
 export 'package:slang/slang.dart';
 export 'package:slang_flutter/slang_flutter.dart';
 
+export 'blocs/pagination_bloc_mixin.dart';
 export 'config/app_config.dart';
 export 'config/firebase_options.dart';
 export 'di/app_di.dart';
