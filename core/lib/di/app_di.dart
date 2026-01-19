@@ -11,6 +11,10 @@ class CoreDependencyInjection {
   }
 
   void _initAppRouter() {
-    serviceLocator.registerSingleton<AppRouter>(AppRouter());
+    serviceLocator.registerSingletonAsync<AppRouter>(
+      () async {
+        return AppRouter();
+      },
+    );
   }
 }
