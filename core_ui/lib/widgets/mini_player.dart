@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import '../core_ui.dart';
-import 'gallery_page.dart';
 
 class SwipeableMiniPlayer extends StatefulWidget {
   final Track currentTrack;
@@ -26,16 +24,16 @@ class SwipeableMiniPlayer extends StatefulWidget {
 class _SwipeableMiniPlayerState extends State<SwipeableMiniPlayer>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  late ValueNotifier<double> _dragOffsetNotifier;
 
-  double _dragOffset = 0.0;
-
-  final double _threshold = 100.0; // Distance to commit swipe
-  final double _resistanceFactor = 0.15; // Resistance at ends
-  final double _cardGap = 16.0; // Visual gap between cards during swipe
+  final double _threshold = 100.0;
+  final double _resistanceFactor = 0.15;
+  final double _cardGap = 16.0;
 
   @override
   void initState() {
     super.initState();
+    _dragOffsetNotifier = ValueNotifier<double>(0.0);
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
@@ -45,6 +43,7 @@ class _SwipeableMiniPlayerState extends State<SwipeableMiniPlayer>
   @override
   void dispose() {
     _controller.dispose();
+    _dragOffsetNotifier.dispose();
     super.dispose();
   }
 
@@ -52,49 +51,48 @@ class _SwipeableMiniPlayerState extends State<SwipeableMiniPlayer>
     if (_controller.isAnimating) return;
 
     final double delta = details.primaryDelta!;
+    double currentOffset = _dragOffsetNotifier.value;
 
-    // Check limits
-    final bool isMovingLeft = _dragOffset + delta < 0;
-    final bool isMovingRight = _dragOffset + delta > 0;
+    final bool isMovingLeft = currentOffset + delta < 0;
+    final bool isMovingRight = currentOffset + delta > 0;
     final bool nextExists = widget.nextTrack != null;
     final bool prevExists = widget.prevTrack != null;
 
-    // Apply Resistance if hitting a wall (null track)
     if ((isMovingLeft && !nextExists) || (isMovingRight && !prevExists)) {
-      _dragOffset += delta * _resistanceFactor;
+      currentOffset += delta * _resistanceFactor;
     } else {
-      _dragOffset += delta;
+      currentOffset += delta;
     }
 
-    setState(() {});
+    // Direct update without setState
+    _dragOffsetNotifier.value = currentOffset;
   }
 
   void _handleDragEnd(DragEndDetails details, double width) {
     if (_controller.isAnimating) return;
-    if (_dragOffset < -_threshold && widget.nextTrack != null) {
-      // Swiped Left -> Go to Next
-      _animateToPosition(-width - _cardGap, () => widget.onSwipeNext());
-    } else if (_dragOffset > _threshold && widget.prevTrack != null) {
-      // Swiped Right -> Go to Prev
-      _animateToPosition(width + _cardGap, () => widget.onSwipePrev());
+
+    final double currentOffset = _dragOffsetNotifier.value;
+
+    if (currentOffset < -_threshold && widget.nextTrack != null) {
+      _animateToPosition(-width - _cardGap, widget.onSwipeNext);
+    } else if (currentOffset > _threshold && widget.prevTrack != null) {
+      _animateToPosition(width + _cardGap, widget.onSwipePrev);
     } else {
-      // Cancel -> Snap back to 0
       _animateToPosition(0.0, null);
     }
   }
 
   void _animateToPosition(double targetOffset, VoidCallback? onComplete) {
-    final double start = _dragOffset;
+    final double start = _dragOffsetNotifier.value;
 
     final Animation<double> animation = Tween<double>(
       begin: start,
       end: targetOffset,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
 
+    // Listen to animation frame and update notifier
     void listener() {
-      setState(() {
-        _dragOffset = animation.value;
-      });
+      _dragOffsetNotifier.value = animation.value;
     }
 
     animation.addListener(listener);
@@ -104,10 +102,9 @@ class _SwipeableMiniPlayerState extends State<SwipeableMiniPlayer>
       animation.removeListener(listener);
 
       if (onComplete != null) {
-        // 1. Trigger the data update (Parent changes Current Track)
         onComplete();
-        _dragOffset = 0.0;
-        setState(() {});
+        // Reset offset silently after parent update
+        _dragOffsetNotifier.value = 0.0;
       }
     });
   }
@@ -126,26 +123,30 @@ class _SwipeableMiniPlayerState extends State<SwipeableMiniPlayer>
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Container(
-              color: Colors.transparent, // Capture taps
-              child: Stack(
-                children: <Widget>[
-                  if (widget.prevTrack != null)
-                    Transform.translate(
-                      offset: Offset(_dragOffset - totalShift, 0),
-                      child: _MiniPlayerCard(track: widget.prevTrack!),
-                    ),
-
-                  if (widget.nextTrack != null)
-                    Transform.translate(
-                      offset: Offset(_dragOffset + totalShift, 0),
-                      child: _MiniPlayerCard(track: widget.nextTrack!),
-                    ),
-
-                  Transform.translate(
-                    offset: Offset(_dragOffset, 0),
-                    child: _MiniPlayerCard(track: widget.currentTrack),
-                  ),
-                ],
+              color: Colors.transparent,
+              // Only this part rebuilds during drag
+              child: ValueListenableBuilder<double>(
+                valueListenable: _dragOffsetNotifier,
+                builder: (BuildContext context, double offset, Widget? child) {
+                  return Stack(
+                    children: <Widget>[
+                      if (widget.prevTrack != null)
+                        Transform.translate(
+                          offset: Offset(offset - totalShift, 0),
+                          child: _MiniPlayerCard(track: widget.prevTrack),
+                        ),
+                      if (widget.nextTrack != null)
+                        Transform.translate(
+                          offset: Offset(offset + totalShift, 0),
+                          child: _MiniPlayerCard(track: widget.nextTrack),
+                        ),
+                      Transform.translate(
+                        offset: Offset(offset, 0),
+                        child: _MiniPlayerCard(track: widget.currentTrack),
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           ),
@@ -168,11 +169,7 @@ class _MiniPlayerCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: context.colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(8),
-        border: Border(
-          left: BorderSide(color: context.colorScheme.primary, width: 0.5),
-          right: BorderSide(color: context.colorScheme.primary, width: 0.5),
-          top: BorderSide(color: context.colorScheme.primary, width: 0.5),
-        ),
+        border: Border.all(color: context.colorScheme.primary, width: 0.5),
         boxShadow: const <BoxShadow>[
           BoxShadow(
             color: Colors.black45,
@@ -186,19 +183,16 @@ class _MiniPlayerCard extends StatelessWidget {
           Expanded(
             child: Row(
               children: <Widget>[
-                // Cover
                 Container(
                   width: 64,
                   color: context.colorScheme.surface,
-                  child: Image.network(
+                  // Optimization: Use your extension
+                  child: networkImageOrDefault(
                     track.coverUrl,
                     fit: BoxFit.cover,
-                    errorBuilder: (BuildContext c, Object e, StackTrace? s) =>
-                        const Icon(Icons.music_note, color: Colors.white),
                   ),
                 ),
                 const SizedBox(width: 12),
-                // Info
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -238,7 +232,6 @@ class _MiniPlayerCard extends StatelessWidget {
               ],
             ),
           ),
-          // Duration Line
           SizedBox(
             height: 2,
             child: LinearProgressIndicator(
