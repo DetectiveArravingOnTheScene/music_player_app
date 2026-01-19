@@ -1,5 +1,6 @@
 library;
 
+export 'package:auto_route/auto_route.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:flutter_dotenv/flutter_dotenv.dart';
 export 'package:flutter_localizations/flutter_localizations.dart';

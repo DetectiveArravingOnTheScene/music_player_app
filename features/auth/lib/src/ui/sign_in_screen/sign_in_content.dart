@@ -1,8 +1,8 @@
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:navigation/navigation.dart';
 
+import '../../../auth.gr.dart';
 import '../../bloc/blocs.dart';
 import '../widgets/auth_scope.dart';
 import '../widgets/auth_screen_template.dart';
@@ -30,9 +30,7 @@ class SignInContent extends StatelessWidget {
           textFields: <Widget>[
             TextField(
               onChanged: (String value) {
-                context.read<SignInBloc>().add(
-                  SignInEmailChanged(value),
-                );
+                context.read<SignInBloc>().add(SignInEmailChanged(value));
               },
               decoration: InputDecoration(
                 label: Text(t.login.email),
@@ -41,9 +39,7 @@ class SignInContent extends StatelessWidget {
             ),
             TextField(
               onChanged: (String value) {
-                context.read<SignInBloc>().add(
-                  SignInPasswordChanged(value),
-                );
+                context.read<SignInBloc>().add(SignInPasswordChanged(value));
               },
               obscureText: true,
               decoration: InputDecoration(

@@ -14,8 +14,6 @@ dependencies:
   equatable: ^2.0.7
   flutter:
     sdk: flutter
-  navigation:
-      path: ./../../navigation
   core:
       path: ./../../core
   core_ui:
