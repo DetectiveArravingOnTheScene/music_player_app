@@ -5,6 +5,11 @@ abstract class LocalLikedTracksTableProvider {
 
   Future<List<LocalLikedTrackMetadataEntity>> getByUserId(String userId);
 
+  Future<List<LocalLikedTrackMetadataEntity>> getByUserIdAndUrns(
+    String userId,
+    List<String> urns,
+  );
+
   Future<LocalLikedTrackMetadataEntity> create(
     LocalLikedTrackMetadataEntity entity,
   );

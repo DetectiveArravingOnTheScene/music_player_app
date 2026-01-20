@@ -13,8 +13,7 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  navigation:
-      path: ./../../navigation
+  
   domain:
       path: ./../../domain
   core:

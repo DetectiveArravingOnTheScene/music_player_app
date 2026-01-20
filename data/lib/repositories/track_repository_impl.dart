@@ -155,7 +155,10 @@ class TrackRepositoryImpl extends TrackRepository {
 
     if (userId != null) {
       final List<LikedTrackMetadataEntity> allLiked =
-          await _localLikedTracksProvider.getByUserId(userId);
+          await _localLikedTracksProvider.getByUserIdAndUrns(
+            userId,
+            tracks.map((TrackEntity i) => i.urn).toList(),
+          );
 
       return LikedTracksMapper.mapLikedTracks(tracks, allLiked);
     }

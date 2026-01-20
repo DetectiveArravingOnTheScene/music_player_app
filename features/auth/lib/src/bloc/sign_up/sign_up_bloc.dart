@@ -1,15 +1,23 @@
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../blocs.dart';
+import 'sign_up_event.dart';
+import 'sign_up_state.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
+  final SignUpWithEmailUseCase _signUpWithEmailUseCase;
+  final SignInWithGoogleUseCase _signInWithGoogleUseCase;
+  final UserValidatonService _userValidatonService;
+
   SignUpBloc({
     required SignUpWithEmailUseCase signUpWithEmailUseCase,
     required SignInWithGoogleUseCase signInWithGoogleUseCase,
+    required UserValidatonService userValidationService,
   }) : _signUpWithEmailUseCase = signUpWithEmailUseCase,
        _signInWithGoogleUseCase = signInWithGoogleUseCase,
-       super(const SignUpState()) {
+       _userValidatonService = userValidationService,
+       super(const SignUpState.input()) {
     on<SignUpEmailChanged>(_onEmailChanged);
     on<SignUpPasswordChanged>(_onPasswordChanged);
     on<SignUpConfirmPasswordChanged>(_onConfirmPasswordChanged);
@@ -17,22 +25,73 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<SignUpWithGoogleSubmitted>(_onGoogleSubmitted);
   }
 
-  final SignUpWithEmailUseCase _signUpWithEmailUseCase;
-  final SignInWithGoogleUseCase _signInWithGoogleUseCase;
+  ({String email, String password, String confirmPassword})? get _formData {
+    return switch (state) {
+      InputSignUp(
+        :final String email,
+        :final String password,
+        :final String confirmPassword,
+      ) ||
+      SubmittingSignUp(
+        :final String email,
+        :final String password,
+        :final String confirmPassword,
+      ) ||
+      FailureSignUp(
+        :final String email,
+        :final String password,
+        :final String confirmPassword,
+      ) => (email: email, password: password, confirmPassword: confirmPassword),
+      _ => null,
+    };
+  }
+
+  String? get _currentEmailError => switch (state) {
+    InputSignUp(:final String? emailError) ||
+    FailureSignUp(:final String? emailError) => emailError,
+    _ => null,
+  };
+
+  String? get _currentPasswordError => switch (state) {
+    InputSignUp(:final String? passwordError) ||
+    FailureSignUp(:final String? passwordError) => passwordError,
+    _ => null,
+  };
+
+  String? get _currentConfirmPasswordError => switch (state) {
+    InputSignUp(:final String? confirmPasswordError) ||
+    FailureSignUp(:final String? confirmPasswordError) => confirmPasswordError,
+    _ => null,
+  };
+
+  bool get _currentIsValid => switch (state) {
+    InputSignUp(:final bool isValid) ||
+    FailureSignUp(:final bool isValid) => isValid,
+    _ => false,
+  };
 
   void _onEmailChanged(SignUpEmailChanged event, Emitter<SignUpState> emit) {
+    final ({String confirmPassword, String email, String password})? data =
+        _formData;
+    if (data == null) return;
+
     final String? error = _validateEmail(event.email);
+
     emit(
-      state.copyWith(
+      SignUpState.input(
         email: event.email,
+        password: data.password,
+        confirmPassword: data.confirmPassword,
         emailError: error,
+        passwordError: _currentPasswordError,
+        confirmPasswordError: _currentConfirmPasswordError,
         isValid: _calculateIsValid(
           emailError: error,
-          passwordError: state.passwordError,
-          confirmPasswordError: state.confirmPasswordError,
+          passwordError: _currentPasswordError,
+          confirmPasswordError: _currentConfirmPasswordError,
           email: event.email,
-          password: state.password,
-          confirmPassword: state.confirmPassword,
+          password: data.password,
+          confirmPassword: data.confirmPassword,
         ),
       ),
     );
@@ -42,25 +101,31 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     SignUpPasswordChanged event,
     Emitter<SignUpState> emit,
   ) {
-    final String? passwordError = _validatePassword(event.password);
+    final ({String confirmPassword, String email, String password})? data =
+        _formData;
+    if (data == null) return;
 
+    final String? passwordError = _validatePassword(event.password);
     final String? confirmPasswordError = _validateConfirmPassword(
-      state.confirmPassword,
+      data.confirmPassword,
       event.password,
     );
 
     emit(
-      state.copyWith(
+      SignUpState.input(
+        email: data.email,
         password: event.password,
+        confirmPassword: data.confirmPassword,
+        emailError: _currentEmailError,
         passwordError: passwordError,
         confirmPasswordError: confirmPasswordError,
         isValid: _calculateIsValid(
-          emailError: state.emailError,
+          emailError: _currentEmailError,
           passwordError: passwordError,
           confirmPasswordError: confirmPasswordError,
-          email: state.email,
+          email: data.email,
           password: event.password,
-          confirmPassword: state.confirmPassword,
+          confirmPassword: data.confirmPassword,
         ),
       ),
     );
@@ -70,21 +135,29 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     SignUpConfirmPasswordChanged event,
     Emitter<SignUpState> emit,
   ) {
+    final ({String confirmPassword, String email, String password})? data =
+        _formData;
+    if (data == null) return;
+
     final String? error = _validateConfirmPassword(
       event.confirmPassword,
-      state.password,
+      data.password,
     );
 
     emit(
-      state.copyWith(
+      SignUpState.input(
+        email: data.email,
+        password: data.password,
         confirmPassword: event.confirmPassword,
+        emailError: _currentEmailError,
+        passwordError: _currentPasswordError,
         confirmPasswordError: error,
         isValid: _calculateIsValid(
-          emailError: state.emailError,
-          passwordError: state.passwordError,
+          emailError: _currentEmailError,
+          passwordError: _currentPasswordError,
           confirmPasswordError: error,
-          email: state.email,
-          password: state.password,
+          email: data.email,
+          password: data.password,
           confirmPassword: event.confirmPassword,
         ),
       ),
@@ -95,34 +168,59 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     SignUpSubmitted event,
     Emitter<SignUpState> emit,
   ) async {
-    final String? emailError = _validateEmail(state.email);
-    final String? passwordError = _validatePassword(state.password);
+    final ({String confirmPassword, String email, String password})? data =
+        _formData;
+    if (data == null) return;
+
+    final String? emailError = _validateEmail(data.email);
+    final String? passwordError = _validatePassword(data.password);
     final String? confirmPasswordError = _validateConfirmPassword(
-      state.confirmPassword,
-      state.password,
+      data.confirmPassword,
+      data.password,
     );
 
-    if (emailError == null &&
+    final bool isValid =
+        emailError == null &&
         passwordError == null &&
-        confirmPasswordError == null) {
+        confirmPasswordError == null;
+
+    if (isValid) {
       try {
-        emit(state.copyWith(status: SignUpStatus.loading));
-        await _signUpWithEmailUseCase.execute(
-          SignInWithEmailPayload(state.email, state.password),
+        emit(
+          SignUpState.submitting(
+            email: data.email,
+            password: data.password,
+            confirmPassword: data.confirmPassword,
+          ),
         );
-        emit(state.copyWith(status: SignUpStatus.success));
+
+        await _signUpWithEmailUseCase.execute(
+          SignInWithEmailPayload(data.email, data.password),
+        );
+
+        emit(const SignUpState.success());
       } on AppException catch (e) {
         emit(
-          state.copyWith(status: SignUpStatus.failure, errorMessage: e.message),
+          SignUpState.failure(
+            errorMessage: e.message,
+            email: data.email,
+            password: data.password,
+            confirmPassword: data.confirmPassword,
+            emailError: emailError,
+            passwordError: passwordError,
+            confirmPasswordError: confirmPasswordError,
+          ),
         );
       }
     } else {
       emit(
-        state.copyWith(
+        SignUpState.input(
+          email: data.email,
+          password: data.password,
+          confirmPassword: data.confirmPassword,
           emailError: emailError,
           passwordError: passwordError,
           confirmPasswordError: confirmPasswordError,
-          isValid: false,
         ),
       );
     }
@@ -132,13 +230,34 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     SignUpWithGoogleSubmitted event,
     Emitter<SignUpState> emit,
   ) async {
+    final ({String confirmPassword, String email, String password})? data =
+        _formData;
+
+    final String currentEmail = data?.email ?? '';
+    final String currentPass = data?.password ?? '';
+    final String currentConfirm = data?.confirmPassword ?? '';
+
     try {
-      emit(state.copyWith(status: SignUpStatus.loading));
+      emit(
+        SignUpState.submitting(
+          email: currentEmail,
+          password: currentPass,
+          confirmPassword: currentConfirm,
+        ),
+      );
+
       await _signInWithGoogleUseCase.execute();
-      emit(state.copyWith(status: SignUpStatus.success));
+
+      emit(const SignUpState.success());
     } on AppException catch (e) {
       emit(
-        state.copyWith(status: SignUpStatus.failure, errorMessage: e.message),
+        SignUpState.failure(
+          errorMessage: e.message,
+          email: currentEmail,
+          password: currentPass,
+          confirmPassword: currentConfirm,
+          isValid: _currentIsValid,
+        ),
       );
     }
   }
@@ -160,18 +279,18 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
   }
 
   String? _validateEmail(String value) {
-    return serviceLocator.get<UserValidatonService>().validateEmail(value);
+    return _userValidatonService.validateEmail(value);
   }
 
   String? _validatePassword(String value) {
-    return serviceLocator.get<UserValidatonService>().validatePassword(value);
+    return _userValidatonService.validatePassword(value);
   }
 
   String? _validateConfirmPassword(
     String? confirmValue,
     String originalPassword,
   ) {
-    return serviceLocator.get<UserValidatonService>().validateConfirmPassword(
+    return _userValidatonService.validateConfirmPassword(
       confirmValue,
       originalPassword,
     );
