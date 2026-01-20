@@ -15,7 +15,7 @@ class SignInContent extends StatelessWidget {
     return BlocConsumer<SignInBloc, SignInState>(
       listener: (BuildContext context, SignInState state) {
         state.mapOrNull(
-          failure: (state) {
+          failure: (FailureSignIn state) {
             context.showErrorSnackbar(state.errorMessage);
           },
           success: (_) {
@@ -30,17 +30,17 @@ class SignInContent extends StatelessWidget {
         );
 
         final String? emailError = state.maybeMap(
-          input: (s) => s.emailError,
+          input: (InputSignIn s) => s.emailError,
           orElse: () => null,
         );
 
         final String? passwordError = state.maybeMap(
-          input: (s) => s.passwordError,
+          input: (InputSignIn s) => s.passwordError,
           orElse: () => null,
         );
 
         final bool isInputValid = state.maybeMap(
-          input: (s) => s.isValid,
+          input: (InputSignIn s) => s.isValid,
           orElse: () => true, // Allow submit attempts in other states
         );
 
