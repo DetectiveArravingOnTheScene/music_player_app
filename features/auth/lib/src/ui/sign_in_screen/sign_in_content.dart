@@ -14,35 +14,34 @@ class SignInContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<SignInBloc, SignInState>(
       listener: (BuildContext context, SignInState state) {
-        state.mapOrNull(
-          failure: (FailureSignIn state) {
+        switch (state) {
+          case FailureSignIn():
             context.showErrorSnackbar(state.errorMessage);
-          },
-          success: (_) {
+          case SuccessSignIn():
             AuthScope.of(context)!.redirectBack(redirect: true);
-          },
-        );
+          default:
+        }
       },
       builder: (BuildContext context, SignInState state) {
-        final bool isLoading = state.maybeMap(
-          submitting: (_) => true,
-          orElse: () => false,
-        );
+        final bool isLoading = switch (state) {
+          SubmittingSignIn() => true,
+          _ => false,
+        };
 
-        final String? emailError = state.maybeMap(
-          input: (InputSignIn s) => s.emailError,
-          orElse: () => null,
-        );
+        final String? emailError = switch (state) {
+          InputSignIn(:final String? emailError) => emailError,
+          _ => null,
+        };
 
-        final String? passwordError = state.maybeMap(
-          input: (InputSignIn s) => s.passwordError,
-          orElse: () => null,
-        );
+        final String? passwordError = switch (state) {
+          InputSignIn(:final String? passwordError) => passwordError,
+          _ => null,
+        };
 
-        final bool isInputValid = state.maybeMap(
-          input: (InputSignIn s) => s.isValid,
-          orElse: () => true, // Allow submit attempts in other states
-        );
+        final bool isInputValid = switch (state) {
+          InputSignIn(:final bool isValid) => isValid,
+          _ => true, // Allow submit attempts in other states
+        };
 
         return AuthScreenTemplate(
           title: t.login.signIn,

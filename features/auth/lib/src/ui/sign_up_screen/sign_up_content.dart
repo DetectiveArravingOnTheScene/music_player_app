@@ -14,35 +14,39 @@ class SignUpContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<SignUpBloc, SignUpState>(
       listener: (BuildContext context, SignUpState state) {
-        state.mapOrNull(
-          failure: (FailureSignUp state) {
-            context.showErrorSnackbar(state.errorMessage);
-          },
-          success: (_) {
+        switch (state) {
+          case FailureSignUp(:final String errorMessage):
+            context.showErrorSnackbar(errorMessage);
+          case SuccessSignUp():
             AuthScope.of(context)!.redirectBack(redirect: true);
-          },
-        );
+          default:
+        }
       },
       builder: (BuildContext context, SignUpState state) {
-        final String? emailError = state.mapOrNull(
-          input: (InputSignUp s) => s.emailError,
-          failure: (FailureSignUp s) => s.emailError,
-        );
+        final String? emailError = switch (state) {
+          InputSignUp(:final String? emailError) ||
+          FailureSignUp(:final String? emailError) => emailError,
+          _ => null,
+        };
 
-        final String? passwordError = state.mapOrNull(
-          input: (InputSignUp s) => s.passwordError,
-          failure: (FailureSignUp s) => s.passwordError,
-        );
+        final String? passwordError = switch (state) {
+          InputSignUp(:final String? passwordError) ||
+          FailureSignUp(:final String? passwordError) => passwordError,
+          _ => null,
+        };
 
-        final String? confirmPasswordError = state.mapOrNull(
-          input: (InputSignUp s) => s.confirmPasswordError,
-          failure: (FailureSignUp s) => s.confirmPasswordError,
-        );
+        final String? confirmPasswordError = switch (state) {
+          InputSignUp(:final String? confirmPasswordError) ||
+          FailureSignUp(
+            :final String? confirmPasswordError,
+          ) => confirmPasswordError,
+          _ => null,
+        };
 
-        final bool isSubmitting = state.maybeMap(
-          submitting: (_) => true,
-          orElse: () => false,
-        );
+        final bool isSubmitting = switch (state) {
+          SubmittingSignUp() => true,
+          _ => false,
+        };
 
         return AuthScreenTemplate(
           title: t.login.signUp,
