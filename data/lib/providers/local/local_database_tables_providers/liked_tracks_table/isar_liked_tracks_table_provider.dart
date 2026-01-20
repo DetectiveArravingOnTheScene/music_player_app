@@ -23,6 +23,7 @@ class IsarLikedTracksTableProvider implements LocalLikedTracksTableProvider {
         .findAllAsync();
   }
 
+  @override
   Future<List<LocalLikedTrackMetadataEntity>> getByUserIdAndUrns(
     String userId,
     List<String> urns,

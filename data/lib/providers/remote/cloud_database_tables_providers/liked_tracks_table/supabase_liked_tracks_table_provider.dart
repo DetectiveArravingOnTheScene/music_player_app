@@ -39,6 +39,7 @@ class SupabaseLikedTracksTableProvider
         .toList();
   }
 
+  @override
   Future<List<CloudLikedTrackMetadataEntity>> getByUserIdAndUrns(
     String userId,
     List<String> urns,
