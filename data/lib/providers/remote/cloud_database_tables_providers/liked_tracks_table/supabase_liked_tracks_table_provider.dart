@@ -39,6 +39,23 @@ class SupabaseLikedTracksTableProvider
         .toList();
   }
 
+  Future<List<CloudLikedTrackMetadataEntity>> getByUserIdAndUrns(
+    String userId,
+    List<String> urns,
+  ) async {
+    final List<Map<String, dynamic>> response = await _db.client
+        .from(_table)
+        .select()
+        .eq(SupabaseConsts.userIdField, userId)
+        .inFilter(SupabaseConsts.urnField, urns);
+
+    return response
+        .map<CloudLikedTrackMetadataEntity>(
+          CloudLikedTrackMetadataEntity.fromJson,
+        )
+        .toList();
+  }
+
   @override
   Future<CloudLikedTrackMetadataEntity> create(
     CloudLikedTrackMetadataEntity entity,
