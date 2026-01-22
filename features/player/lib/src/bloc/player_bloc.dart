@@ -90,9 +90,6 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
   }
 
   Future<void> _playCurrentTrack(Emitter<PlayerBlocState> emit) async {
-    print("HELLO MAMA");
-    print(state.currentIndex);
-    print(state.playlist.length);
     final TrackModel? track = state.currentTrack;
     if (track == null) {
       return;
