@@ -75,6 +75,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
       final Map<StreamTypeEnum, String> streamUrls =
           await _getTrackStreamsUseCase.execute(track.urn);
       await _service.playTrack(track, streamUrls[StreamTypeEnum.httpMp3128]!);
+
       emit(state.copyWith(isLoading: false, isPlaying: true));
     } catch (e) {
       emit(state.copyWith(isLoading: false));
