@@ -55,9 +55,13 @@ class PlayerService {
   }
 
   Future<void> pause() => _player.pause();
+
   Future<void> resume() => _player.play();
+
   Future<void> seek(Duration position) => _player.seek(position);
+
   Future<void> stop() => _player.stop();
+
   Future<void> setVolume(double volume) => _player.setVolume(volume);
 
   void dispose() => _player.dispose();
