@@ -145,6 +145,7 @@ class DataDependencyInjection {
       },
       dependsOn: <Type>[Supabase],
     );
+
     serviceLocator.registerSingletonAsync<LocalLikedArtistsTableProvider>(
       () async {
         return IsarLikedArtistsTableProvider(
@@ -243,12 +244,14 @@ class DataDependencyInjection {
       },
       dependsOn: <Type>[AuthRepository],
     );
+
     serviceLocator.registerSingletonWithDependencies<SignUpWithEmailUseCase>(
       () {
         return SignUpWithEmailUseCase(serviceLocator.get<AuthRepository>());
       },
       dependsOn: <Type>[AuthRepository],
     );
+
     serviceLocator.registerSingletonWithDependencies<SignInWithGoogleUseCase>(
       () {
         return SignInWithGoogleUseCase(serviceLocator.get<AuthRepository>());
@@ -269,15 +272,18 @@ class DataDependencyInjection {
       },
       dependsOn: <Type>[TrackRepository],
     );
+
     serviceLocator
         .registerSingletonWithDependencies<SubscribeToTrackUpdatesUseCase>(() {
           return SubscribeToTrackUpdatesUseCase(
             serviceLocator.get<TrackRepository>(),
           );
         }, dependsOn: <Type>[TrackRepository]);
+
     serviceLocator.registerSingletonWithDependencies<LikeTrackUseCase>(() {
       return LikeTrackUseCase(serviceLocator.get<TrackRepository>());
     }, dependsOn: <Type>[TrackRepository]);
+
     serviceLocator.registerSingletonWithDependencies<RemoveLikeTrackUseCase>(
       () {
         return RemoveLikeTrackUseCase(serviceLocator.get<TrackRepository>());
