@@ -94,7 +94,7 @@ class MainContent extends StatelessWidget {
                           ),
                         );
                       } else {
-                        return const SizedBox(height: 0, width: 0);
+                        return const SizedBox.shrink();
                       }
                     },
                   ),
