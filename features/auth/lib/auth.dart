@@ -1,6 +1,6 @@
 library;
 
-import 'package:navigation/navigation.dart';
+import 'package:core/core.dart';
 
 export 'src/ui/auth_screen.dart';
 

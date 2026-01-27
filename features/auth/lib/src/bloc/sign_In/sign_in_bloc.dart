@@ -5,31 +5,60 @@ import 'sign_in_event.dart';
 import 'sign_in_state.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
+  final SignInWithEmailUseCase _signInWithEmailUseCase;
+  final SignInWithGoogleUseCase _signInWithGoogleUseCase;
+  final UserValidatonService _userValidatonService;
+
   SignInBloc({
     required SignInWithEmailUseCase signInWithEmailUseCase,
     required SignInWithGoogleUseCase signInWithGoogleUseCase,
+    required UserValidatonService userValidationService,
   }) : _signInWithEmailUseCase = signInWithEmailUseCase,
        _signInWithGoogleUseCase = signInWithGoogleUseCase,
-       super(const SignInState()) {
+       _userValidatonService = userValidationService,
+       super(const SignInState.input()) {
     on<SignInEmailChanged>(_onEmailChanged);
     on<SignInPasswordChanged>(_onPasswordChanged);
     on<SignInSubmitted>(_onSubmitted);
     on<SignInWithGoogleSubmitted>(_onGoogleSubmitted);
   }
 
-  final SignInWithEmailUseCase _signInWithEmailUseCase;
-  final SignInWithGoogleUseCase _signInWithGoogleUseCase;
+  String _getCurrentEmail() {
+    return switch (state) {
+      InputSignIn(:final String email) ||
+      SubmittingSignIn(:final String email) ||
+      FailureSignIn(:final String email) => email,
+      _ => '',
+    };
+  }
+
+  String _getCurrentPassword() {
+    return switch (state) {
+      InputSignIn(:final String password) ||
+      SubmittingSignIn(:final String password) ||
+      FailureSignIn(:final String password) => password,
+      _ => '',
+    };
+  }
 
   void _onEmailChanged(SignInEmailChanged event, Emitter<SignInState> emit) {
-    final String? error = _validateEmail(event.email);
+    final String email = event.email;
+    final String password = _getCurrentPassword();
+
+    final String? emailError = _validateEmail(email);
+    final String? passwordError = _validatePassword(password);
+
     emit(
-      state.copyWith(
-        email: event.email,
-        emailError: error,
+      SignInState.input(
+        email: email,
+        password: password,
+        emailError: emailError,
+        passwordError: passwordError,
         isValid:
-            error == null &&
-            state.passwordError == null &&
-            state.password.isNotEmpty,
+            emailError == null &&
+            passwordError == null &&
+            email.isNotEmpty &&
+            password.isNotEmpty,
       ),
     );
   }
@@ -38,13 +67,23 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     SignInPasswordChanged event,
     Emitter<SignInState> emit,
   ) {
-    final String? error = _validatePassword(event.password);
+    final String email = _getCurrentEmail();
+    final String password = event.password;
+
+    final String? passwordError = _validatePassword(password);
+    final String? emailError = _validateEmail(email);
+
     emit(
-      state.copyWith(
-        password: event.password,
-        passwordError: error,
+      SignInState.input(
+        email: email,
+        password: password,
+        emailError: emailError,
+        passwordError: passwordError,
         isValid:
-            error == null && state.emailError == null && state.email.isNotEmpty,
+            emailError == null &&
+            passwordError == null &&
+            email.isNotEmpty &&
+            password.isNotEmpty,
       ),
     );
   }
@@ -53,27 +92,37 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     SignInSubmitted event,
     Emitter<SignInState> emit,
   ) async {
-    final String? emailError = _validateEmail(state.email);
-    final String? passwordError = _validatePassword(state.password);
+    final String email = _getCurrentEmail();
+    final String password = _getCurrentPassword();
+
+    final String? emailError = _validateEmail(email);
+    final String? passwordError = _validatePassword(password);
 
     if (emailError == null && passwordError == null) {
       try {
-        emit(state.copyWith(status: SignInStatus.loading));
+        emit(SignInState.submitting(email: email, password: password));
+
         await _signInWithEmailUseCase.execute(
-          SignInWithEmailPayload(state.email, state.password),
+          SignInWithEmailPayload(email, password),
         );
-        emit(state.copyWith(status: SignInStatus.success));
+
+        emit(const SignInState.success());
       } on AppException catch (e) {
         emit(
-          state.copyWith(status: SignInStatus.failure, errorMessage: e.message),
+          SignInState.failure(
+            email: email,
+            password: password,
+            errorMessage: e.message,
+          ),
         );
       }
     } else {
       emit(
-        state.copyWith(
+        SignInState.input(
+          email: email,
+          password: password,
           emailError: emailError,
           passwordError: passwordError,
-          isValid: false,
         ),
       );
     }
@@ -83,22 +132,30 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     SignInWithGoogleSubmitted event,
     Emitter<SignInState> emit,
   ) async {
+    final String email = _getCurrentEmail();
+    final String password = _getCurrentPassword();
+
     try {
-      emit(state.copyWith(status: SignInStatus.loading));
+      emit(SignInState.submitting(email: email, password: password));
       await _signInWithGoogleUseCase.execute();
-      emit(state.copyWith(status: SignInStatus.success));
+
+      emit(const SignInState.success());
     } on AppException catch (e) {
       emit(
-        state.copyWith(status: SignInStatus.failure, errorMessage: e.message),
+        SignInState.failure(
+          email: email,
+          password: password,
+          errorMessage: e.message,
+        ),
       );
     }
   }
 
   String? _validateEmail(String value) {
-    return serviceLocator.get<UserValidatonService>().validateEmail(value);
+    return _userValidatonService.validateEmail(value);
   }
 
   String? _validatePassword(String value) {
-    return serviceLocator.get<UserValidatonService>().validatePassword(value);
+    return _userValidatonService.validatePassword(value);
   }
 }

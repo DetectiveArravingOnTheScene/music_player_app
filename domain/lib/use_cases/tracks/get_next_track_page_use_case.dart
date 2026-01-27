@@ -1,11 +1,13 @@
 import '../../domain.dart';
 
-class GetNextTracksPageUseCase {
+class GetNextTracksPageUseCase
+    extends FutureUseCase<String, CollectionModel<TrackModel>> {
   final TrackRepository _repository;
 
   GetNextTracksPageUseCase(this._repository);
 
-  Future<CollectionModel<TrackModel>> execute(String nextUrl) {
+  @override
+  Future<CollectionModel<TrackModel>> execute(String nextUrl) async {
     return _repository.getNextPage(nextUrl);
   }
 }

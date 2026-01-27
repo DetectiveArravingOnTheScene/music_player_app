@@ -11,8 +11,6 @@ resolution: workspace
 dependencies:
     bloc: ^9.2.0
 
-    domain:
-        path: ./../domain
 
     flutter:
         sdk: flutter
