@@ -4,7 +4,6 @@ import 'package:domain/use_cases/tracks/like_track_use_case.dart';
 import 'package:domain/use_cases/tracks/remove_like_use_case.dart';
 import 'package:domain/use_cases/tracks/subscribe_to_track_updates_use_case.dart';
 import 'package:flutter/material.dart';
-import 'package:navigation/navigation.dart';
 import 'package:player/player.dart';
 
 import 'main_content.dart';

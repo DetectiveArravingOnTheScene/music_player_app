@@ -140,46 +140,52 @@ class _SwipeableMiniPlayerState extends State<SwipeableMiniPlayer>
                 borderRadius: BorderRadius.circular(8),
                 child: Container(
                   color: Colors.transparent, // Capture taps
-                  child: Stack(
-                    children: <Widget>[
-                      if (widget.prevTrack != null)
-                        Transform.translate(
-                          offset: Offset(_dragOffset - totalShift, 0),
-                          child: MiniPlayerCard(
-                            onLikeToggle: widget.onLikeToggle,
-                            onPauseToggle: widget.onPauseToggle,
-                            track: widget.prevTrack!,
-                            position: asyncSnapshot.data,
-                            isLiked: widget.currentTrack.isLiked,
-                            isPaused: widget.isPaused,
-                          ),
-                        ),
+                  child: ValueListenableBuilder<double>(
+                    valueListenable: _dragOffsetNotifier,
+                    builder:
+                        (BuildContext context, double offset, Widget? child) {
+                          return Stack(
+                            children: <Widget>[
+                              if (widget.prevTrack != null)
+                                Transform.translate(
+                                  offset: Offset(offset - totalShift, 0),
+                                  child: MiniPlayerCard(
+                                    onLikeToggle: widget.onLikeToggle,
+                                    onPauseToggle: widget.onPauseToggle,
+                                    track: widget.prevTrack!,
+                                    position: asyncSnapshot.data,
+                                    isLiked: widget.currentTrack.isLiked,
+                                    isPaused: widget.isPaused,
+                                  ),
+                                ),
 
-                      if (widget.nextTrack != null)
-                        Transform.translate(
-                          offset: Offset(_dragOffset + totalShift, 0),
-                          child: MiniPlayerCard(
-                            onLikeToggle: widget.onLikeToggle,
-                            onPauseToggle: widget.onPauseToggle,
-                            track: widget.nextTrack!,
-                            position: asyncSnapshot.data,
-                            isLiked: widget.currentTrack.isLiked,
-                            isPaused: widget.isPaused,
-                          ),
-                        ),
+                              if (widget.nextTrack != null)
+                                Transform.translate(
+                                  offset: Offset(offset + totalShift, 0),
+                                  child: MiniPlayerCard(
+                                    onLikeToggle: widget.onLikeToggle,
+                                    onPauseToggle: widget.onPauseToggle,
+                                    track: widget.nextTrack!,
+                                    position: asyncSnapshot.data,
+                                    isLiked: widget.currentTrack.isLiked,
+                                    isPaused: widget.isPaused,
+                                  ),
+                                ),
 
-                      Transform.translate(
-                        offset: Offset(_dragOffset, 0),
-                        child: MiniPlayerCard(
-                          onLikeToggle: widget.onLikeToggle,
-                          onPauseToggle: widget.onPauseToggle,
-                          track: widget.currentTrack,
-                          position: asyncSnapshot.data,
-                          isLiked: widget.currentTrack.isLiked,
-                          isPaused: widget.isPaused,
-                        ),
-                      ),
-                    ],
+                              Transform.translate(
+                                offset: Offset(offset, 0),
+                                child: MiniPlayerCard(
+                                  onLikeToggle: widget.onLikeToggle,
+                                  onPauseToggle: widget.onPauseToggle,
+                                  track: widget.currentTrack,
+                                  position: asyncSnapshot.data,
+                                  isLiked: widget.currentTrack.isLiked,
+                                  isPaused: widget.isPaused,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
                   ),
                 ),
               ),

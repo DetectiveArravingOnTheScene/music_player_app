@@ -4,7 +4,6 @@ import 'package:core/config/app_config.dart';
 import 'package:core/di/app_di.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/domain.dart';
-import 'package:domain/services/auth_service.dart';
 
 import '../../../entities/soundcloud/artist_entity.dart';
 import '../../../entities/soundcloud/collection_entity.dart';

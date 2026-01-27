@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'accent_button_widget.dart';
 import 'artist_tile.dart';
 import 'horizontal_list.dart';
-import 'mini_player.dart';
 import 'outline_button_widget.dart';
 import 'playlist_tile.dart';
 import 'tonal_button_widget.dart';
@@ -36,19 +35,6 @@ class Track {
 
 class _GalleryPageState extends State<GalleryPage> {
   Duration currentDuration = const Duration(seconds: 90);
-
-  final List<Track> _allTracks = List<Track>.generate(
-    5,
-    (int index) => Track(
-      title: 'Track Number ${index + 1}',
-      author: 'Artist ${index + 1}',
-      coverUrl: 'https://picsum.photos/100?random=$index',
-      duration: const Duration(minutes: 3),
-      currentPosition: Duration(seconds: 30 + (index * 10)),
-    ),
-  );
-
-  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,6 @@ import 'package:domain/use_cases/tracks/like_track_use_case.dart';
 import 'package:domain/use_cases/tracks/remove_like_use_case.dart';
 import 'package:domain/use_cases/tracks/subscribe_to_track_updates_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:just_audio/just_audio.dart' as ja;
 
 part 'player_event.dart';
 part 'player_state.dart';
@@ -54,7 +53,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
 
   void _onInit(PlayerInit event, Emitter<PlayerBlocState> emit) {
     _playerStateSubscription = _service.playbackStateStream.listen((
-      ja.PlayerState state,
+      PlayerState state,
     ) {
       add(_PlayerPlaybackStateChanged(state));
     });
@@ -166,9 +165,9 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
     _PlayerPlaybackStateChanged event,
     Emitter<PlayerBlocState> emit,
   ) {
-    emit(state.copyWith(isPlaying: event.state.playing));
+    emit(state.copyWith(isPlaying: event.state.isPlaying));
 
-    if (event.state.processingState == ja.ProcessingState.completed) {
+    if (event.state.processingState == ProcessingState.completed) {
       add(PlayerNext());
     }
   }

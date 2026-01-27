@@ -3,9 +3,7 @@ import 'package:domain/models/music_models/playlist_model.dart';
 import 'package:domain/models/music_models/track_model.dart';
 
 import '../entities/abstract/liked_playlist_metadata_entity.dart';
-import '../entities/isar/local_liked_playlist_metadata_entity.dart';
 import '../entities/soundcloud/playlist_entity.dart';
-import '../entities/supabase/cloud_liked_playlist_metadata_entity.dart';
 import 'artist_mapper.dart';
 import 'playlist_type_mapper.dart';
 import 'track_mapper.dart';
