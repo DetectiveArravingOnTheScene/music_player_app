@@ -46,7 +46,10 @@ class HomeContent extends StatelessWidget {
                       isLiked: trandingTracks.items[index].isLiked,
                       onPress: () {
                         context.read<PlayerBloc>().add(
-                          PlayerSetPlaylist(playlist: trandingTracks.items),
+                          PlayerSetPlaylist(
+                            playlist: trandingTracks.items,
+                            initialIndex: index,
+                          ),
                         );
                       },
                     );

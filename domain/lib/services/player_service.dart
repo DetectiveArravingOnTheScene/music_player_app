@@ -31,9 +31,9 @@ class PlayerService {
     streamUrls, // I pass all streams, sooner or later i will add NetworkService, and i will be able to choose stream accroding to connection speed.
   ) async {
     try {
-      final ja.AudioSource source = ja.HlsAudioSource(
+      final ja.AudioSource source = ja.AudioSource.uri(
         headers: _authService.getAuthHeader,
-        Uri.parse(streamUrls[StreamTypeEnum.hlsAac160]!),
+        Uri.parse(streamUrls[StreamTypeEnum.httpMp3128]!),
         tag: MediaItem(
           id: '$idCounter',
           title: track.title,
