@@ -1,6 +1,5 @@
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
-import 'package:domain/services/auth_service.dart';
 import 'package:domain/use_cases/tracks/like_track_use_case.dart';
 import 'package:domain/use_cases/tracks/remove_like_use_case.dart';
 import 'package:domain/use_cases/tracks/subscribe_to_track_updates_use_case.dart';
@@ -168,9 +167,11 @@ class DataDependencyInjection {
 
     serviceLocator.registerLazySingleton<AuthService>(() {
       return AuthService(serviceLocator.get<AuthRepository>().user);
-    }, dependsOn: <Type>[AuthRepository]);
+    });
 
-    serviceLocator.registerSingleton<PlayerService>(PlayerService());
+    serviceLocator.registerLazySingleton<PlayerService>(() {
+      return PlayerService(serviceLocator.get<AuthService>());
+    });
   }
 
   void _initUseCases() {

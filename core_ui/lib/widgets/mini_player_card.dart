@@ -1,7 +1,6 @@
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import '../core_ui.dart';
-import '../extensions/network_image_or_default.dart';
 
 class MiniPlayerCard extends StatelessWidget {
   final TrackModel track;

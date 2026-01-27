@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:just_audio/just_audio.dart' as ja;
 import '../domain.dart';
-import 'auth_service.dart';
 
 part 'player_state.dart';
 

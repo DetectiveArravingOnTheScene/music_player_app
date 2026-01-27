@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:core/core.dart';
-import 'package:core/di/app_di.dart';
-import 'package:core/localization/gen/strings.g.dart';
 import 'package:domain/domain.dart';
 
 import '../entities/abstract/liked_track_metadata_entity.dart';
