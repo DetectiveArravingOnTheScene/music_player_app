@@ -117,10 +117,10 @@ packages:
     dependency: transitive
     description:
       name: auto_route
-      sha256: e2861f76fc710c12b2909f9a03e338e92926b221a5170312db97965ace252d07
+      sha256: e9acfeb3df33d188fce4ad0239ef4238f333b7aa4d95ec52af3c2b9360dcd969
       url: "https://pub.dev"
     source: hosted
-    version: "11.0.0"
+    version: "11.1.0"
   auto_route_generator:
     dependency: transitive
     description:
@@ -329,14 +329,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
-  equatable:
-    dependency: transitive
-    description:
-      name: equatable
-      sha256: "567c64b3cb4cf82397aac55f4f0cbd3ca20d77c6c03bedbc4ceaddc08904aef7"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.7"
   fake_async:
     dependency: transitive
     description:

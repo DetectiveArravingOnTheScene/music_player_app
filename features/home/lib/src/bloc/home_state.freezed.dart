@@ -55,12 +55,12 @@ extension HomeStatePatterns on HomeState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Loading value)?  loading,TResult Function( _Success value)?  success,TResult Function( _Failure value)?  failure,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( HomeLoading value)?  loading,TResult Function( HomeSuccess value)?  success,TResult Function( HomeFailure value)?  failure,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _Loading() when loading != null:
-return loading(_that);case _Success() when success != null:
-return success(_that);case _Failure() when failure != null:
+case HomeLoading() when loading != null:
+return loading(_that);case HomeSuccess() when success != null:
+return success(_that);case HomeFailure() when failure != null:
 return failure(_that);case _:
   return orElse();
 
@@ -79,12 +79,12 @@ return failure(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Loading value)  loading,required TResult Function( _Success value)  success,required TResult Function( _Failure value)  failure,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( HomeLoading value)  loading,required TResult Function( HomeSuccess value)  success,required TResult Function( HomeFailure value)  failure,}){
 final _that = this;
 switch (_that) {
-case _Loading():
-return loading(_that);case _Success():
-return success(_that);case _Failure():
+case HomeLoading():
+return loading(_that);case HomeSuccess():
+return success(_that);case HomeFailure():
 return failure(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -102,12 +102,12 @@ return failure(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Loading value)?  loading,TResult? Function( _Success value)?  success,TResult? Function( _Failure value)?  failure,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( HomeLoading value)?  loading,TResult? Function( HomeSuccess value)?  success,TResult? Function( HomeFailure value)?  failure,}){
 final _that = this;
 switch (_that) {
-case _Loading() when loading != null:
-return loading(_that);case _Success() when success != null:
-return success(_that);case _Failure() when failure != null:
+case HomeLoading() when loading != null:
+return loading(_that);case HomeSuccess() when success != null:
+return success(_that);case HomeFailure() when failure != null:
 return failure(_that);case _:
   return null;
 
@@ -127,9 +127,9 @@ return failure(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loading,TResult Function( CollectionModel<TrackModel> trandingTracks)?  success,TResult Function( String errorMessage)?  failure,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _Loading() when loading != null:
-return loading();case _Success() when success != null:
-return success(_that.trandingTracks);case _Failure() when failure != null:
+case HomeLoading() when loading != null:
+return loading();case HomeSuccess() when success != null:
+return success(_that.trandingTracks);case HomeFailure() when failure != null:
 return failure(_that.errorMessage);case _:
   return orElse();
 
@@ -150,9 +150,9 @@ return failure(_that.errorMessage);case _:
 
 @optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loading,required TResult Function( CollectionModel<TrackModel> trandingTracks)  success,required TResult Function( String errorMessage)  failure,}) {final _that = this;
 switch (_that) {
-case _Loading():
-return loading();case _Success():
-return success(_that.trandingTracks);case _Failure():
+case HomeLoading():
+return loading();case HomeSuccess():
+return success(_that.trandingTracks);case HomeFailure():
 return failure(_that.errorMessage);case _:
   throw StateError('Unexpected subclass');
 
@@ -172,9 +172,9 @@ return failure(_that.errorMessage);case _:
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loading,TResult? Function( CollectionModel<TrackModel> trandingTracks)?  success,TResult? Function( String errorMessage)?  failure,}) {final _that = this;
 switch (_that) {
-case _Loading() when loading != null:
-return loading();case _Success() when success != null:
-return success(_that.trandingTracks);case _Failure() when failure != null:
+case HomeLoading() when loading != null:
+return loading();case HomeSuccess() when success != null:
+return success(_that.trandingTracks);case HomeFailure() when failure != null:
 return failure(_that.errorMessage);case _:
   return null;
 
@@ -186,8 +186,8 @@ return failure(_that.errorMessage);case _:
 /// @nodoc
 
 
-class _Loading implements HomeState {
-  const _Loading();
+class HomeLoading implements HomeState {
+  const HomeLoading();
   
 
 
@@ -197,7 +197,7 @@ class _Loading implements HomeState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeLoading);
 }
 
 
@@ -218,8 +218,8 @@ String toString() {
 /// @nodoc
 
 
-class _Success implements HomeState {
-  const _Success({required this.trandingTracks});
+class HomeSuccess implements HomeState {
+  const HomeSuccess({required this.trandingTracks});
   
 
  final  CollectionModel<TrackModel> trandingTracks;
@@ -228,13 +228,13 @@ class _Success implements HomeState {
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$SuccessCopyWith<_Success> get copyWith => __$SuccessCopyWithImpl<_Success>(this, _$identity);
+$HomeSuccessCopyWith<HomeSuccess> get copyWith => _$HomeSuccessCopyWithImpl<HomeSuccess>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Success&&(identical(other.trandingTracks, trandingTracks) || other.trandingTracks == trandingTracks));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeSuccess&&(identical(other.trandingTracks, trandingTracks) || other.trandingTracks == trandingTracks));
 }
 
 
@@ -250,8 +250,8 @@ String toString() {
 }
 
 /// @nodoc
-abstract mixin class _$SuccessCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
-  factory _$SuccessCopyWith(_Success value, $Res Function(_Success) _then) = __$SuccessCopyWithImpl;
+abstract mixin class $HomeSuccessCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
+  factory $HomeSuccessCopyWith(HomeSuccess value, $Res Function(HomeSuccess) _then) = _$HomeSuccessCopyWithImpl;
 @useResult
 $Res call({
  CollectionModel<TrackModel> trandingTracks
@@ -262,17 +262,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$SuccessCopyWithImpl<$Res>
-    implements _$SuccessCopyWith<$Res> {
-  __$SuccessCopyWithImpl(this._self, this._then);
+class _$HomeSuccessCopyWithImpl<$Res>
+    implements $HomeSuccessCopyWith<$Res> {
+  _$HomeSuccessCopyWithImpl(this._self, this._then);
 
-  final _Success _self;
-  final $Res Function(_Success) _then;
+  final HomeSuccess _self;
+  final $Res Function(HomeSuccess) _then;
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? trandingTracks = null,}) {
-  return _then(_Success(
+  return _then(HomeSuccess(
 trandingTracks: null == trandingTracks ? _self.trandingTracks : trandingTracks // ignore: cast_nullable_to_non_nullable
 as CollectionModel<TrackModel>,
   ));
@@ -284,8 +284,8 @@ as CollectionModel<TrackModel>,
 /// @nodoc
 
 
-class _Failure implements HomeState {
-  const _Failure({required this.errorMessage});
+class HomeFailure implements HomeState {
+  const HomeFailure({required this.errorMessage});
   
 
  final  String errorMessage;
@@ -294,13 +294,13 @@ class _Failure implements HomeState {
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$FailureCopyWith<_Failure> get copyWith => __$FailureCopyWithImpl<_Failure>(this, _$identity);
+$HomeFailureCopyWith<HomeFailure> get copyWith => _$HomeFailureCopyWithImpl<HomeFailure>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Failure&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeFailure&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
 
@@ -316,8 +316,8 @@ String toString() {
 }
 
 /// @nodoc
-abstract mixin class _$FailureCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
-  factory _$FailureCopyWith(_Failure value, $Res Function(_Failure) _then) = __$FailureCopyWithImpl;
+abstract mixin class $HomeFailureCopyWith<$Res> implements $HomeStateCopyWith<$Res> {
+  factory $HomeFailureCopyWith(HomeFailure value, $Res Function(HomeFailure) _then) = _$HomeFailureCopyWithImpl;
 @useResult
 $Res call({
  String errorMessage
@@ -328,17 +328,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$FailureCopyWithImpl<$Res>
-    implements _$FailureCopyWith<$Res> {
-  __$FailureCopyWithImpl(this._self, this._then);
+class _$HomeFailureCopyWithImpl<$Res>
+    implements $HomeFailureCopyWith<$Res> {
+  _$HomeFailureCopyWithImpl(this._self, this._then);
 
-  final _Failure _self;
-  final $Res Function(_Failure) _then;
+  final HomeFailure _self;
+  final $Res Function(HomeFailure) _then;
 
 /// Create a copy of HomeState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? errorMessage = null,}) {
-  return _then(_Failure(
+  return _then(HomeFailure(
 errorMessage: null == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String,
   ));

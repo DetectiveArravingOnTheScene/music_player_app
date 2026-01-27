@@ -55,10 +55,10 @@ class SupabaseAuthProvider implements AuthProvider {
 
     final GoogleSignInClientAuthorization authorization =
         await googleUser.authorizationClient.authorizationForScopes(
-          GoogleSignInOptions.scopes,
+          serviceLocator.get<AppConfig>().googleScopes,
         ) ??
         await googleUser.authorizationClient.authorizeScopes(
-          GoogleSignInOptions.scopes,
+          serviceLocator.get<AppConfig>().googleScopes,
         );
 
     final String? idToken = googleUser.authentication.idToken;

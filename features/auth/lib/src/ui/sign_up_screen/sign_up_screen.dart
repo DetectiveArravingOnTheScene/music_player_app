@@ -1,7 +1,6 @@
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
-import 'package:navigation/navigation.dart';
 
 import '../../bloc/blocs.dart';
 import 'sign_up_content.dart';
@@ -16,6 +15,7 @@ class SignUpScreen extends StatelessWidget {
       create: (BuildContext context) => SignUpBloc(
         signUpWithEmailUseCase: serviceLocator.get<SignUpWithEmailUseCase>(),
         signInWithGoogleUseCase: serviceLocator.get<SignInWithGoogleUseCase>(),
+        userValidationService: serviceLocator.get<UserValidatonService>(),
       ),
       child: const SignUpContent(),
     );
