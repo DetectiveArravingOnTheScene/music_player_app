@@ -1,5 +1,7 @@
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
+import 'package:domain/services/auth_service.dart';
+import 'package:domain/services/player_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:isar_plus/isar_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -122,7 +124,11 @@ class DataDependencyInjection {
 
     serviceLocator.registerLazySingleton<AuthService>(() {
       return AuthService(serviceLocator.get<AuthRepository>().user);
-    });
+    }, dependsOn: <Type>[AuthRepository]);
+
+    serviceLocator.registerSingletonAsync<PlayerService>(() async {
+      return PlayerService(serviceLocator.get<AuthService>());
+    }, dependsOn: <Type>[AuthService]);
   }
 
   void _initUseCases() {

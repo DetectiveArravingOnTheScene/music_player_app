@@ -4,6 +4,7 @@ import 'package:core/config/app_config.dart';
 import 'package:core/di/app_di.dart';
 import 'package:dio/dio.dart';
 import 'package:domain/domain.dart';
+import 'package:domain/services/auth_service.dart';
 
 import '../../../entities/soundcloud/artist_entity.dart';
 import '../../../entities/soundcloud/collection_entity.dart';
@@ -47,7 +48,14 @@ class SoundCloudProviderImpl extends RemoteMusicProvider {
     final Map<String, dynamic> data = response.data as Map<String, dynamic>;
     final String accessToken = data[SoundCloudStrings.accessTokenKey] as String;
 
-    _api.setAuthToken(accessToken);
+    final Map<String, String> headers = <String, String>{
+      ApiProviderConsts.autorizationHeaderKey:
+          ApiProviderConsts.autorizationHeaderBody(accessToken),
+    };
+
+    _api.addHeaders(headers);
+    serviceLocator.get<AuthService>().setAuthHeader(headers);
+
     return accessToken;
   }
 
