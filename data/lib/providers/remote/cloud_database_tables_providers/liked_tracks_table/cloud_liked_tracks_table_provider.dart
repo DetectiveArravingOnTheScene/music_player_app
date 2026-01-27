@@ -1,4 +1,5 @@
 import '../../../../entities/supabase/cloud_liked_track_metadata_entity.dart';
+import '../../../../requests/track_metadata_upsert_request.dart';
 
 abstract class CloudLikedTracksTableProvider {
   Future<CloudLikedTrackMetadataEntity?> getByUrn(String urn);
@@ -6,10 +7,10 @@ abstract class CloudLikedTracksTableProvider {
   Future<List<CloudLikedTrackMetadataEntity>> getByUserId(String userId);
 
   Future<CloudLikedTrackMetadataEntity> create(
-    CloudLikedTrackMetadataEntity entity,
+    TrackMetadataUpsertRequest request,
   );
 
-  Future<void> update(CloudLikedTrackMetadataEntity entity);
+  Future<void> update(TrackMetadataUpsertRequest request);
 
   Future<void> delete(String urn);
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:core/core.dart';
 import 'package:core/di/app_di.dart';
 import 'package:core/localization/gen/strings.g.dart';
 import 'package:domain/domain.dart';
@@ -15,6 +16,7 @@ import '../mappers/track_mapper.dart';
 import '../providers/local/local_database_tables_providers/liked_tracks_table/local_liked_tracks_table_provider.dart';
 import '../providers/remote/cloud_database_tables_providers/liked_tracks_table/cloud_liked_tracks_table_provider.dart';
 import '../providers/remote/remote_music_provider/remote_music_provider.dart';
+import '../requests/track_metadata_upsert_request.dart';
 
 class TrackRepositoryImpl extends TrackRepository {
   final RemoteMusicProvider _remoteMusicProvider;
@@ -125,10 +127,10 @@ class TrackRepositoryImpl extends TrackRepository {
 
     try {
       await _cloudLikedTracksProvider.create(
-        TrackMapper.toCloud(track, userId),
+        TrackMetadataUpsertRequest(urn: track.urn, userId: userId),
       );
       await _localLikedTracksProvider.create(
-        TrackMapper.toLocal(track, userId),
+        TrackMetadataUpsertRequest(urn: track.urn, userId: userId),
       );
 
       _trackUpdateController.add(track.copyWith(isLiked: true));

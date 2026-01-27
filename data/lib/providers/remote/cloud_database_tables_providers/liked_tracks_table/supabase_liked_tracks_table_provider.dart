@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../entities/supabase/cloud_liked_track_metadata_entity.dart';
+import '../../../../requests/track_metadata_upsert_request.dart';
 import '../supabase_consts.dart';
 import 'cloud_liked_tracks_table_provider.dart';
 
@@ -41,22 +42,36 @@ class SupabaseLikedTracksTableProvider
 
   @override
   Future<CloudLikedTrackMetadataEntity> create(
-    CloudLikedTrackMetadataEntity entity,
+    TrackMetadataUpsertRequest request,
   ) async {
     final List<Map<String, dynamic>> response = await _db.client
         .from(_table)
-        .insert(entity.toJson())
+        .insert(
+          CloudLikedTrackMetadataEntity(
+            urn: request.urn,
+            userId: request.userId,
+            listenCount: request.listenCount,
+            createdAt: DateTime.now(),
+          ).toJson(),
+        )
         .select();
 
     return CloudLikedTrackMetadataEntity.fromJson(response.first);
   }
 
   @override
-  Future<void> update(CloudLikedTrackMetadataEntity entity) async {
+  Future<void> update(TrackMetadataUpsertRequest request) async {
     await _db.client
         .from(_table)
-        .update(entity.toJson())
-        .eq(SupabaseConsts.urnField, entity.urn);
+        .update(
+          CloudLikedTrackMetadataEntity(
+            urn: request.urn,
+            userId: request.userId,
+            listenCount: request.listenCount,
+            createdAt: DateTime.now(),
+          ).toJson(),
+        )
+        .eq(SupabaseConsts.urnField, request.urn);
   }
 
   @override

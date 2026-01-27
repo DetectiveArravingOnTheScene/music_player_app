@@ -22,29 +22,4 @@ class ArtistMapper {
       avatarUrl: entity.avatarUrl,
     );
   }
-
-  static CloudLikedArtistMetadataEntity toCloud(
-    ArtistModel model,
-    String userId,
-  ) {
-    return CloudLikedArtistMetadataEntity(
-      urn: model.urn,
-      userId: userId,
-      listenCount: model.userListenCount,
-      createdAt: DateTime.now(),
-    );
-  }
-
-  static LocalLikedArtistMetadataEntity toLocal(
-    ArtistModel model,
-    String userId,
-  ) {
-    return LocalLikedArtistMetadataEntity(
-      urn: model.urn,
-      userId: userId,
-      listenCount: model.userListenCount,
-      createdAt: DateTime.now(),
-      id: 1,
-    );
-  }
 }
