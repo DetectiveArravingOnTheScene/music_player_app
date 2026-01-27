@@ -1,5 +1,4 @@
 import '../models.dart';
-import 'track_type.dart';
 
 class TrackModel {
   final String urn;

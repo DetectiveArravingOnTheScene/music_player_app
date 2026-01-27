@@ -1,5 +1,5 @@
 library;
 
-export 'package:core_ui/extensions/extensions.dart';
-
+export 'extensions/extensions.dart';
 export 'theme/app_theme.dart';
+export 'widgets/widgets.dart';

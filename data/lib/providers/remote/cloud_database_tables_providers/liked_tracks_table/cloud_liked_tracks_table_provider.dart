@@ -6,6 +6,11 @@ abstract class CloudLikedTracksTableProvider {
 
   Future<List<CloudLikedTrackMetadataEntity>> getByUserId(String userId);
 
+  Future<List<CloudLikedTrackMetadataEntity>> getByUserIdAndUrns(
+    String userId,
+    List<String> urns,
+  );
+
   Future<CloudLikedTrackMetadataEntity> create(
     TrackMetadataUpsertRequest request,
   );

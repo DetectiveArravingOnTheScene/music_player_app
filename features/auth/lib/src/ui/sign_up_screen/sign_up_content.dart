@@ -1,8 +1,8 @@
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:navigation/navigation.dart';
 
+import '../../../auth.gr.dart';
 import '../../bloc/blocs.dart';
 import '../widgets/auth_scope.dart';
 import '../widgets/auth_screen_template.dart';
@@ -13,18 +13,41 @@ class SignUpContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SignUpBloc, SignUpState>(
-      listenWhen: (SignUpState previous, SignUpState current) {
-        return previous.status != current.status;
-      },
       listener: (BuildContext context, SignUpState state) {
-        if (state.status == SignUpStatus.failure) {
-          context.showErrorSnackbar(state.errorMessage);
-        }
-        if (state.status == SignUpStatus.success) {
-          AuthScope.of(context)!.redirectBack(redirect: true);
+        switch (state) {
+          case FailureSignUp(:final String errorMessage):
+            context.showErrorSnackbar(errorMessage);
+          case SuccessSignUp():
+            AuthScope.of(context)!.redirectBack(redirect: true);
+          default:
         }
       },
       builder: (BuildContext context, SignUpState state) {
+        final String? emailError = switch (state) {
+          InputSignUp(:final String? emailError) ||
+          FailureSignUp(:final String? emailError) => emailError,
+          _ => null,
+        };
+
+        final String? passwordError = switch (state) {
+          InputSignUp(:final String? passwordError) ||
+          FailureSignUp(:final String? passwordError) => passwordError,
+          _ => null,
+        };
+
+        final String? confirmPasswordError = switch (state) {
+          InputSignUp(:final String? confirmPasswordError) ||
+          FailureSignUp(
+            :final String? confirmPasswordError,
+          ) => confirmPasswordError,
+          _ => null,
+        };
+
+        final bool isSubmitting = switch (state) {
+          SubmittingSignUp() => true,
+          _ => false,
+        };
+
         return AuthScreenTemplate(
           title: t.login.signUp,
           textFields: <Widget>[
@@ -32,10 +55,10 @@ class SignUpContent extends StatelessWidget {
               onChanged: (String value) {
                 context.read<SignUpBloc>().add(SignUpEmailChanged(value));
               },
-              // controller: emailController,
               decoration: InputDecoration(
                 label: Text(t.login.email),
-                errorText: state.emailError,
+                errorText: emailError,
+                enabled: !isSubmitting,
               ),
             ),
             TextField(
@@ -43,10 +66,10 @@ class SignUpContent extends StatelessWidget {
               onChanged: (String value) {
                 context.read<SignUpBloc>().add(SignUpPasswordChanged(value));
               },
-              // controller: passwordController,
               decoration: InputDecoration(
                 label: Text(t.login.password),
-                errorText: state.passwordError,
+                errorText: passwordError,
+                enabled: !isSubmitting,
               ),
             ),
             TextField(
@@ -56,10 +79,10 @@ class SignUpContent extends StatelessWidget {
                   SignUpConfirmPasswordChanged(value),
                 );
               },
-              // controller: passwordController,
               decoration: InputDecoration(
                 label: Text(t.login.confirmPassword),
-                errorText: state.confirmPasswordError,
+                errorText: confirmPasswordError,
+                enabled: !isSubmitting,
               ),
             ),
           ],
@@ -67,10 +90,20 @@ class SignUpContent extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: FilledButton.tonal(
-                  onPressed: () {
-                    context.read<SignUpBloc>().add(const SignUpSubmitted());
-                  },
-                  child: Text(t.login.signUp),
+                  onPressed: isSubmitting
+                      ? null
+                      : () {
+                          context.read<SignUpBloc>().add(
+                            const SignUpSubmitted(),
+                          );
+                        },
+                  child: isSubmitting
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Text(t.login.signUp),
                 ),
               ),
             ],
@@ -80,11 +113,13 @@ class SignUpContent extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: FilledButton(
-                    onPressed: () {
-                      context.read<SignUpBloc>().add(
-                        const SignUpWithGoogleSubmitted(),
-                      );
-                    },
+                    onPressed: isSubmitting
+                        ? null
+                        : () {
+                            context.read<SignUpBloc>().add(
+                              const SignUpWithGoogleSubmitted(),
+                            );
+                          },
                     child: Text(t.login.google),
                   ),
                 ),
@@ -92,9 +127,11 @@ class SignUpContent extends StatelessWidget {
             ),
           ],
           bottomWidget: TextButton(
-            onPressed: () {
-              context.navigateTo(const SignInRoute());
-            },
+            onPressed: isSubmitting
+                ? null
+                : () {
+                    context.navigateTo(const SignInRoute());
+                  },
             child: Text(t.login.haveAccount),
           ),
         );

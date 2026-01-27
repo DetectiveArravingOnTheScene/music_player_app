@@ -18,11 +18,10 @@ class HomeContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (BuildContext context, HomeState state) {
-        return state.when(
-          loading: () {
+        switch (state) {
+          case HomeLoading():
             return const LoadingWidget();
-          },
-          success: (CollectionModel<TrackModel> trandingTracks) {
+          case HomeSuccess(:final CollectionModel<TrackModel> trandingTracks):
             return SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -56,16 +55,14 @@ class HomeContent extends StatelessWidget {
                 ),
               ),
             );
-          },
-          failure: (String errorMessage) {
+          case HomeFailure(:final String errorMessage):
             return ErrorRetryWidget(
               errorMessage: errorMessage,
               onRetryPressed: () {
                 context.read<HomeBloc>().add(const HomePageOpenedEvent());
               },
             );
-          },
-        );
+        }
       },
     );
   }

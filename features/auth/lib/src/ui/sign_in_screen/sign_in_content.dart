@@ -1,8 +1,8 @@
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:navigation/navigation.dart';
 
+import '../../../auth.gr.dart';
 import '../../bloc/blocs.dart';
 import '../widgets/auth_scope.dart';
 import '../widgets/auth_screen_template.dart';
@@ -13,42 +13,58 @@ class SignInContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SignInBloc, SignInState>(
-      listenWhen: (SignInState previous, SignInState current) {
-        return previous.status != current.status;
-      },
       listener: (BuildContext context, SignInState state) {
-        if (state.status == SignInStatus.failure) {
-          context.showErrorSnackbar(state.errorMessage);
-        }
-        if (state.status == SignInStatus.success) {
-          AuthScope.of(context)!.redirectBack(redirect: true);
+        switch (state) {
+          case FailureSignIn():
+            context.showErrorSnackbar(state.errorMessage);
+          case SuccessSignIn():
+            AuthScope.of(context)!.redirectBack(redirect: true);
+          default:
         }
       },
       builder: (BuildContext context, SignInState state) {
+        final bool isLoading = switch (state) {
+          SubmittingSignIn() => true,
+          _ => false,
+        };
+
+        final String? emailError = switch (state) {
+          InputSignIn(:final String? emailError) => emailError,
+          _ => null,
+        };
+
+        final String? passwordError = switch (state) {
+          InputSignIn(:final String? passwordError) => passwordError,
+          _ => null,
+        };
+
+        final bool isInputValid = switch (state) {
+          InputSignIn(:final bool isValid) => isValid,
+          _ => true, // Allow submit attempts in other states
+        };
+
         return AuthScreenTemplate(
           title: t.login.signIn,
           textFields: <Widget>[
             TextField(
+              enabled: !isLoading,
               onChanged: (String value) {
-                context.read<SignInBloc>().add(
-                  SignInEmailChanged(value),
-                );
+                context.read<SignInBloc>().add(SignInEmailChanged(value));
               },
               decoration: InputDecoration(
                 label: Text(t.login.email),
-                errorText: state.emailError,
+                errorText: emailError,
               ),
             ),
             TextField(
+              enabled: !isLoading,
               onChanged: (String value) {
-                context.read<SignInBloc>().add(
-                  SignInPasswordChanged(value),
-                );
+                context.read<SignInBloc>().add(SignInPasswordChanged(value));
               },
               obscureText: true,
               decoration: InputDecoration(
                 label: Text(t.login.password),
-                errorText: state.passwordError,
+                errorText: passwordError,
               ),
             ),
           ],
@@ -56,10 +72,20 @@ class SignInContent extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 child: FilledButton.tonal(
-                  onPressed: () {
-                    context.read<SignInBloc>().add(const SignInSubmitted());
-                  },
-                  child: Text(t.login.signIn),
+                  onPressed: (isLoading || !isInputValid)
+                      ? null
+                      : () {
+                          context.read<SignInBloc>().add(
+                            const SignInSubmitted(),
+                          );
+                        },
+                  child: isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Text(t.login.signIn),
                 ),
               ),
             ],
@@ -69,11 +95,13 @@ class SignInContent extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: FilledButton(
-                    onPressed: () {
-                      context.read<SignInBloc>().add(
-                        const SignInWithGoogleSubmitted(),
-                      );
-                    },
+                    onPressed: isLoading
+                        ? null
+                        : () {
+                            context.read<SignInBloc>().add(
+                              const SignInWithGoogleSubmitted(),
+                            );
+                          },
                     child: Text(t.login.google),
                   ),
                 ),
@@ -81,9 +109,11 @@ class SignInContent extends StatelessWidget {
             ),
           ],
           bottomWidget: TextButton(
-            onPressed: () {
-              context.navigateTo(const SignUpRoute());
-            },
+            onPressed: isLoading
+                ? null
+                : () {
+                    context.navigateTo(const SignUpRoute());
+                  },
             child: Text(t.login.haveNoAccount),
           ),
         );

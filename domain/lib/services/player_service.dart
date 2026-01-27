@@ -6,6 +6,7 @@ import 'auth_service.dart';
 part 'player_state.dart';
 
 class PlayerService {
+  //MediaItem requires Unique ID for every instance. This is primitive, but i don't know better.
   int idCounter = 1;
 
   final ja.AudioPlayer _player = ja.AudioPlayer();
@@ -27,12 +28,13 @@ class PlayerService {
 
   Future<void> playTrack(
     TrackModel track,
-    Map<StreamTypeEnum, String> streamUrls,
+    Map<StreamTypeEnum, String>
+    streamUrls, // I pass all streams, sooner or later i will add NetworkService, and i will be able to choose stream accroding to connection speed.
   ) async {
     try {
-      final ja.AudioSource source = ja.AudioSource.uri(
+      final ja.AudioSource source = ja.HlsAudioSource(
         headers: _authService.getAuthHeader,
-        Uri.parse(streamUrls[StreamTypeEnum.httpMp3128]!),
+        Uri.parse(streamUrls[StreamTypeEnum.hlsAac160]!),
         tag: MediaItem(
           id: '$idCounter',
           title: track.title,
@@ -53,9 +55,13 @@ class PlayerService {
   }
 
   Future<void> pause() => _player.pause();
+
   Future<void> resume() => _player.play();
+
   Future<void> seek(Duration position) => _player.seek(position);
+
   Future<void> stop() => _player.stop();
+
   Future<void> setVolume(double volume) => _player.setVolume(volume);
 
   void dispose() => _player.dispose();

@@ -11,9 +11,11 @@ class ApiProvider {
         ApiProviderConsts.acceptHeaderBody;
   }
 
-  void setAuthToken(String token) {
-    _dio.options.headers[ApiProviderConsts.autorizationHeaderKey] =
-        ApiProviderConsts.autorizationHeaderBody(token);
+  void addHeaders(Map<String, String> headers) {
+    _dio.options.headers = <String, dynamic>{
+      ..._dio.options.headers,
+      ...headers,
+    };
   }
 
   void setTokenRefresher(Future<String> Function() refresher) {

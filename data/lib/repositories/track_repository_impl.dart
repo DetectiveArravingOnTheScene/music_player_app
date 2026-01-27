@@ -4,8 +4,6 @@ import 'package:core/core.dart';
 import 'package:core/di/app_di.dart';
 import 'package:core/localization/gen/strings.g.dart';
 import 'package:domain/domain.dart';
-import 'package:domain/errors/api_app_exception.dart';
-import 'package:domain/services/auth_service.dart';
 
 import '../entities/abstract/liked_track_metadata_entity.dart';
 import '../entities/soundcloud/collection_entity.dart';
@@ -163,7 +161,10 @@ class TrackRepositoryImpl extends TrackRepository {
 
     if (userId != null) {
       final List<LikedTrackMetadataEntity> allLiked =
-          await _localLikedTracksProvider.getByUserId(userId);
+          await _localLikedTracksProvider.getByUserIdAndUrns(
+            userId,
+            tracks.map((TrackEntity i) => i.urn).toList(),
+          );
 
       return LikedTracksMapper.mapLikedTracks(tracks, allLiked);
     }
