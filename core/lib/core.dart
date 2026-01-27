@@ -13,3 +13,4 @@ export 'config/app_config.dart';
 export 'config/firebase_options.dart';
 export 'di/app_di.dart';
 export 'localization/gen/strings.g.dart';
+export 'logger.dart';
