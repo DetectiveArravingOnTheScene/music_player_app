@@ -23,6 +23,8 @@ dependencies:
     flutter_dotenv: ^6.0.0
     logger: ^2.6.2
 
+    navigation:
+        path: ./../navigation
     domain:
         path: ./../domain
 

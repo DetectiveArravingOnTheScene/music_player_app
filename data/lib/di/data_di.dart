@@ -13,11 +13,17 @@ final DataDependencyInjection dataDependencyInjection =
 
 class DataDependencyInjection {
   void initialize() {
+    _initGoogleSignIn();
     _initIsar();
+    _initSupabase();
     _initProviders();
     _initRepositories();
     _initServices();
     _initUseCases();
+  }
+
+  void _initGoogleSignIn() {
+    serviceLocator.registerSingleton<GoogleSignIn>(GoogleSignIn.instance);
   }
 
   void _initIsar() {
@@ -28,19 +34,29 @@ class DataDependencyInjection {
     });
   }
 
+  void _initSupabase() {
+    serviceLocator.registerSingletonAsync<Supabase>(() async {
+      await Supabase.initialize(
+        url: serviceLocator.get<AppConfig>().supabaseUrl,
+        anonKey: serviceLocator.get<AppConfig>().supabasePublishibleKey,
+      );
+      return Supabase.instance;
+    });
+  }
+
   void _initProviders() {
     serviceLocator.registerSingleton<ApiProvider>(ApiProvider());
 
-    serviceLocator.registerSingletonWithDependencies<RemoteMusicProvider>(() {
-      return SoundCloudProviderImpl(serviceLocator.get<ApiProvider>());
-    }, dependsOn: <Type>[ApiProvider]);
+    serviceLocator.registerSingleton<RemoteMusicProvider>(
+      SoundCloudProviderImpl(serviceLocator.get<ApiProvider>()),
+    );
 
-    serviceLocator.registerSingletonWithDependencies<AuthProvider>(() {
+    serviceLocator.registerLazySingleton<AuthProvider>(() {
       return SupabaseAuthProvider(
         serviceLocator.get<Supabase>(),
         serviceLocator.get<GoogleSignIn>(),
       );
-    }, dependsOn: <Type>[Supabase, GoogleSignIn]);
+    });
 
     serviceLocator.registerLazySingleton<CloudLikedTracksTableProvider>(() {
       return SupabaseLikedTracksTableProvider(
@@ -72,68 +88,47 @@ class DataDependencyInjection {
       );
     });
 
-    serviceLocator.registerSingletonAsync<CloudUserSettingsTableProvider>(
-      () async {
-        return SupabaseUserSettingsTableProvider(
-          supabase: serviceLocator.get<Supabase>(),
-        );
-      },
-      dependsOn: <Type>[Supabase],
-    );
+    serviceLocator.registerLazySingleton<CloudUserSettingsTableProvider>(() {
+      return SupabaseUserSettingsTableProvider(
+        supabase: serviceLocator.get<Supabase>(),
+      );
+    });
 
-    serviceLocator.registerSingletonAsync<LocalLikedArtistsTableProvider>(
-      () async {
-        return IsarLikedArtistsTableProvider(
-          serviceLocator.get<IsarProvider>().instance,
-        );
-      },
-      dependsOn: <Type>[IsarProvider],
-    );
+    serviceLocator.registerLazySingleton<LocalLikedArtistsTableProvider>(() {
+      return IsarLikedArtistsTableProvider(
+        serviceLocator.get<IsarProvider>().instance,
+      );
+    });
 
-    serviceLocator.registerSingletonAsync<LocalLikedPlaylistsTableProvider>(
-      () async {
-        return IsarLikedPlaylistsTableProvider(
-          serviceLocator.get<IsarProvider>().instance,
-        );
-      },
-      dependsOn: <Type>[IsarProvider],
-    );
+    serviceLocator.registerLazySingleton<LocalLikedPlaylistsTableProvider>(() {
+      return IsarLikedPlaylistsTableProvider(
+        serviceLocator.get<IsarProvider>().instance,
+      );
+    });
 
-    serviceLocator.registerSingletonAsync<LocalLikedTracksTableProvider>(
-      () async {
-        return IsarLikedTracksTableProvider(
-          serviceLocator.get<IsarProvider>().instance,
-        );
-      },
-      dependsOn: <Type>[IsarProvider],
-    );
+    serviceLocator.registerLazySingleton<LocalLikedTracksTableProvider>(() {
+      return IsarLikedTracksTableProvider(
+        serviceLocator.get<IsarProvider>().instance,
+      );
+    });
 
-    serviceLocator.registerSingletonAsync<LocalPlaylistTracksTableProvider>(
-      () async {
-        return IsarPlaylistTracksTableProvider(
-          serviceLocator.get<IsarProvider>().instance,
-        );
-      },
-      dependsOn: <Type>[IsarProvider],
-    );
+    serviceLocator.registerLazySingleton<LocalPlaylistTracksTableProvider>(() {
+      return IsarPlaylistTracksTableProvider(
+        serviceLocator.get<IsarProvider>().instance,
+      );
+    });
 
-    serviceLocator.registerSingletonAsync<LocalUserPlaylistsTableProvider>(
-      () async {
-        return IsarUserPlaylistsTableProvider(
-          serviceLocator.get<IsarProvider>().instance,
-        );
-      },
-      dependsOn: <Type>[IsarProvider],
-    );
+    serviceLocator.registerLazySingleton<LocalUserPlaylistsTableProvider>(() {
+      return IsarUserPlaylistsTableProvider(
+        serviceLocator.get<IsarProvider>().instance,
+      );
+    });
 
-    serviceLocator.registerSingletonAsync<LocalUserSettingsTableProvider>(
-      () async {
-        return IsarUserSettingsTableProvider(
-          serviceLocator.get<IsarProvider>().instance,
-        );
-      },
-      dependsOn: <Type>[IsarProvider],
-    );
+    serviceLocator.registerLazySingleton<LocalUserSettingsTableProvider>(() {
+      return IsarUserSettingsTableProvider(
+        serviceLocator.get<IsarProvider>().instance,
+      );
+    });
   }
 
   void _initRepositories() {
@@ -141,7 +136,7 @@ class DataDependencyInjection {
       return AuthRepositoryImpl(serviceLocator.get<AuthProvider>());
     });
 
-    serviceLocator.registerSingletonWithDependencies<TrackRepository>(
+    serviceLocator.registerLazySingleton<TrackRepository>(
       () {
         return TrackRepositoryImpl(
           remoteProvider: serviceLocator.get<RemoteMusicProvider>(),
@@ -149,11 +144,7 @@ class DataDependencyInjection {
           localProvider: serviceLocator.get<LocalLikedTracksTableProvider>(),
         );
       },
-      dependsOn: <Type>[
-        RemoteMusicProvider,
-        CloudLikedTracksTableProvider,
-        LocalLikedTracksTableProvider,
-      ],
+
       dispose: (TrackRepository repo) {
         repo.dispose();
       },
@@ -175,57 +166,38 @@ class DataDependencyInjection {
   }
 
   void _initUseCases() {
-    serviceLocator.registerSingletonWithDependencies<SignInWithEmailUseCase>(
-      () {
-        return SignInWithEmailUseCase(serviceLocator.get<AuthRepository>());
-      },
-      dependsOn: <Type>[AuthRepository],
-    );
+    serviceLocator.registerLazySingleton<SignInWithEmailUseCase>(() {
+      return SignInWithEmailUseCase(serviceLocator.get<AuthRepository>());
+    });
 
-    serviceLocator.registerSingletonWithDependencies<SignUpWithEmailUseCase>(
-      () {
-        return SignUpWithEmailUseCase(serviceLocator.get<AuthRepository>());
-      },
-      dependsOn: <Type>[AuthRepository],
-    );
+    serviceLocator.registerLazySingleton<SignUpWithEmailUseCase>(() {
+      return SignUpWithEmailUseCase(serviceLocator.get<AuthRepository>());
+    });
 
-    serviceLocator.registerSingletonWithDependencies<SignInWithGoogleUseCase>(
-      () {
-        return SignInWithGoogleUseCase(serviceLocator.get<AuthRepository>());
-      },
-      dependsOn: <Type>[AuthRepository],
-    );
+    serviceLocator.registerLazySingleton<SignInWithGoogleUseCase>(() {
+      return SignInWithGoogleUseCase(serviceLocator.get<AuthRepository>());
+    });
 
-    serviceLocator.registerSingletonWithDependencies<GetTrandingTracksUseCase>(
-      () {
-        return GetTrandingTracksUseCase(serviceLocator.get<TrackRepository>());
-      },
-      dependsOn: <Type>[TrackRepository],
-    );
+    serviceLocator.registerLazySingleton<GetTrandingTracksUseCase>(() {
+      return GetTrandingTracksUseCase(serviceLocator.get<TrackRepository>());
+    });
 
-    serviceLocator.registerSingletonWithDependencies<GetTrackStreamsUseCase>(
-      () {
-        return GetTrackStreamsUseCase(serviceLocator.get<TrackRepository>());
-      },
-      dependsOn: <Type>[TrackRepository],
-    );
+    serviceLocator.registerLazySingleton<GetTrackStreamsUseCase>(() {
+      return GetTrackStreamsUseCase(serviceLocator.get<TrackRepository>());
+    });
 
-    serviceLocator
-        .registerSingletonWithDependencies<SubscribeToTrackUpdatesUseCase>(() {
-          return SubscribeToTrackUpdatesUseCase(
-            serviceLocator.get<TrackRepository>(),
-          );
-        }, dependsOn: <Type>[TrackRepository]);
+    serviceLocator.registerLazySingleton<SubscribeToTrackUpdatesUseCase>(() {
+      return SubscribeToTrackUpdatesUseCase(
+        serviceLocator.get<TrackRepository>(),
+      );
+    });
 
-    serviceLocator.registerSingletonWithDependencies<LikeTrackUseCase>(() {
+    serviceLocator.registerLazySingleton<LikeTrackUseCase>(() {
       return LikeTrackUseCase(serviceLocator.get<TrackRepository>());
-    }, dependsOn: <Type>[TrackRepository]);
+    });
 
-    serviceLocator.registerSingletonWithDependencies<RemoveLikeTrackUseCase>(
-      () {
-        return RemoveLikeTrackUseCase(serviceLocator.get<TrackRepository>());
-      },
-      dependsOn: <Type>[TrackRepository],
-    );
+    serviceLocator.registerLazySingleton<RemoveLikeTrackUseCase>(() {
+      return RemoveLikeTrackUseCase(serviceLocator.get<TrackRepository>());
+    });
   }
 }
