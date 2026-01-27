@@ -27,6 +27,17 @@ class PlayerToggleShuffle extends PlayerEvent {}
 
 class PlayerToggleLoop extends PlayerEvent {}
 
+class PlayerLikeTrack extends PlayerEvent {
+  final TrackModel track;
+  final bool liked;
+  PlayerLikeTrack({required this.track, required this.liked});
+}
+
+class TrackUpdatedEvent extends PlayerEvent {
+  TrackModel updatedTrack;
+  TrackUpdatedEvent(this.updatedTrack);
+}
+
 // Internal event triggered when the audio player notifies us of state changes
 class _PlayerPlaybackStateChanged extends PlayerEvent {
   final PlayerState state;

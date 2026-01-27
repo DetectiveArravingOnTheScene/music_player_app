@@ -1,20 +1,32 @@
+import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
-import '../core_ui.dart';
+
+import 'mini_player_card.dart';
 
 class SwipeableMiniPlayer extends StatefulWidget {
-  final Track currentTrack;
-  final Track? nextTrack;
-  final Track? prevTrack;
+  final Stream<Duration> positionStream;
+  final TrackModel currentTrack;
+  final bool isPaused;
+  final TrackModel? nextTrack;
+  final TrackModel? prevTrack;
   final VoidCallback onSwipeNext;
   final VoidCallback onSwipePrev;
+  final VoidCallback onTap;
+  final VoidCallback onPauseToggle;
+  final VoidCallback onLikeToggle;
 
   const SwipeableMiniPlayer({
     super.key,
     required this.currentTrack,
-    this.nextTrack,
-    this.prevTrack,
+    required this.isPaused,
+    required this.positionStream,
     required this.onSwipeNext,
     required this.onSwipePrev,
+    required this.onTap,
+    required this.onPauseToggle,
+    required this.onLikeToggle,
+    this.nextTrack,
+    this.prevTrack,
   });
 
   @override
@@ -111,141 +123,70 @@ class _SwipeableMiniPlayerState extends State<SwipeableMiniPlayer>
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        final double width = constraints.maxWidth;
-        final double totalShift = width + _cardGap;
+    return StreamBuilder<Duration>(
+      stream: widget.positionStream,
+      builder: (BuildContext context, AsyncSnapshot<Duration> asyncSnapshot) {
+        return LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            final double width = constraints.maxWidth;
+            final double totalShift = width + _cardGap;
 
-        return GestureDetector(
-          onHorizontalDragUpdate: _handleDragUpdate,
-          onHorizontalDragEnd: (DragEndDetails details) =>
-              _handleDragEnd(details, width),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Container(
-              color: Colors.transparent,
-              // Only this part rebuilds during drag
-              child: ValueListenableBuilder<double>(
-                valueListenable: _dragOffsetNotifier,
-                builder: (BuildContext context, double offset, Widget? child) {
-                  return Stack(
+            return GestureDetector(
+              onTap: widget.onTap,
+              onHorizontalDragUpdate: _handleDragUpdate,
+              onHorizontalDragEnd: (DragEndDetails details) =>
+                  _handleDragEnd(details, width),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  color: Colors.transparent, // Capture taps
+                  child: Stack(
                     children: <Widget>[
                       if (widget.prevTrack != null)
                         Transform.translate(
-                          offset: Offset(offset - totalShift, 0),
-                          child: _MiniPlayerCard(track: widget.prevTrack),
+                          offset: Offset(_dragOffset - totalShift, 0),
+                          child: MiniPlayerCard(
+                            onLikeToggle: widget.onLikeToggle,
+                            onPauseToggle: widget.onPauseToggle,
+                            track: widget.prevTrack!,
+                            position: asyncSnapshot.data,
+                            isLiked: widget.currentTrack.isLiked,
+                            isPaused: widget.isPaused,
+                          ),
                         ),
+
                       if (widget.nextTrack != null)
                         Transform.translate(
-                          offset: Offset(offset + totalShift, 0),
-                          child: _MiniPlayerCard(track: widget.nextTrack),
+                          offset: Offset(_dragOffset + totalShift, 0),
+                          child: MiniPlayerCard(
+                            onLikeToggle: widget.onLikeToggle,
+                            onPauseToggle: widget.onPauseToggle,
+                            track: widget.nextTrack!,
+                            position: asyncSnapshot.data,
+                            isLiked: widget.currentTrack.isLiked,
+                            isPaused: widget.isPaused,
+                          ),
                         ),
+
                       Transform.translate(
-                        offset: Offset(offset, 0),
-                        child: _MiniPlayerCard(track: widget.currentTrack),
+                        offset: Offset(_dragOffset, 0),
+                        child: MiniPlayerCard(
+                          onLikeToggle: widget.onLikeToggle,
+                          onPauseToggle: widget.onPauseToggle,
+                          track: widget.currentTrack,
+                          position: asyncSnapshot.data,
+                          isLiked: widget.currentTrack.isLiked,
+                          isPaused: widget.isPaused,
+                        ),
                       ),
                     ],
-                  );
-                },
+                  ),
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
-    );
-  }
-}
-
-class _MiniPlayerCard extends StatelessWidget {
-  final Track track;
-
-  const _MiniPlayerCard({required this.track});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-        color: context.colorScheme.primaryContainer,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: context.colorScheme.primary, width: 0.5),
-        boxShadow: const <BoxShadow>[
-          BoxShadow(
-            color: Colors.black45,
-            blurRadius: 10,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: Row(
-              children: <Widget>[
-                Container(
-                  width: 64,
-                  color: context.colorScheme.surface,
-                  // Optimization: Use your extension
-                  child: networkImageOrDefault(
-                    track.coverUrl,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        track.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          color: context.colorScheme.onPrimaryFixedVariant,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        track.author,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: context.colorScheme.onPrimaryFixedVariant,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.play_arrow_rounded,
-                    color: context.colorScheme.onPrimaryFixedVariant,
-                  ),
-                  onPressed: () {},
-                ),
-                const SizedBox(width: 4),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 2,
-            child: LinearProgressIndicator(
-              color: context.colorScheme.primary,
-              value:
-                  track.currentPosition.inSeconds /
-                  (track.duration.inSeconds == 0
-                      ? 1
-                      : track.duration.inSeconds),
-              backgroundColor: Colors.transparent,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

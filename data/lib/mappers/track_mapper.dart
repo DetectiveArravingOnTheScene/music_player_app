@@ -1,9 +1,7 @@
 import 'package:domain/domain.dart';
 
 import '../entities/abstract/liked_track_metadata_entity.dart';
-import '../entities/isar/local_liked_track_metadata_entity.dart';
 import '../entities/soundcloud/track_entity.dart';
-import '../entities/supabase/cloud_liked_track_metadata_entity.dart';
 import 'artist_mapper.dart';
 
 class TrackMapper {
@@ -23,30 +21,6 @@ class TrackMapper {
       type: TrackType.stream,
       artworkUrl: entity.artworkUrl,
       genre: entity.genre,
-    );
-  }
-
-  static CloudLikedTrackMetadataEntity toCloud(
-    TrackModel model,
-    String userId,
-  ) {
-    return CloudLikedTrackMetadataEntity(
-      urn: model.urn,
-      userId: userId,
-      listenCount: model.userListenCount,
-      createdAt: DateTime.now(),
-    );
-  }
-
-  static LocalLikedTrackMetadataEntity toLocal(
-    TrackModel model,
-    String userId,
-  ) {
-    return LocalLikedTrackMetadataEntity(
-      urn: model.urn,
-      userId: userId,
-      listenCount: model.userListenCount,
-      createdAt: DateTime.now(),
     );
   }
 }

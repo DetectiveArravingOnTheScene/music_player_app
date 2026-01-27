@@ -38,28 +38,4 @@ class PlaylistMapper {
       releaseYear: entity.releaseYear,
     );
   }
-
-  static CloudLikedPlaylistMetadataEntity toCloud(
-    PlaylistModel model,
-    String userId,
-  ) {
-    return CloudLikedPlaylistMetadataEntity(
-      urn: model.urn,
-      userId: userId,
-      listenCount: model.userListenCount,
-      createdAt: DateTime.now(),
-    );
-  }
-
-  static LocalLikedPlaylistMetadataEntity toLocal(
-    PlaylistModel model,
-    String userId,
-  ) {
-    return LocalLikedPlaylistMetadataEntity(
-      urn: model.urn,
-      userId: userId,
-      listenCount: model.userListenCount,
-      createdAt: DateTime.now(),
-    );
-  }
 }

@@ -48,7 +48,7 @@ class PlayerService {
       idCounter++;
 
       await _player.setAudioSource(source);
-      await _player.play();
+      unawaited(_player.play());
     } catch (e) {
       throw Exception('Failed to load track: $e');
     }

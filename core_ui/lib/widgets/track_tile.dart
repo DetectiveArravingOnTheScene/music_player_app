@@ -66,7 +66,7 @@ class TrackTile extends StatelessWidget {
                 IconButton(
                   onPressed: onLikePressed,
                   icon: Icon(
-                    isLiked ? Icons.favorite : Icons.add_circle_outline_rounded,
+                    isLiked ? Icons.favorite : Icons.favorite_border_outlined,
                   ),
                 ),
                 IconButton(

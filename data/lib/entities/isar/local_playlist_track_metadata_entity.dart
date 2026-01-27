@@ -9,7 +9,7 @@ part 'gen/local_playlist_track_metadata_entity.g.dart';
 class LocalPlaylistTrackMetadataEntity implements PlaylistTrackMetadataEntity {
   LocalPlaylistTrackMetadataEntity({required this.id});
 
-  int? id;
+  int id;
 
   @override
   @Index()

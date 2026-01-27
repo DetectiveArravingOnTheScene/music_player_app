@@ -26,4 +26,32 @@ class TrackModel {
     this.artworkUrl,
     this.genre,
   });
+
+  TrackModel copyWith({
+    String? urn,
+    String? title,
+    int? duration,
+    int? playbackCount,
+    int? likesCount,
+    ArtistModel? artist,
+    bool? isLiked,
+    int? userListenCount,
+    TrackType? type,
+    String? artworkUrl,
+    String? genre,
+  }) {
+    return TrackModel(
+      urn: urn ?? this.urn,
+      title: title ?? this.title,
+      duration: duration ?? this.duration,
+      playbackCount: playbackCount ?? this.playbackCount,
+      likesCount: likesCount ?? this.likesCount,
+      artist: artist ?? this.artist,
+      isLiked: isLiked ?? this.isLiked,
+      userListenCount: userListenCount ?? this.userListenCount,
+      type: type ?? this.type,
+      artworkUrl: artworkUrl ?? this.artworkUrl,
+      genre: genre ?? this.genre,
+    );
+  }
 }

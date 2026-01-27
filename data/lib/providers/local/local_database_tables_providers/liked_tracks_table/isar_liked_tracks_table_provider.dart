@@ -1,5 +1,6 @@
 import 'package:isar_plus/isar_plus.dart';
 import '../../../../entities/isar/local_liked_track_metadata_entity.dart';
+import '../../../../requests/track_metadata_upsert_request.dart';
 import 'local_liked_tracks_table_provider.dart';
 
 class IsarLikedTracksTableProvider implements LocalLikedTracksTableProvider {
@@ -49,10 +50,17 @@ class IsarLikedTracksTableProvider implements LocalLikedTracksTableProvider {
 
   @override
   Future<LocalLikedTrackMetadataEntity> create(
-    LocalLikedTrackMetadataEntity entity,
+    TrackMetadataUpsertRequest request,
   ) async {
     return _isar.writeAsync((Isar i) {
-      entity.id = i.localLikedTrackMetadataEntitys.autoIncrement();
+      final LocalLikedTrackMetadataEntity entity =
+          LocalLikedTrackMetadataEntity(
+            urn: request.urn,
+            userId: request.userId,
+            listenCount: request.listenCount,
+            createdAt: request.createdAt ?? DateTime.now(),
+            id: i.localLikedTrackMetadataEntitys.autoIncrement(),
+          );
       i.localLikedTrackMetadataEntitys.put(entity);
       return entity;
     });
@@ -60,9 +68,17 @@ class IsarLikedTracksTableProvider implements LocalLikedTracksTableProvider {
 
   @override
   Future<LocalLikedTrackMetadataEntity> update(
-    LocalLikedTrackMetadataEntity entity,
+    TrackMetadataUpsertRequest request,
   ) async {
     return _isar.writeAsync((Isar i) {
+      final LocalLikedTrackMetadataEntity entity =
+          LocalLikedTrackMetadataEntity(
+            urn: request.urn,
+            userId: request.userId,
+            listenCount: request.listenCount,
+            createdAt: request.createdAt ?? DateTime.now(),
+            id: i.localLikedTrackMetadataEntitys.autoIncrement(),
+          );
       final LocalLikedTrackMetadataEntity? existing = i
           .localLikedTrackMetadataEntitys
           .where()
