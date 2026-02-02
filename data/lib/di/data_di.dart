@@ -23,7 +23,13 @@ class DataDependencyInjection {
   }
 
   void _initGoogleSignIn() {
-    serviceLocator.registerSingleton<GoogleSignIn>(GoogleSignIn.instance);
+    serviceLocator.registerSingletonAsync<GoogleSignIn>(() async {
+      await GoogleSignIn.instance.initialize(
+        clientId: serviceLocator.get<AppConfig>().googleIosClientId,
+        serverClientId: serviceLocator.get<AppConfig>().googleWebClientId,
+      );
+      return GoogleSignIn.instance;
+    });
   }
 
   void _initIsar() {

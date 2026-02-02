@@ -47,10 +47,13 @@ class SupabaseAuthProvider implements AuthProvider {
 
   @override
   Future<void> signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await _googleSignIn
+    GoogleSignInAccount? googleUser = await _googleSignIn
         .attemptLightweightAuthentication();
-    if (googleUser == null) {
-      throw AuthException(t.login.fail);
+
+    try {
+      googleUser = await _googleSignIn.authenticate();
+    } catch (e) {
+      throw AuthAppException(t.login.fail);
     }
 
     final GoogleSignInClientAuthorization authorization =
@@ -64,7 +67,7 @@ class SupabaseAuthProvider implements AuthProvider {
     final String? idToken = googleUser.authentication.idToken;
 
     if (idToken == null) {
-      throw AuthException(t.login.fail);
+      throw AuthAppException(t.login.fail);
     }
 
     await _supabaseDb.client.auth.signInWithIdToken(
