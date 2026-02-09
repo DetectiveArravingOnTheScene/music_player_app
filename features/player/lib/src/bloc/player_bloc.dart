@@ -8,9 +8,10 @@ import 'package:domain/use_cases/tracks/subscribe_to_track_updates_use_case.dart
 import 'package:navigation/navigation.dart';
 
 import '../service/player_service.dart';
+import 'player_state.dart';
+export 'player_state.dart';
 
 part 'player_event.dart';
-part 'player_state.dart';
 
 class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
   final PlayerService _service;

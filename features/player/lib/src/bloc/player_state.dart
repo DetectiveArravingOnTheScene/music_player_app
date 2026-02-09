@@ -1,25 +1,41 @@
-part of 'player_bloc.dart';
+import 'package:core/core.dart';
+import 'package:domain/domain.dart';
+
+part 'player_state.freezed.dart';
 
 enum LoopMode { off, all, one }
 
-class PlayerBlocState {
-  final List<TrackModel> playlist;
-  final int currentIndex;
-  final bool isShuffleMode;
-  final LoopMode loopMode;
-  final List<int> shuffleIndices;
+@Freezed()
+abstract class PlayerBlocState with _$PlayerBlocState {
+  // 1. THE PRIVATE CONSTRUCTOR
+  // This is required because you have custom getters (currentTrack, etc.)
+  const PlayerBlocState._();
 
-  final bool isPlaying;
-  final bool isLoading;
+  // 2. THE FACTORY CONSTRUCTOR
+  // We use @Default() for initial values instead of the constructor body
+  const factory PlayerBlocState({
+    @Default(<TrackModel>[]) List<TrackModel> playlist,
+    @Default(0) int currentIndex,
+    @Default(false) bool isShuffleMode,
+    @Default(LoopMode.off) LoopMode loopMode,
+    @Default(<int>[]) List<int> shuffleIndices,
+    @Default(false) bool isPlaying,
+    @Default(false) bool isLoading,
+    @Default(false) bool isError,
+    @Default('') String errorMessage,
+  }) = _PlayerBlocState;
 
-  final bool isError;
-  final String errorMessage;
-
+  // 3. YOUR CUSTOM GETTERS
+  // These work exactly the same as before
   TrackModel? get currentTrack {
     if (playlist.isEmpty) return null;
     final int index = isShuffleMode
         ? shuffleIndices[currentIndex]
         : currentIndex;
+
+    // Safety check: ensure index is valid to prevent crashes
+    if (index < 0 || index >= playlist.length) return null;
+
     return playlist[index];
   }
 
@@ -30,6 +46,8 @@ class PlayerBlocState {
     final int index = isShuffleMode
         ? shuffleIndices[currentIndex - 1]
         : currentIndex - 1;
+
+    if (index < 0 || index >= playlist.length) return null;
 
     return playlist[index];
   }
@@ -42,42 +60,8 @@ class PlayerBlocState {
         ? shuffleIndices[currentIndex + 1]
         : currentIndex + 1;
 
+    if (index < 0 || index >= playlist.length) return null;
+
     return playlist[index];
-  }
-
-  const PlayerBlocState({
-    this.playlist = const <TrackModel>[],
-    this.currentIndex = 0,
-    this.isShuffleMode = false,
-    this.loopMode = LoopMode.off,
-    this.shuffleIndices = const <int>[],
-    this.isPlaying = false,
-    this.isLoading = false,
-    this.isError = false,
-    this.errorMessage = '',
-  });
-
-  PlayerBlocState copyWith({
-    List<TrackModel>? playlist,
-    int? currentIndex,
-    bool? isShuffleMode,
-    LoopMode? loopMode,
-    List<int>? shuffleIndices,
-    bool? isPlaying,
-    bool? isLoading,
-    bool? isError,
-    String? errorMessage,
-  }) {
-    return PlayerBlocState(
-      playlist: playlist ?? this.playlist,
-      currentIndex: currentIndex ?? this.currentIndex,
-      isShuffleMode: isShuffleMode ?? this.isShuffleMode,
-      loopMode: loopMode ?? this.loopMode,
-      shuffleIndices: shuffleIndices ?? this.shuffleIndices,
-      isPlaying: isPlaying ?? this.isPlaying,
-      isLoading: isLoading ?? this.isLoading,
-      isError: isError ?? this.isError,
-      errorMessage: errorMessage ?? this.errorMessage,
-    );
   }
 }
