@@ -1,16 +1,14 @@
 import 'dart:async';
 import 'package:domain/domain.dart';
 import 'package:just_audio/just_audio.dart' as ja;
+import 'package:uuid/uuid.dart';
 
 part 'player_state.dart';
 
 class PlayerService {
-  //TODO: CHANGE TO UUID
-  //MediaItem requires Unique ID for every instance. This is primitive, but i don't know better.
-  int idCounter = 1;
-
   final ja.AudioPlayer _player = ja.AudioPlayer();
   final AuthService _authService;
+  final Uuid _uuid = const Uuid();
 
   Stream<PlayerState> get playbackStateStream {
     return _player.playerStateStream.map(
@@ -36,7 +34,7 @@ class PlayerService {
         headers: _authService.getAuthHeader,
         Uri.parse(streamUrls[StreamTypeEnum.httpMp3128]!),
         tag: MediaItem(
-          id: '$idCounter',
+          id: _uuid.v4(),
           title: track.title,
           artUri: Uri.tryParse(track.artworkUrl ?? ''),
           artist: track.artist.username,
@@ -45,7 +43,6 @@ class PlayerService {
           displaySubtitle: track.artist.username,
         ),
       );
-      idCounter++;
 
       await _player.setAudioSource(source);
       unawaited(_player.play());
