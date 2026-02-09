@@ -21,7 +21,7 @@ class MainWrapperPage extends StatelessWidget {
         removeLikeTrack: serviceLocator.get<RemoveLikeTrackUseCase>(),
         subscribeToTrackUpdatesUseCase: serviceLocator
             .get<SubscribeToTrackUpdatesUseCase>(),
-      )..add(PlayerInit()),
+      ),
       child: const AutoRouter(),
     );
   }

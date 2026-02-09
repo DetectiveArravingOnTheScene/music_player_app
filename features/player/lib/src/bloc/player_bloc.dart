@@ -51,6 +51,8 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
 
     // Internal listener handler
     on<_PlayerPlaybackStateChanged>(_onPlaybackStateChanged);
+
+    add(PlayerInit());
   }
 
   void _onInit(PlayerInit event, Emitter<PlayerBlocState> emit) {

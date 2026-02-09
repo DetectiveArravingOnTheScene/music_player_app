@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
             .get<GetTrandingTracksUseCase>(),
         subscribeToTrackUpdatesUseCase: serviceLocator
             .get<SubscribeToTrackUpdatesUseCase>(),
-      )..add(const HomePageOpenedEvent()),
+      ),
       child: const HomeContent(),
     );
   }

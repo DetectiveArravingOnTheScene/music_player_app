@@ -32,6 +32,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomePageOpenedEvent>(_onHomePageOpened);
     on<TrackUpdatedEvent>(_onTrackUpdated);
     on<HomeLikeTrack>(_onLikeTrack);
+
+    add(const HomePageOpenedEvent());
   }
 
   Future<void> _onHomePageOpened(
