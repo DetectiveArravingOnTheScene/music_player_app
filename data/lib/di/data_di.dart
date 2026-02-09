@@ -4,6 +4,7 @@ import 'package:domain/use_cases/tracks/like_track_use_case.dart';
 import 'package:domain/use_cases/tracks/remove_like_use_case.dart';
 import 'package:domain/use_cases/tracks/subscribe_to_track_updates_use_case.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:player/player.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../data.dart';

@@ -1,10 +1,11 @@
 import 'dart:async';
+import 'package:domain/domain.dart';
 import 'package:just_audio/just_audio.dart' as ja;
-import '../domain.dart';
 
 part 'player_state.dart';
 
 class PlayerService {
+  //TODO: CHANGE TO UUID
   //MediaItem requires Unique ID for every instance. This is primitive, but i don't know better.
   int idCounter = 1;
 

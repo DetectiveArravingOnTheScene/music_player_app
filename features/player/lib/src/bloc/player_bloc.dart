@@ -6,6 +6,8 @@ import 'package:domain/use_cases/tracks/remove_like_use_case.dart';
 import 'package:domain/use_cases/tracks/subscribe_to_track_updates_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../service/player_service.dart';
+
 part 'player_event.dart';
 part 'player_state.dart';
 
