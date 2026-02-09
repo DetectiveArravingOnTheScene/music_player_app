@@ -41,13 +41,14 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
        super(const PlayerBlocState()) {
     on<PlayerInit>(_onInit);
     on<PlayerSetPlaylist>(_onSetPlaylist);
-    on<PlayerPlay>(_onPlay);
+    on<PlayerResume>(_onResume);
     on<PlayerPause>(_onPause);
     on<PlayerNext>(_onNext);
     on<PlayerPrevious>(_onPrevious);
     on<PlayerToggleShuffle>(_onToggleShuffle);
     on<PlayerLikeTrack>(_onLikeTrack);
     on<TrackUpdatedEvent>(_onTrackUpdated);
+    on<PlayCurrrentTrack>(_onPlayCurrentTrack);
 
     // Internal listener handler
     on<_PlayerPlaybackStateChanged>(_onPlaybackStateChanged);
@@ -89,10 +90,13 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
       ),
     );
 
-    await _playCurrentTrack(emit);
+    add(PlayCurrrentTrack());
   }
 
-  Future<void> _playCurrentTrack(Emitter<PlayerBlocState> emit) async {
+  Future<void> _onPlayCurrentTrack(
+    PlayCurrrentTrack event,
+    Emitter<PlayerBlocState> emit,
+  ) async {
     final TrackModel? track = state.currentTrack;
     if (track == null) {
       return;
@@ -134,7 +138,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
 
     emit(state.copyWith(currentIndex: nextIndex));
 
-    await _playCurrentTrack(emit);
+    add(PlayCurrrentTrack());
   }
 
   Future<void> _onPrevious(
@@ -145,7 +149,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
     if (prevIndex < 0) prevIndex = 0; // or wrap if loop is on
 
     emit(state.copyWith(currentIndex: prevIndex));
-    await _playCurrentTrack(emit);
+    add(PlayCurrrentTrack());
   }
 
   void _onToggleShuffle(
@@ -176,7 +180,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
     }
   }
 
-  void _onPlay(PlayerPlay event, Emitter<PlayerBlocState> emit) {
+  void _onResume(PlayerResume event, Emitter<PlayerBlocState> emit) {
     _service.resume();
 
     emit(state.copyWith(isPlaying: true));

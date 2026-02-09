@@ -86,7 +86,9 @@ class MainContent extends StatelessWidget {
                                 if (state.isPlaying) {
                                   context.read<PlayerBloc>().add(PlayerPause());
                                 } else {
-                                  context.read<PlayerBloc>().add(PlayerPlay());
+                                  context.read<PlayerBloc>().add(
+                                    PlayerResume(),
+                                  );
                                 }
                               },
                               isPaused: !state.isPlaying,

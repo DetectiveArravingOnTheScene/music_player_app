@@ -10,7 +10,9 @@ class PlayerSetPlaylist extends PlayerEvent {
   PlayerSetPlaylist({required this.playlist, this.initialIndex = 0});
 }
 
-class PlayerPlay extends PlayerEvent {}
+class PlayerResume extends PlayerEvent {}
+
+class PlayCurrrentTrack extends PlayerEvent {}
 
 class PlayerPause extends PlayerEvent {}
 
