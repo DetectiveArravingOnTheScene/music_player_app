@@ -8,7 +8,7 @@ class LikeTrackUseCase extends FutureUseCase<TrackModel, void> {
   ) : _trackRepository = trackRepository;
 
   @override
-  Future<void> execute(TrackModel track) {
-    return _trackRepository.likeTrack(track);
+  Future<void> execute(TrackModel trackUrn) {
+    return _trackRepository.likeTrack(trackUrn);
   }
 }

@@ -17,7 +17,8 @@ class MainScreen extends StatelessWidget {
     return BlocProvider<PlayerBloc>(
       create: (BuildContext context) => PlayerBloc(
         service: serviceLocator.get<PlayerService>(),
-        getTrackStreamsUseCase: serviceLocator.get<GetTrackStreamsUseCase>(),
+        getTrackStreamsUseCase: serviceLocator
+            .get<GetTrackStreamUrlsByTrackUrnUseCase>(),
         likeTrack: serviceLocator.get<LikeTrackUseCase>(),
         removeLikeTrack: serviceLocator.get<RemoveLikeTrackUseCase>(),
         subscribeToTrackUpdatesUseCase: serviceLocator

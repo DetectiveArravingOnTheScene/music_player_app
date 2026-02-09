@@ -7,7 +7,7 @@ class RemoveLikeTrackUseCase extends FutureUseCase<TrackModel, void> {
     : _trackRepository = trackRepository;
 
   @override
-  Future<void> execute(TrackModel track) {
-    return _trackRepository.removeLikeTrack(track);
+  Future<void> execute(TrackModel trackUrn) {
+    return _trackRepository.removeLikeTrack(trackUrn);
   }
 }

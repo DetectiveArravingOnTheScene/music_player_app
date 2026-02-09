@@ -7,7 +7,7 @@ class GetNextTracksPageUseCase
   GetNextTracksPageUseCase(this._repository);
 
   @override
-  Future<CollectionModel<TrackModel>> execute(String nextUrl) async {
-    return _repository.getNextPage(nextUrl);
+  Future<CollectionModel<TrackModel>> execute(String trackUrn) async {
+    return _repository.getNextPage(trackUrn);
   }
 }

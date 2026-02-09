@@ -189,9 +189,13 @@ class DataDependencyInjection {
       return GetTrandingTracksUseCase(serviceLocator.get<TrackRepository>());
     });
 
-    serviceLocator.registerLazySingleton<GetTrackStreamsUseCase>(() {
-      return GetTrackStreamsUseCase(serviceLocator.get<TrackRepository>());
-    });
+    serviceLocator.registerLazySingleton<GetTrackStreamUrlsByTrackUrnUseCase>(
+      () {
+        return GetTrackStreamUrlsByTrackUrnUseCase(
+          serviceLocator.get<TrackRepository>(),
+        );
+      },
+    );
 
     serviceLocator.registerLazySingleton<SubscribeToTrackUpdatesUseCase>(() {
       return SubscribeToTrackUpdatesUseCase(

@@ -106,9 +106,9 @@ class TrackRepositoryImpl extends TrackRepository {
   }
 
   @override
-  Future<Map<StreamTypeEnum, String>> getTrackStream(String streamUrl) async {
+  Future<Map<StreamTypeEnum, String>> getTrackStream(String trackUrn) async {
     try {
-      return _remoteMusicProvider.getTrackStreams(streamUrl);
+      return _remoteMusicProvider.getTrackStreams(trackUrn);
     } catch (e) {
       throw ApiAppException(t.track.failedToStream);
     }

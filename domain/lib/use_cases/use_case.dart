@@ -7,7 +7,7 @@ abstract class UseCaseNoParams<Output> {
 }
 
 abstract class FutureUseCase<Input, Output> {
-  Future<Output> execute(Input input);
+  Future<Output> execute(Input trackUrn);
 }
 
 abstract class FutureUseCaseNoParams<Output> {

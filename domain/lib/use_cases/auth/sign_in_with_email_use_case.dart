@@ -6,7 +6,7 @@ class SignInWithEmailUseCase
   final AuthRepository _authRepository;
 
   @override
-  Future<void> execute(SignInWithEmailPayload input) async {
-    return _authRepository.signInWithEmail(input);
+  Future<void> execute(SignInWithEmailPayload trackUrn) async {
+    return _authRepository.signInWithEmail(trackUrn);
   }
 }

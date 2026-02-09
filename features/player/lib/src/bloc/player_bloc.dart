@@ -13,7 +13,7 @@ part 'player_state.dart';
 
 class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
   final PlayerService _service;
-  final GetTrackStreamsUseCase _getTrackStreamsUseCase;
+  final GetTrackStreamUrlsByTrackUrnUseCase _getTrackStreamsUseCase;
   final LikeTrackUseCase _likeTrackUseCase;
   final RemoveLikeTrackUseCase _removeLikeTrackUseCase;
   final SubscribeToTrackUpdatesUseCase _subscribeToTrackUpdatesUseCase;
@@ -29,7 +29,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
 
   PlayerBloc({
     required PlayerService service,
-    required GetTrackStreamsUseCase getTrackStreamsUseCase,
+    required GetTrackStreamUrlsByTrackUrnUseCase getTrackStreamsUseCase,
     required SubscribeToTrackUpdatesUseCase subscribeToTrackUpdatesUseCase,
     required LikeTrackUseCase likeTrack,
     required RemoveLikeTrackUseCase removeLikeTrack,
