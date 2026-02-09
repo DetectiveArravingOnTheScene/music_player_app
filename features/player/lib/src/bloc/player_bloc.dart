@@ -5,7 +5,7 @@ import 'package:domain/domain.dart';
 import 'package:domain/use_cases/tracks/like_track_use_case.dart';
 import 'package:domain/use_cases/tracks/remove_like_use_case.dart';
 import 'package:domain/use_cases/tracks/subscribe_to_track_updates_use_case.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:navigation/navigation.dart';
 
 import '../service/player_service.dart';
 
@@ -18,6 +18,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
   final LikeTrackUseCase _likeTrackUseCase;
   final RemoveLikeTrackUseCase _removeLikeTrackUseCase;
   final SubscribeToTrackUpdatesUseCase _subscribeToTrackUpdatesUseCase;
+  final AppRouter _router;
 
   StreamSubscription<PlayerState>? _playerStateSubscription;
   StreamSubscription<Duration>? _playerPositionSubscription;
@@ -36,11 +37,13 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
     required SubscribeToTrackUpdatesUseCase subscribeToTrackUpdatesUseCase,
     required LikeTrackUseCase likeTrack,
     required RemoveLikeTrackUseCase removeLikeTrack,
+    required AppRouter router,
   }) : _service = service,
        _getTrackStreamsUseCase = getTrackStreamsUseCase,
        _subscribeToTrackUpdatesUseCase = subscribeToTrackUpdatesUseCase,
        _likeTrackUseCase = likeTrack,
        _removeLikeTrackUseCase = removeLikeTrack,
+       _router = router,
        super(const PlayerBlocState()) {
     on<PlayerInit>(_onInit);
     on<PlayerSetPlaylist>(_onSetPlaylist);
@@ -52,6 +55,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
     on<PlayerLikeTrack>(_onLikeTrack);
     on<TrackUpdatedEvent>(_onTrackUpdated);
     on<PlayCurrrentTrack>(_onPlayCurrentTrack);
+    on<PlayerOpenPlayerScreenEvent>(_onOpenPlayerScreen);
 
     // Internal listener handler
     on<_PlayerPlaybackStateChanged>(_onPlaybackStateChanged);
@@ -229,6 +233,13 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
       newPlaylist[index] = event.updatedTrack;
       emit(state.copyWith(playlist: newPlaylist));
     }
+  }
+
+  Future<void> _onOpenPlayerScreen(
+    PlayerOpenPlayerScreenEvent event,
+    Emitter<PlayerBlocState> emit,
+  ) async {
+    await _router.push(const PlayerRoute());
   }
 
   @override

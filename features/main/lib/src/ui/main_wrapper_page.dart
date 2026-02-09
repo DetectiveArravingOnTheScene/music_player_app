@@ -4,6 +4,7 @@ import 'package:domain/use_cases/tracks/like_track_use_case.dart';
 import 'package:domain/use_cases/tracks/remove_like_use_case.dart';
 import 'package:domain/use_cases/tracks/subscribe_to_track_updates_use_case.dart';
 import 'package:flutter/material.dart';
+import 'package:navigation/navigation.dart';
 import 'package:player/player.dart';
 
 @RoutePage()
@@ -21,6 +22,7 @@ class MainWrapperPage extends StatelessWidget {
         removeLikeTrack: serviceLocator.get<RemoveLikeTrackUseCase>(),
         subscribeToTrackUpdatesUseCase: serviceLocator
             .get<SubscribeToTrackUpdatesUseCase>(),
+        router: serviceLocator.get<AppRouter>(),
       ),
       child: const AutoRouter(),
     );

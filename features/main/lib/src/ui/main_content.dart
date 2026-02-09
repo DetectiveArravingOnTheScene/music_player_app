@@ -1,6 +1,5 @@
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
-import 'package:core_ui/widgets/mini_player.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
 import 'package:player/player.dart';
@@ -78,7 +77,9 @@ class MainContent extends StatelessWidget {
                                 );
                               },
                               onTap: () {
-                                context.router.push(const PlayerRoute());
+                                context.read<PlayerBloc>().add(
+                                  PlayerOpenPlayerScreenEvent(),
+                                );
                               },
                               onLikeToggle: () {
                                 context.read<PlayerBloc>().add(

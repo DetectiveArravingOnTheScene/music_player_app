@@ -2,6 +2,8 @@ part of 'player_bloc.dart';
 
 class PlayerEvent {}
 
+class PlayerOpenPlayerScreenEvent extends PlayerEvent {}
+
 class PlayerInit extends PlayerEvent {}
 
 class PlayerSetPlaylist extends PlayerEvent {
