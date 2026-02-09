@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:core_ui/core_ui.dart';
 import 'package:core_ui/widgets/mini_player.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
@@ -50,7 +51,12 @@ class MainContent extends StatelessWidget {
               end: 0,
               child: Row(
                 children: <Widget>[
-                  BlocBuilder<PlayerBloc, PlayerBlocState>(
+                  BlocConsumer<PlayerBloc, PlayerBlocState>(
+                    listener: (BuildContext context, PlayerBlocState state) {
+                      if (state.isError) {
+                        context.showErrorSnackbar(state.errorMessage);
+                      }
+                    },
                     builder: (BuildContext context, PlayerBlocState state) {
                       if (state.currentTrack != null) {
                         return Expanded(

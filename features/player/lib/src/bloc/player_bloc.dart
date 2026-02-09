@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 import 'package:domain/use_cases/tracks/like_track_use_case.dart';
 import 'package:domain/use_cases/tracks/remove_like_use_case.dart';
@@ -26,6 +27,8 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
       StreamController<Duration>.broadcast();
 
   Stream<Duration> get positionStream => _positionStream.stream;
+
+  int skipCount = 0;
 
   PlayerBloc({
     required PlayerService service,
@@ -76,6 +79,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
     PlayerSetPlaylist event,
     Emitter<PlayerBlocState> emit,
   ) async {
+    emit(state.copyWith(isError: false, errorMessage: ''));
     final List<int> indices = List<int>.generate(
       event.playlist.length,
       (int i) => i,
@@ -112,8 +116,18 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
 
       emit(state.copyWith(isLoading: false, isPlaying: true));
     } catch (e) {
-      // emit(state.copyWith(isLoading: false));
-      // Auto-skip on error?
+      if (skipCount > 3) {
+        skipCount = 0;
+        await _service.stop();
+        emit(
+          state.copyWith(
+            isPlaying: false,
+            isError: true,
+            errorMessage: t.track.failedToStream,
+          ),
+        );
+      }
+      skipCount++;
       add(PlayerNext());
     }
   }

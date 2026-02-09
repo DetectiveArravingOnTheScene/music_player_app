@@ -12,6 +12,9 @@ class PlayerBlocState {
   final bool isPlaying;
   final bool isLoading;
 
+  final bool isError;
+  final String errorMessage;
+
   TrackModel? get currentTrack {
     if (playlist.isEmpty) return null;
     final int index = isShuffleMode
@@ -50,6 +53,8 @@ class PlayerBlocState {
     this.shuffleIndices = const <int>[],
     this.isPlaying = false,
     this.isLoading = false,
+    this.isError = false,
+    this.errorMessage = '',
   });
 
   PlayerBlocState copyWith({
@@ -60,6 +65,8 @@ class PlayerBlocState {
     List<int>? shuffleIndices,
     bool? isPlaying,
     bool? isLoading,
+    bool? isError,
+    String? errorMessage,
   }) {
     return PlayerBlocState(
       playlist: playlist ?? this.playlist,
@@ -69,6 +76,8 @@ class PlayerBlocState {
       shuffleIndices: shuffleIndices ?? this.shuffleIndices,
       isPlaying: isPlaying ?? this.isPlaying,
       isLoading: isLoading ?? this.isLoading,
+      isError: isError ?? this.isError,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }
