@@ -28,7 +28,7 @@ class PlayerService {
   Future<void> playTrack(
     TrackModel track,
     Map<StreamTypeEnum, String>
-    streamUrls, // I pass all streams, sooner or later i will add NetworkService, and i will be able to choose stream accroding to connection speed.
+    streamUrls, //TODO: Add logic for choosing streams based on current network connection.
   ) async {
     try {
       final ja.AudioSource source = ja.AudioSource.uri(
