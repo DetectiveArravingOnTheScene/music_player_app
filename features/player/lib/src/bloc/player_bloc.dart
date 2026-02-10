@@ -28,6 +28,8 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
   final StreamController<Duration> _positionStream =
       StreamController<Duration>.broadcast();
 
+  Duration lastPosition = Duration
+      .zero; // Position stream does not emit anything when track is paused, so we store the last value, to show correct progress bars
   Stream<Duration> get positionStream => _positionStream.stream;
 
   int skipCount = 0;
@@ -57,6 +59,8 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
     on<TrackUpdatedEvent>(_onTrackUpdated);
     on<PlayCurrrentTrack>(_onPlayCurrentTrack);
     on<PlayerOpenPlayerScreenEvent>(_onOpenPlayerScreen);
+    on<PlayerSeek>(_onSeek);
+    on<PlayerToggleLoop>(_onToggleLoop);
 
     // Internal listener handler
     on<_PlayerPlaybackStateChanged>(_onPlaybackStateChanged);
@@ -70,9 +74,10 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
     ) {
       add(_PlayerPlaybackStateChanged(state));
     });
-    _playerPositionSubscription = _service.positionStream.listen(
-      _positionStream.add,
-    );
+    _playerPositionSubscription = _service.positionStream.listen((Duration d) {
+      _positionStream.add(d);
+      lastPosition = d;
+    });
     _trackUpdatesSubscription = _subscribeToTrackUpdatesUseCase
         .execute()
         .listen((TrackModel updated) {
@@ -137,8 +142,18 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
     }
   }
 
+  Future<void> _onSeek(PlayerSeek event, Emitter<PlayerBlocState> emit) async {
+    await _service.seek(event.position);
+    emit(state);
+  }
+
   Future<void> _onNext(PlayerNext event, Emitter<PlayerBlocState> emit) async {
     if (state.playlist.isEmpty) return;
+
+    if (state.loopMode == LoopMode.one) {
+      add(PlayCurrrentTrack());
+      return;
+    }
 
     int nextIndex = state.currentIndex + 1;
 
@@ -164,8 +179,24 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
     PlayerPrevious event,
     Emitter<PlayerBlocState> emit,
   ) async {
+    if (lastPosition.inSeconds > 3) {
+      await _service.seek(Duration.zero);
+      return;
+    }
+
+    if (state.loopMode == LoopMode.one) {
+      add(PlayCurrrentTrack());
+      return;
+    }
+
     int prevIndex = state.currentIndex - 1;
-    if (prevIndex < 0) prevIndex = 0; // or wrap if loop is on
+    if (prevIndex < 0) {
+      if (state.loopMode == LoopMode.all) {
+        prevIndex = state.playlist.length - 1;
+      } else {
+        prevIndex = 0;
+      }
+    }
 
     emit(state.copyWith(currentIndex: prevIndex));
     add(PlayCurrrentTrack());
@@ -177,15 +208,31 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerBlocState> {
   ) {
     final bool newMode = !state.isShuffleMode;
     List<int> newIndices;
+    final int currentIndex = state.currentIndex;
 
-    if (newMode) {
-      newIndices = List<int>.generate(state.playlist.length, (int i) => i)
-        ..shuffle();
-    } else {
-      newIndices = List<int>.generate(state.playlist.length, (int i) => i);
-    }
+    newIndices = List<int>.generate(state.playlist.length, (int i) => i)
+      ..shuffle();
+    newIndices[currentIndex] = currentIndex; // to keep current track untouched
 
     emit(state.copyWith(isShuffleMode: newMode, shuffleIndices: newIndices));
+  }
+
+  void _onToggleLoop(PlayerToggleLoop event, Emitter<PlayerBlocState> emit) {
+    final LoopMode nextMode;
+
+    switch (state.loopMode) {
+      case LoopMode.off:
+        nextMode = LoopMode.all;
+        break;
+      case LoopMode.all:
+        nextMode = LoopMode.one;
+        break;
+      case LoopMode.one:
+        nextMode = LoopMode.off;
+        break;
+    }
+
+    emit(state.copyWith(loopMode: nextMode));
   }
 
   void _onPlaybackStateChanged(
