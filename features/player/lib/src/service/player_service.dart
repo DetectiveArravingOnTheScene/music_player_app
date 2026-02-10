@@ -6,7 +6,7 @@ import 'package:uuid/uuid.dart';
 part 'player_state.dart';
 
 class PlayerService {
-  final ja.AudioPlayer _player = ja.AudioPlayer();
+  final ja.AudioPlayer _player = ja.AudioPlayer(maxSkipsOnError: 3);
   final AuthService _authService;
   final Uuid _uuid = const Uuid();
 

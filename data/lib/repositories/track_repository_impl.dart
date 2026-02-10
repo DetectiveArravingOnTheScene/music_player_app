@@ -131,6 +131,7 @@ class TrackRepositoryImpl extends TrackRepository {
 
       _trackUpdateController.add(track.copyWith(isLiked: true));
     } catch (e) {
+      print(e);
       throw ApiAppException(t.track.failedToUpdate);
     }
   }
@@ -159,7 +160,7 @@ class TrackRepositoryImpl extends TrackRepository {
 
     if (userId != null) {
       final List<LikedTrackMetadataEntity> allLiked =
-          await _localLikedTracksProvider.getByUserIdAndUrns(
+          await _cloudLikedTracksProvider.getByUserIdAndUrns(
             userId,
             tracks.map((TrackEntity i) => i.urn).toList(),
           );
